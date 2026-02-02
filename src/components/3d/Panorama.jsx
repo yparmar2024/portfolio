@@ -1,3 +1,4 @@
+// src/components/3d/Panorama.jsx
 import { useRef } from 'react';
 import { useFrame, useLoader } from '@react-three/fiber';
 import * as THREE from 'three';
@@ -5,12 +6,19 @@ import * as THREE from 'three';
 export default function Panorama() {
   const meshRef = useRef();
   
-  // This is a free, public 4K equirectangular image hosted by the Three.js team
-  // It's a park scene, but it tests if your sphere mapping is correct.
-  const texture = useLoader(
-    THREE.TextureLoader, 
-    '/textures/background.jpg'
-  );
+  // 1. Get the current hour (0 - 23)
+  const hour = new Date().getHours();
+
+  // 2. Logic: Night is before 6 AM or after 6 PM (18:00)
+  // Otherwise, it is Day.
+  const isNight = hour < 6 || hour >= 18;
+  
+  const texturePath = isNight 
+    ? '/textures/background_night.jpg' 
+    : '/textures/background_day.jpg';
+
+  // 3. Load the selected texture
+  const texture = useLoader(THREE.TextureLoader, texturePath);
 
   useFrame((state, delta) => {
     // Rotates the world slowly around the Y-axis
@@ -21,11 +29,7 @@ export default function Panorama() {
 
   return (
     <mesh ref={meshRef}>
-      {/* Huge sphere that surrounds the camera */}
-      {/* args: [radius, widthSegments, heightSegments] */}
       <sphereGeometry args={[500, 60, 40]} />
-      
-      {/* BackSide renders the image on the INSIDE of the sphere */}
       <meshBasicMaterial map={texture} side={THREE.BackSide} />
     </mesh>
   );

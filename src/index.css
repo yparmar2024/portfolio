@@ -14,10 +14,10 @@ body, html, #root {
   padding: 0;
   width: 100%;
   height: 100%;
-  overflow: hidden; /* CRITICAL: Prevents scrollbars */
+  overflow: hidden;
   background-color: #1a1a1a;
-  font-family: 'Mojangles', sans-serif; /* Default font */
-  -webkit-font-smoothing: none; /* Keeps pixel fonts crisp */
+  font-family: 'Mojangles', sans-serif;
+  -webkit-font-smoothing: none;
 }
 
 /* 3. Layer Management */
@@ -28,8 +28,8 @@ body, html, #root {
   width: 100%;
   height: 100%;
   z-index: 0;
-  transition: filter 0.5s ease; /* Smooth blur when opening inventory */
-  filter: blur(4px);
+  transition: filter 0.5s ease;
+  filter: blur(4px); 
 }
 
 .canvas-layer.blurred {
@@ -43,42 +43,48 @@ body, html, #root {
   width: 100%;
   height: 100%;
   z-index: 10;
-  pointer-events: none; /* Let clicks pass through to 3D world if needed */
+  pointer-events: none;
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
-/* Allow interaction with actual UI elements */
 .ui-layer > * {
   pointer-events: auto;
 }
 
-/* DAMAGE OVERLAY: The red vignette flash */
+/* 4. DAMAGE OVERLAY */
 .damage-overlay {
   position: fixed;
   top: 0;
   left: 0;
   width: 100vw;
   height: 100vh;
-  /* Radial gradient creates the vignette effect (edges only) */
   background: radial-gradient(circle, transparent 50%, rgba(255, 0, 0, 0.6) 100%);
-  pointer-events: none; /* Allows clicks to pass through */
-  z-index: 9999; /* Ensures it sits on top of everything */
+  pointer-events: none;
+  z-index: 9999;
   opacity: 0;
   transition: opacity 0.1s ease-out;
 }
 
-/* When active, show it and shake the screen */
 .damage-overlay.active {
   opacity: 1;
   animation: shake 0.2s cubic-bezier(.36,.07,.19,.97) both;
 }
 
-/* The Screen Shake Animation */
+/* 5. ANIMATIONS */
+
+/* The Screen Shake (for damage) */
 @keyframes shake {
   10%, 90% { transform: translate3d(-4px, 0, 0); }
   20%, 80% { transform: translate3d(6px, 0, 0); }
   30%, 50%, 70% { transform: translate3d(-8px, 0, 0); }
   40%, 60% { transform: translate3d(8px, 0, 0); }
+}
+
+/* NEW: The Splash Text Bounce (Add this!) */
+@keyframes splash-bounce {
+  0% { transform: rotate(-20deg) scale(1); }
+  50% { transform: rotate(-20deg) scale(1.1); }
+  100% { transform: rotate(-20deg) scale(1); }
 }
