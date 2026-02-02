@@ -1,16 +1,51 @@
-# React + Vite
+# Minecraft Portfolio ⛏️
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A personal developer portfolio website built with **React** and **Vite**, styled to replicate the Minecraft user interface. This project serves as an interactive resume, allowing users to explore my projects ("Inventory"), social links ("Multiplayer"), and work experience ("Realms") in an immersive 3D environment.
 
-Currently, two official plugins are available:
+## 🌟 Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+* **Immersive 3D Background:** Uses `react-three-fiber` to render a 360° panoramic world that changes based on the user's local time (Day/Night cycle).
+* **Authentic UI:** Custom CSS and components designed to mimic the Minecraft Java Edition menu system, including sound effects, pixelated fonts, and hover states.
+* **Interactive Navigation:**
+    * **Singleplayer:** Opens the Inventory (Projects).
+    * **Multiplayer:** Displays Social Links (GitHub, LinkedIn, etc.).
+    * **Minecraft Realms:** showcases Work Experience & Resume timeline.
+* **Responsive Design:** Fully playable on desktop and mobile devices.
 
-## React Compiler
+## 🛠️ Tech Stack
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+* **Framework:** [React](https://react.dev/)
+* **Build Tool:** [Vite](https://vitejs.dev/)
+* **3D Rendering:** [React Three Fiber](https://docs.pmnd.rs/react-three-fiber) & [Drei](https://github.com/pmndrs/drei)
+* **Styling:** CSS Modules & Standard CSS
 
-## Expanding the ESLint configuration
+## 🚀 Getting Started
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+1.  **Clone the repository**
+    ```bash
+    git clone [https://github.com/yourusername/minecraft-portfolio.git](https://github.com/yourusername/minecraft-portfolio.git)
+    ```
+
+2.  **Install dependencies**
+    ```bash
+    npm install
+    ```
+
+3.  **Run the development server**
+    ```bash
+    npm run dev
+    ```
+
+## 📜 Credits & Attribution
+
+This project is a fan creation and is not affiliated with Mojang Studios or Microsoft.
+
+* **Inspiration:** [Minecraft](https://www.minecraft.net/) by Mojang Studios.
+* **Assets:**
+    * **Cursor:** Custom cursor asset sourced from [Minecraft Cursor Mod](https://www.curseforge.com/minecraft/mc-mods/minecraft-cursor) (CurseForge).
+    * **Fonts:** Uses the "Mojangles" font for UI authenticity.
+    * **Sounds:** UI sound effects (`click.ogg`, `hurt.ogg`) used under fair use for educational/portfolio purposes.
+
+---
+
+*Minecraft is a trademark of Mojang Synergies AB.*

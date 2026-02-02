@@ -18,6 +18,28 @@ body, html, #root {
   background-color: #1a1a1a;
   font-family: 'Mojangles', sans-serif;
   -webkit-font-smoothing: none;
+
+  /* Set custom cursor */
+  cursor: url('/icons/cursor.png'), auto;
+}
+
+/* This block fixes the cursor resetting when you hover over buttons */
+button, 
+a, 
+.btn, 
+[role="button"], 
+input, 
+select, 
+textarea {
+  /* '0 0' sets the click point to the top-left tip of the arrow */
+  cursor: url('/icons/cursor.png') 0 0, pointer !important;
+}
+
+/* Keeps the cursor custom even while you are clicking down */
+button:active, 
+.btn:active,
+a:active {
+  cursor: url('/icons/cursor.png') 0 0, pointer !important;
 }
 
 /* 3. Layer Management */
