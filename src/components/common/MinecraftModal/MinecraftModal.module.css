@@ -1,0 +1,49 @@
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.65); /* Classic darkened background */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 50; /* Above the main menu */
+  animation: fadeIn 0.2s ease-out;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  max-width: 600px;
+  color: white;
+  text-align: center;
+}
+
+.title {
+  font-family: 'Mojangles', sans-serif;
+  font-size: 32px;
+  color: #ffffff;
+  margin-bottom: 20px;
+  text-shadow: 2px 2px 0px #3f3f3f;
+}
+
+.content {
+  margin-bottom: 40px;
+  width: 100%;
+  /* This allows content to scroll if it gets too tall (like a long resume) */
+  max-height: 60vh;
+  overflow-y: auto;
+  
+  /* Scrollbar styling for Webkit (Chrome/Safari) */
+  scrollbar-width: thin;
+  scrollbar-color: #888 #333;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}

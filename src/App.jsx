@@ -1,15 +1,13 @@
-// src/App.jsx
 import { useState, Suspense } from 'react';
 import { Canvas } from '@react-three/fiber';
 import Panorama from './components/3d/Panorama';
 
-// UPDATED IMPORTS: Pointing to the new "screens" folder structure
 import MainMenu from './components/screens/MainMenu/MainMenu';
-import Inventory from './components/screens/Inventory/Inventory';
+import Inventory from './components/screens/Inventory/Inventory'; // We will build this next
+import MinecraftModal from './components/common/MinecraftModal/MinecraftModal';
 
 export default function App() {
-  // State now handles multiple screens: 'MENU', 'INVENTORY', 'SOCIALS', 'EXPERIENCE'
-  const [gameState, setGameState] = useState('MENU');
+  const [gameState, setGameState] = useState('MENU'); // 'MENU', 'INVENTORY', 'SOCIALS', 'EXPERIENCE', 'OPTIONS'
 
   const handleBackToMenu = () => {
     setGameState('MENU');
@@ -17,8 +15,7 @@ export default function App() {
 
   return (
     <>
-      {/* LAYER 1: 3D World (Persists across states) */}
-      {/* We blur the background whenever we are NOT on the main menu */}
+      {/* LAYER 1: 3D World */}
       <div className={`canvas-layer ${gameState !== 'MENU' ? 'blurred' : ''}`}>
         <Canvas camera={{ fov: 75, position: [0, 0, 0.1] }}>
           <Suspense fallback={null}>
@@ -35,49 +32,46 @@ export default function App() {
             onSingleplayer={() => setGameState('INVENTORY')}
             onMultiplayer={() => setGameState('SOCIALS')}
             onRealms={() => setGameState('EXPERIENCE')}
+            onOptions={() => setGameState('OPTIONS')} // <--- Need to add this prop to MainMenu!
           />
         )}
 
+        {/* --- THE NEW MODALS --- */}
+
+        {gameState === 'SOCIALS' && (
+          <MinecraftModal title="Multiplayer (Socials)" onClose={handleBackToMenu}>
+            <p>Connect to the server...</p>
+            <ul>
+              <li>GitHub: github.com/yash</li>
+              <li>LinkedIn: linkedin.com/in/yash</li>
+            </ul>
+          </MinecraftModal>
+        )}
+
+        {gameState === 'EXPERIENCE' && (
+          <MinecraftModal title="Minecraft Realms" onClose={handleBackToMenu}>
+             <p>Select a Realm (Work Experience):</p>
+             {/* We will populate this later */}
+             <div style={{ padding: '20px' }}>
+               <p>Course Assistant - Stevens Institute</p>
+               <p>Software Engineer - Blueprint</p>
+             </div>
+          </MinecraftModal>
+        )}
+
+        {gameState === 'OPTIONS' && (
+          <MinecraftModal title="Options" onClose={handleBackToMenu}>
+             <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', alignItems: 'center' }}>
+                <p>Music: OFF</p>
+                <p>Difficulty: HARD (Engineering Major)</p>
+                <p>FOV: Quake Pro</p>
+             </div>
+          </MinecraftModal>
+        )}
+
+        {/* --- INVENTORY (Specific Logic) --- */}
         {gameState === 'INVENTORY' && (
           <Inventory onClose={handleBackToMenu} />
-        )}
-
-        {/* Placeholder for Socials (Multiplayer) */}
-        {gameState === 'SOCIALS' && (
-          <div style={{ 
-            display: 'flex', 
-            flexDirection: 'column', 
-            alignItems: 'center', 
-            justifyContent: 'center', 
-            height: '100%', 
-            color: 'white',
-            fontFamily: 'Mojangles, sans-serif'
-          }}>
-            <h1>Multiplayer Screen</h1>
-            <p>Connect to: GitHub, LinkedIn, etc.</p>
-            <button onClick={handleBackToMenu} style={{ marginTop: '20px', padding: '10px' }}>
-              Cancel (Back)
-            </button>
-          </div>
-        )}
-
-        {/* Placeholder for Experience (Realms) */}
-        {gameState === 'EXPERIENCE' && (
-          <div style={{ 
-            display: 'flex', 
-            flexDirection: 'column', 
-            alignItems: 'center', 
-            justifyContent: 'center', 
-            height: '100%', 
-            color: 'white',
-            fontFamily: 'Mojangles, sans-serif'
-          }}>
-            <h1>Minecraft Realms</h1>
-            <p>Work Experience & Resume Timeline</p>
-            <button onClick={handleBackToMenu} style={{ marginTop: '20px', padding: '10px' }}>
-              Back to Menu
-            </button>
-          </div>
         )}
 
       </div>
