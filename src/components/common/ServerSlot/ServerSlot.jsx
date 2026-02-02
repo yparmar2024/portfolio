@@ -4,10 +4,10 @@ export default function ServerSlot({
   name, 
   motd, 
   ping = 0, 
-  players = '0/0', 
-  icon = '/icons/icon.png', 
+  dates,
+  icon = '/icons/default_server.png', 
   onClick,
-  selected // <--- 1. New Prop
+  selected 
 }) {
   
   const getBarColor = (barIndex) => {
@@ -21,7 +21,6 @@ export default function ServerSlot({
   };
 
   return (
-    // 2. Conditionally add the 'selected' class
     <div 
       className={`${styles.container} ${selected ? styles.selected : ''}`} 
       onClick={onClick}
@@ -35,7 +34,8 @@ export default function ServerSlot({
       </div>
 
       <div className={styles.status}>
-        <div className={styles.playerCount}>{players}</div>
+        <div className={styles.dates}>{dates}</div>
+        
         <div className={styles.signalBars}>
            {[0, 1, 2, 3, 4].map((i) => (
              <div 
@@ -48,6 +48,7 @@ export default function ServerSlot({
              />
            ))}
         </div>
+        
         <div className={styles.pingText}>{ping}ms</div>
       </div>
     </div>

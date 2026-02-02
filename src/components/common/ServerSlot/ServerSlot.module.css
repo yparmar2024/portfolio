@@ -3,8 +3,8 @@
   align-items: center;
   padding: 6px;
   margin-bottom: 4px;
-  background-color: rgba(0, 0, 0, 0.5); /* Classic darkened list item */
-  border: 2px solid #5a5a5a; /* Default grey border */
+  background-color: rgba(0, 0, 0, 0.5); 
+  border: 2px solid #5a5a5a; 
   cursor: pointer;
   gap: 12px;
   transition: all 0.1s ease-in-out;
@@ -13,27 +13,25 @@
   user-select: none;
 }
 
-/* Hover Effect: Lighter background + lighter border */
+/* Hover Effect */
 .container:hover {
   background-color: rgba(0, 0, 0, 0.7);
   border-color: #a0a0a0; 
 }
 
-/* NEW: Selected State (Stays active even when not hovering) */
+/* Selected State */
 .selected {
-  background-color: #000000; /* Fully black or very dark background */
-  border-color: #ffffff; /* Stark white border */
-  outline: 1px solid #000000; /* Optional: adds that crisp double-border feel */
-  z-index: 1; /* Ensures border sits on top */
+  background-color: #000000; 
+  border-color: #ffffff; 
+  outline: 1px solid #000000; 
+  z-index: 1; 
 }
 
-/* Ensure hover doesn't override the selected white border */
 .container.selected:hover {
   border-color: #ffffff;
   background-color: #000000;
 }
 
-/* Active/Selected Effect (Optional) */
 .container:active {
   background-color: rgba(0, 0, 0, 0.8);
   border-color: #ffffff;
@@ -43,14 +41,13 @@
   width: 64px;
   height: 64px;
   image-rendering: pixelated;
-  /* Ensure icon doesn't shrink */
   flex-shrink: 0; 
 }
 
 .details {
-  flex: 1; /* Takes up middle space */
+  flex: 1; 
   text-align: left;
-  overflow: hidden; /* truncates long text */
+  overflow: hidden; 
 }
 
 .name {
@@ -81,13 +78,12 @@
   min-width: 60px;
 }
 
-.playerCount {
+.dates {
   color: #aaaaaa;
   font-size: 14px;
   margin-bottom: 4px;
 }
 
-/* Signal Strength Bars container */
 .signalBars {
   display: flex;
   gap: 2px;
@@ -95,7 +91,6 @@
   height: 14px;
 }
 
-/* Individual bars */
 .bar {
   width: 4px;
 }

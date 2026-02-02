@@ -2,146 +2,146 @@ import React, { useState } from 'react';
 import MinecraftModal from '../../common/MinecraftModal/MinecraftModal';
 import MinecraftButton from '../../common/MinecraftButton/MinecraftButton';
 import ServerSlot from '../../common/ServerSlot/ServerSlot';
-
-// 1. IMPORT THE JSON DATA
+import DirtScreen from '../../common/DirtScreen/DirtScreen';
+import ErrorModal from '../../common/ErrorModal/ErrorModal'; 
 import experiencesData from '../../../data/experiences.json'; 
 
-// (Delete the entire 'const INITIAL_EXPERIENCES = [...]' block here)
-
 const Multiplayer = ({ onBack }) => {
-  // 2. INITIALIZE STATE WITH IMPORTED DATA
-  const [experiences, setExperiences] = useState(experiencesData);
+  const [view, setView] = useState('LIST');
   
+  // Track active error state
+  const [error, setError] = useState(null); 
+
+  const [experiences, setExperiences] = useState(() => {
+    return experiencesData.map(job => ({
+      ...job,
+      ping: Math.floor(Math.random() * 350) + 20 
+    }));
+  });
+
   const [selectedId, setSelectedId] = useState(null);
   const [isRefreshing, setIsRefreshing] = useState(false);
 
-  // Helper: Get the actual object of the selected job
   const selectedJob = experiences.find(e => e.id === selectedId);
 
   // --- HANDLERS ---
-
-  const handleJoin = () => {
-    if (selectedJob) {
-      alert(`Connecting to ${selectedJob.name}...\n\nRole: ${selectedJob.role}\nTime: ${selectedJob.dates}\n\nWork Done:\n${selectedJob.description}`);
-    }
-  };
-
+  const handleJoin = () => { if (selectedJob) setView('DETAILS'); };
+  
   const handleDirectConnect = () => {
-    // If selected, go to that specific site. If not, go to generic (LinkedIn/Portfolio)
     const url = selectedJob ? selectedJob.link : 'https://linkedin.com/in/yparmar';
     window.open(url, '_blank');
   };
 
   const handleAddServer = () => {
-    const email = "yparmar2024@gmail.com";
-    const subject = "Hiring Inquiry: New Server Opportunity";
-    const body = "Hello, I would like to add a new server (job opportunity) to your list...";
-    window.open(`mailto:${email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`);
+    setError({
+      title: "Unknown Host", // Classic Minecraft error title
+      message: "You can't add a server to this list... unless you're hiring me!\n\nTo unlock this feature, please send a valid Job Offer to: yparmar2024@gmail.com\n\nError Code: OFFER_REQUIRED"
+    });
   };
 
-  const handleEdit = () => {
-    // Funny Error: Only triggers if button is enabled (which requires selection)
-    alert("Error: Stop trying to change my experience! 😠\n(Permission Denied: You are not an Admin)");
+  // --- UPDATED FUNNY HANDLERS ---
+
+  const handleEdit = () => { 
+    setError({
+      title: "Creative Mode Restricted", // Sounds official...
+      message: "Hey! You can't rewrite my history!\nOnly the server admin (Me) has write access to these files.\n\nError Code: NOT_THE_MAIN_CHARACTER" // ...but the message is clearly a joke
+    });
   };
 
-  const handleDelete = () => {
-    // Funny Error
-    alert("Error: Stop trying to change my past! 🕰️\n(Cannot delete immutable history)");
+  const handleDelete = () => { 
+    setError({
+      title: "Time Paradox Detected", // Sci-fi / Game trope title
+      message: "Wait, that actually happened!\nDeleting this experience would cause a timeline collapse.\n\nError Code: CANON_EVENT" // Spider-verse reference / clear joke
+    });
   };
 
   const handleRefresh = () => {
     setIsRefreshing(true);
     setTimeout(() => {
-      const newExperiences = experiences.map(exp => ({
-        ...exp,
-        ping: Math.floor(Math.random() * 55) + 5 
-      }));
-      setExperiences(newExperiences);
+      setExperiences(prev => prev.map(e => ({ ...e, ping: Math.floor(Math.random() * 350) + 20 })));
       setIsRefreshing(false);
     }, 800);
   };
 
+  const handleBack = () => {
+    if (view === 'DETAILS') setView('LIST');
+    else onBack();
+  };
+
+  // --- RENDER ---
   return (
-    <MinecraftModal 
-      title="Play Multiplayer" 
-      onClose={onBack}
-      controls={
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', width: '100%', alignItems: 'center' }}>
-          
-          {/* --- TOP ROW --- */}
-          <div style={{ display: 'flex', gap: '10px', justifyContent: 'center', width: '100%' }}>
-            
-            {/* JOIN: Disabled if no selection */}
-            <MinecraftButton 
-              style={{ width: '150px' }} 
-              onClick={handleJoin}
-              disabled={!selectedId} 
-            >
-              Join Server
-            </MinecraftButton>
+    <>
+      {/* ERROR MODAL (The Grey Box) */}
+      {error && (
+        <ErrorModal 
+          title={error.title} 
+          message={error.message} 
+          onClose={() => setError(null)} 
+        />
+      )}
 
-            {/* DIRECT CONNECT: Always Enabled */}
-            <MinecraftButton style={{ width: '150px' }} onClick={handleDirectConnect}>
-              Direct Connect
-            </MinecraftButton>
-
-            {/* ADD SERVER: Always Enabled */}
-             <MinecraftButton style={{ width: '150px' }} onClick={handleAddServer}>
-              Add Server
-            </MinecraftButton>
-          </div>
-
-          {/* --- BOTTOM ROW --- */}
-          <div style={{ display: 'flex', gap: '10px', justifyContent: 'center', width: '100%' }}>
-             
-             {/* EDIT: Disabled if no selection */}
-             <MinecraftButton 
-               style={{ width: '100px' }} 
-               onClick={handleEdit}
-               disabled={!selectedId}
-             >
-               Edit
-             </MinecraftButton>
-             
-             {/* DELETE: Disabled if no selection */}
-             <MinecraftButton 
-               style={{ width: '100px' }} 
-               onClick={handleDelete}
-               disabled={!selectedId}
-             >
-               Delete
-             </MinecraftButton>
-             
-             {/* REFRESH: Always Enabled */}
-             <MinecraftButton style={{ width: '100px' }} onClick={handleRefresh}>
-                {isRefreshing ? "..." : "Refresh"}
-             </MinecraftButton>
-             
-             {/* CANCEL: Always Enabled */}
-             <MinecraftButton style={{ width: '100px' }} onClick={onBack}>Cancel</MinecraftButton>
-          </div>
-        </div>
-      }
-    >
-       {/* --- SERVER LIST --- */}
-       <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
-         {experiences.map((job) => (
-           <ServerSlot 
-             key={job.id}
-             name={job.name}
-             motd={job.role}
-             ping={job.ping}
-             players={job.status}
-             // Ensure this path matches the icons you have in /public/icons/
-             icon={job.icon || "/icons/default_server.png"}
-             
-             // Pass selection state to ServerSlot
-             selected={selectedId === job.id} 
-             onClick={() => setSelectedId(job.id)}
-           />
-         ))}
-       </div>
-    </MinecraftModal>
+      {/* DIRT SCREEN (Details View) */}
+      {view === 'DETAILS' && selectedJob ? (
+        <DirtScreen>
+           <div style={{ fontSize: '24px', color: '#aaaaaa', marginBottom: '5px' }}>{selectedJob.name}</div>
+           <div style={{ fontSize: '18px', color: '#ffff55' }}>{selectedJob.role}</div>
+           <div style={{ fontSize: '16px', color: '#aaaaaa', marginBottom: '15px' }}>{selectedJob.dates}</div>
+           
+           <div style={{ 
+             display: 'flex', flexDirection: 'column', gap: '10px', width: '100%', 
+             fontSize: '16px', color: '#ffffff', lineHeight: '1.4', textAlign: 'left', 
+             backgroundColor: 'rgba(0,0,0,0.3)', padding: '20px', border: '2px solid #1a1a1a' 
+           }}>
+             {selectedJob.description.split('\n').map((line, i) => <div key={i}>{line}</div>)}
+           </div>
+           
+           <div style={{ marginTop: '25px', fontSize: '14px', color: '#55ff55', opacity: 0.8 }}>
+             Connection established securely.
+           </div>
+           
+           <div style={{ display: 'flex', gap: '10px', marginTop: '20px' }}>
+             <MinecraftButton style={{ width: '200px' }} onClick={handleDirectConnect}>Direct Connect</MinecraftButton>
+             <MinecraftButton style={{ width: '200px' }} onClick={() => setView('LIST')}>Back to Server List</MinecraftButton>
+           </div>
+        </DirtScreen>
+      ) : (
+        // SERVER LIST MODAL
+        <MinecraftModal 
+          title="Play Multiplayer" 
+          onClose={onBack}
+          controls={
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', width: '100%', alignItems: 'center' }}>
+              <div style={{ display: 'flex', gap: '10px', justifyContent: 'center', width: '100%' }}>
+                <MinecraftButton style={{ width: '150px' }} onClick={handleJoin} disabled={!selectedId}>Join Server</MinecraftButton>
+                <MinecraftButton style={{ width: '150px' }} onClick={handleDirectConnect}>Direct Connect</MinecraftButton>
+                <MinecraftButton style={{ width: '150px' }} onClick={handleAddServer}>Add Server</MinecraftButton>
+              </div>
+              <div style={{ display: 'flex', gap: '10px', justifyContent: 'center', width: '100%' }}>
+                 <MinecraftButton style={{ width: '100px' }} onClick={handleEdit} disabled={!selectedId}>Edit</MinecraftButton>
+                 <MinecraftButton style={{ width: '100px' }} onClick={handleDelete} disabled={!selectedId}>Delete</MinecraftButton>
+                 <MinecraftButton style={{ width: '100px' }} onClick={handleRefresh}>{isRefreshing ? "..." : "Refresh"}</MinecraftButton>
+                 <MinecraftButton style={{ width: '100px' }} onClick={onBack}>Cancel</MinecraftButton>
+              </div>
+            </div>
+          }
+        >
+           <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
+             {experiences.map((job) => (
+               <ServerSlot 
+                 key={job.id}
+                 name={job.name}
+                 motd={job.role}
+                 ping={job.ping}
+                 dates={job.dates} 
+                 icon={job.icon || "/icons/default_server.png"}
+                 selected={selectedId === job.id} 
+                 onClick={() => setSelectedId(job.id)}
+               />
+             ))}
+           </div>
+        </MinecraftModal>
+      )}
+    </>
   );
 };
 

@@ -14,8 +14,8 @@ export default function Panorama() {
   const isNight = hour < 6 || hour >= 18;
   
   const texturePath = isNight 
-    ? '/textures/background_night.jpg' 
-    : '/textures/background_day.jpg';
+    ? '/textures/background_night.png' 
+    : '/textures/background_day.png';
 
   // 3. Load the selected texture
   const texture = useLoader(THREE.TextureLoader, texturePath);

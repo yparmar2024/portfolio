@@ -1,0 +1,62 @@
+/* The Dark Overlay behind the modal */
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.6);
+  z-index: 1000; /* Highest priority */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* The Grey Window Container */
+.modal {
+  background-color: #c6c6c6; /* Standard Minecraft GUI Grey */
+  border: 2px solid #000;
+  /* The Bevel Effect */
+  box-shadow: 
+    inset 2px 2px 0px #ffffff,
+    inset -2px -2px 0px #555555;
+  
+  width: 400px;
+  max-width: 90%;
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  
+  font-family: 'Mojangles', sans-serif;
+  image-rendering: pixelated;
+}
+
+/* Title Bar */
+.title {
+  color: #3f3f3f; /* Dark grey text for title */
+  font-size: 18px;
+  margin-bottom: 2px;
+  margin-left: 4px;
+  text-shadow: none; /* No shadow on grey background */
+}
+
+/* The Black Content Box (Inner Screen) */
+.messageBox {
+  background-color: #000000;
+  border: 2px solid #8b8b8b; /* Dark grey border */
+  padding: 15px;
+  color: #ffffff;
+  font-size: 14px;
+  line-height: 1.4;
+  min-height: 80px;
+  white-space: pre-wrap; /* Allows \n newlines to work */
+  text-shadow: 1px 1px 0 #3f3f3f;
+}
+
+/* Footer area for the button */
+.footer {
+  display: flex;
+  justify-content: center;
+  margin-top: 5px;
+}

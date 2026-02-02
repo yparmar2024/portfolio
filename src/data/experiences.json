@@ -3,33 +3,36 @@
     "id": 1, 
     "name": "Blueprint", 
     "role": "Software Engineer", 
-    "dates": "Jan 2026 – Present", 
-    "status": "Member", 
-    "ping": 12, 
+    "dates": "Jan 2026 -- Present", 
     "link": "https://sitblueprint.com", 
     "icon": "/icons/blueprint.png",
-    "description": "• Built a search tool that reads thousands of internal documents so members can find answers instantly.\n• Designed a backend system that handles heavy traffic and many users at once without crashing.\n• Organized how data is stored to keep chat history and search results fast and secure."
+    "description": "• Built a internal LLM search tool that reads thousands of internal documents so members can find answers instantly.\n• Designed a backend system that handles heavy traffic and many users at once without crashing and proper scaling.\n• Organized how data is stored to keep chat history and search results fast and secure with a vector-database."
   },
   { 
     "id": 2, 
     "name": "Stevens Institute of Technology", 
     "role": "Course Assistant", 
-    "dates": "Sept 2025 – Present", 
-    "status": "Staff", 
-    "ping": 5, 
+    "dates": "Sep 2025 -- Present", 
     "link": "https://stevens.edu", 
     "icon": "/icons/stevens.png",
-    "description": "• Taught coding basics to students during weekly lab sessions to help them practice what they learned.\n• Helped students master complex topics like data structures and sorting algorithms.\n• Graded projects and showed students how to debug their code and improve their design."
+    "description": "• Taught programming fundamentals to students during weekly lab sessions to help them practice what they learned.\n• Helped students master complex topics like data structures and sorting algorithms.\n• Graded projects and showed students how to debug their code and improve their design."
   },
   { 
     "id": 3, 
     "name": "Quantum Pulse Consulting", 
     "role": "Software Engineering Intern", 
-    "dates": "July 2025 – Oct 2025", 
-    "status": "Offline", 
-    "ping": 88, 
+    "dates": "July 2025 -- Oct 2025", 
     "link": "https://qpulse.tech", 
     "icon": "/icons/quantum_pulse_consulting.png",
-    "description": "• Built web applications that allow users to log in securely and see live updates.\n• Created tools that let different parts of the app talk to each other instantly.\n• Set up automatic updates so the team could release new features faster and with fewer errors."
+    "description": "• Built web applications that allow users to log in securely and see live updates on KRs in sprints.\n• Created tools that let different parts of the app talk to each other instantly through APIs.\n• Set up automatic updates so the team could release new features faster and with fewer errors."
+  },
+  {
+    "id": 4,
+    "name": "Data Glacier",
+    "role": "Data Science Intern",
+    "dates": "Mar 2025 -- July 2025",
+    "link": "https://www.dataglacier.org/",
+    "icon": "/icons/data_glacier.png",
+    "description": "• Cleaned and organized thousands of text documents to help AI models understand language better and learn faster.\n• Built a classification tool and set up an automated system to publish updates instantly without manual work.\n• Tuned machine learning models to improve their accuracy and ensure they performed reliably in real-world tests."
   }
 ]
