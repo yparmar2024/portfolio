@@ -67,7 +67,7 @@ const Options = ({ onBack }) => {
           </div>
 
           {/* Row 3 - Single Wide Button */}
-          <MinecraftButton style={{ width: '310px' }} onClick={() => window.open('https://github.com/yash', '_blank')}>
+          <MinecraftButton style={{ width: '310px' }} onClick={() => window.open('https://github.com/yparmar2024', '_blank')}>
             Video Settings... (Source Code)
           </MinecraftButton>
 

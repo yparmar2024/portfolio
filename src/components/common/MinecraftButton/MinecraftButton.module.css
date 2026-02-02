@@ -3,11 +3,12 @@
   position: relative;
   display: flex;
   justify-content: center;
-  align-items: center; /* Keeps it horizontally centered */
+  align-items: center; 
   height: 50px;
-  width: 450px;
+  /* Remove fixed width if you want it to stretch, or keep it */
+  width: 100%; 
   max-width: 90vw;
-  box-sizing: border-box; /* Important: Ensures padding doesn't make the button bigger */
+  box-sizing: border-box; 
   padding-top: 15px; 
   padding-bottom: 0px; 
 
@@ -15,7 +16,7 @@
   color: #e0e0e0;
   font-family: 'Mojangles', sans-serif;
   font-size: 20px;
-  line-height: 1; /* Tights up the line height so padding controls position */
+  line-height: 1; 
   text-shadow: 2px 2px 0px #3f3f3f;
   
   /* 3. Button Background */
@@ -33,7 +34,7 @@
   image-rendering: pixelated;
 }
 
-/* Hover State adjustments */
+/* Hover State */
 .btn:hover {
   background-color: #5c6e9e;
   box-shadow: 
@@ -44,13 +45,23 @@
   border-color: #000;
 }
 
-/* Active State: The text moves down physically when clicked */
+/* Active State */
 .btn:active {
   background-color: #555555;
   box-shadow: 
     inset 2px 2px 0px #383838, 
     inset -2px -2px 0px #8b8b8b;
-  
-  /* IMPORTANT: Since we added 10px padding, we just shift it 2px more on click */
   transform: translateY(2px); 
+}
+
+/* Disabled State */
+.btn:disabled {
+  color: #a0a0a0;
+  text-shadow: 1px 1px 0 #111111;
+  background-color: #1e1e1f; 
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='4' viewBox='0 0 4 4'%3E%3Cpath fill='%23000000' fill-opacity='0.2' d='M1 3h1v1H1V3zm2-2h1v1H3V1z'/%3E%3C/svg%3E");
+  border: 2px solid #000000;
+  box-shadow: none;
+  cursor: default;
+  pointer-events: none;
 }

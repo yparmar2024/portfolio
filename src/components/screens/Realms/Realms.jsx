@@ -12,10 +12,10 @@ const Realms = ({ onBack }) => {
         <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', width: '100%', alignItems: 'center' }}>
           {/* Top Actions */}
           <div style={{ display: 'flex', gap: '10px', justifyContent: 'center', width: '100%' }}>
-            <MinecraftButton style={{ width: '200px' }} onClick={() => window.open('https://github.com/yash', '_blank')}>
+            <MinecraftButton style={{ width: '200px' }} onClick={() => window.open('https://github.com/yparmar2024', '_blank')}>
               Join Realm (GitHub)
             </MinecraftButton>
-            <MinecraftButton style={{ width: '200px' }} onClick={() => window.open('https://linkedin.com/in/yash', '_blank')}>
+            <MinecraftButton style={{ width: '200px' }} onClick={() => window.open('https://linkedin.com/in/yparmar', '_blank')}>
               Configure (LinkedIn)
             </MinecraftButton>
           </div>
@@ -35,14 +35,14 @@ const Realms = ({ onBack }) => {
           ping={12} 
           players="5000/5000"
           icon="/icons/github.png"
-          onClick={() => window.open('https://github.com/yash', '_blank')}
+          onClick={() => window.open('https://github.com/yparmar2024', '_blank')}
         />
         <ServerSlot 
           name="LinkedIn Network" 
           motd="Let's connect professionally." 
           ping={45} 
           players="1000+"
-          onClick={() => window.open('https://linkedin.com/in/yash', '_blank')}
+          onClick={() => window.open('https://linkedin.com/in/yparmar', '_blank')}
         />
         <ServerSlot 
           name="Email Server" 

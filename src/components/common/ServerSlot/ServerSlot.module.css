@@ -19,6 +19,20 @@
   border-color: #a0a0a0; 
 }
 
+/* NEW: Selected State (Stays active even when not hovering) */
+.selected {
+  background-color: #000000; /* Fully black or very dark background */
+  border-color: #ffffff; /* Stark white border */
+  outline: 1px solid #000000; /* Optional: adds that crisp double-border feel */
+  z-index: 1; /* Ensures border sits on top */
+}
+
+/* Ensure hover doesn't override the selected white border */
+.container.selected:hover {
+  border-color: #ffffff;
+  background-color: #000000;
+}
+
 /* Active/Selected Effect (Optional) */
 .container:active {
   background-color: rgba(0, 0, 0, 0.8);

@@ -1,4 +1,3 @@
-// src/components/ui/MinecraftButton.jsx
 import { useRef } from 'react';
 import styles from './MinecraftButton.module.css';
 
@@ -6,9 +5,9 @@ export default function MinecraftButton({ children, onClick, style, disabled, mu
   const audioRef = useRef(new Audio('/sounds/click.ogg'));
 
   const handleClick = (e) => {
+    // 1. Safety check: prevent action if disabled
     if (disabled) return;
 
-    // Only play the default click sound if muteSound is NOT true
     if (!muteSound) {
       const sound = audioRef.current.cloneNode();
       sound.volume = 0.5;
@@ -19,14 +18,15 @@ export default function MinecraftButton({ children, onClick, style, disabled, mu
   };
 
   return (
-    <div 
+    // 2. CHANGED: Use <button> instead of <div>
+    <button 
       className={styles.btn} 
       onClick={handleClick}
       style={style}
-      role="button"
-      aria-disabled={disabled}
+      // 3. CRITICAL: Pass the native disabled attribute so CSS :disabled works
+      disabled={disabled} 
     >
       {children}
-    </div>
+    </button>
   );
 }
