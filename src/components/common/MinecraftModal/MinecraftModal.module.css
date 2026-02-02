@@ -1,49 +1,90 @@
+/* src/components/common/MinecraftModal/MinecraftModal.module.css */
+
 .overlay {
   position: fixed;
   top: 0;
   left: 0;
   width: 100vw;
   height: 100vh;
-  background-color: rgba(0, 0, 0, 0.65); /* Classic darkened background */
+  /* Darken the background significantly to focus on the modal */
+  background-color: rgba(0, 0, 0, 0.75);
+  backdrop-filter: blur(4px);
   display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
-  z-index: 50; /* Above the main menu */
+  z-index: 50;
   animation: fadeIn 0.2s ease-out;
 }
 
 .container {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  width: 100%;
-  max-width: 600px;
+  /* Match typical Minecraft menu width */
+  width: 800px;
+  max-width: 95vw;
+  /* Use a fixed height or max-height to force scrolling */
+  height: 80vh; 
   color: white;
   text-align: center;
 }
 
 .title {
   font-family: 'Mojangles', sans-serif;
-  font-size: 32px;
+  font-size: 24px;
   color: #ffffff;
-  margin-bottom: 20px;
+  margin-bottom: 10px;
   text-shadow: 2px 2px 0px #3f3f3f;
+  flex-shrink: 0; /* Prevents title from shrinking */
 }
 
-.content {
-  margin-bottom: 40px;
-  width: 100%;
-  /* This allows content to scroll if it gets too tall (like a long resume) */
-  max-height: 60vh;
-  overflow-y: auto;
+/* THE NEW "GREYED OUT" SCROLL AREA */
+.scrollArea {
+  flex: 1; /* Takes up all remaining vertical space */
+  background-color: rgba(0, 0, 0, 0.5); /* The classic "Server List" darkness */
+  border: 1px solid rgba(255, 255, 255, 0.1); /* Subtle border */
+  box-shadow: inset 0 0 10px rgba(0,0,0,0.5); /* Inner shadow for depth */
+  overflow-y: auto; /* Enable scrolling */
+  padding: 10px;
+  margin-bottom: 20px;
   
-  /* Scrollbar styling for Webkit (Chrome/Safari) */
+  /* Custom Scrollbar to look like Minecraft */
   scrollbar-width: thin;
-  scrollbar-color: #888 #333;
+  scrollbar-color: #c6c6c6 #2e2e2e;
+}
+
+.scrollArea::-webkit-scrollbar {
+  width: 8px;
+}
+
+.scrollArea::-webkit-scrollbar-track {
+  background: #2e2e2e;
+  border: 1px solid #000;
+}
+
+.scrollArea::-webkit-scrollbar-thumb {
+  background: #c6c6c6;
+  border: 1px solid #fff;
+}
+
+/* FOOTER AREA FOR BUTTONS */
+.controls {
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 100%;
+  align-items: center;
+}
+
+/* Helper to organize buttons in rows (like the screenshot) */
+.buttonRow {
+  display: flex;
+  gap: 10px;
+  width: 100%;
+  justify-content: center;
 }
 
 @keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
+  from { opacity: 0; transform: scale(0.98); }
+  to { opacity: 1; transform: scale(1); }
 }

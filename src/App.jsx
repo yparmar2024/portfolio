@@ -2,12 +2,15 @@ import { useState, Suspense } from 'react';
 import { Canvas } from '@react-three/fiber';
 import Panorama from './components/3d/Panorama';
 
+// Screen Imports
 import MainMenu from './components/screens/MainMenu/MainMenu';
-import Inventory from './components/screens/Inventory/Inventory'; // We will build this next
-import MinecraftModal from './components/common/MinecraftModal/MinecraftModal';
+import Inventory from './components/screens/Inventory/Inventory'; 
+import Multiplayer from './components/screens/Multiplayer/Multiplayer';
+import MinecraftRealms from './components/screens/Realms/Realms';
+import Options from './components/screens/Options/Options';
 
 export default function App() {
-  const [gameState, setGameState] = useState('MENU'); // 'MENU', 'INVENTORY', 'SOCIALS', 'EXPERIENCE', 'OPTIONS'
+  const [gameState, setGameState] = useState('MENU'); 
 
   const handleBackToMenu = () => {
     setGameState('MENU');
@@ -15,7 +18,6 @@ export default function App() {
 
   return (
     <>
-      {/* LAYER 1: 3D World */}
       <div className={`canvas-layer ${gameState !== 'MENU' ? 'blurred' : ''}`}>
         <Canvas camera={{ fov: 75, position: [0, 0, 0.1] }}>
           <Suspense fallback={null}>
@@ -24,55 +26,27 @@ export default function App() {
         </Canvas>
       </div>
 
-      {/* LAYER 2: UI Overlay */}
       <div className="ui-layer">
         
         {gameState === 'MENU' && (
           <MainMenu 
             onSingleplayer={() => setGameState('INVENTORY')}
-            onMultiplayer={() => setGameState('SOCIALS')}
-            onRealms={() => setGameState('EXPERIENCE')}
-            onOptions={() => setGameState('OPTIONS')} // <--- Need to add this prop to MainMenu!
+            onMultiplayer={() => setGameState('MULTIPLAYER')}
+            onRealms={() => setGameState('REALMS')}
+            onOptions={() => setGameState('OPTIONS')} 
           />
         )}
 
-        {/* --- THE NEW MODALS --- */}
+        {/* Singleplayer -> Inventory (Projects/Skills) */}
+        {gameState === 'INVENTORY' && <Inventory onClose={handleBackToMenu} />}
+        
+        {/* Multiplayer -> Multiplayer (Work Experience) */}
+        {gameState === 'MULTIPLAYER' && <Multiplayer onBack={handleBackToMenu} />}
 
-        {gameState === 'SOCIALS' && (
-          <MinecraftModal title="Multiplayer (Socials)" onClose={handleBackToMenu}>
-            <p>Connect to the server...</p>
-            <ul>
-              <li>GitHub: github.com/yash</li>
-              <li>LinkedIn: linkedin.com/in/yash</li>
-            </ul>
-          </MinecraftModal>
-        )}
+        {/* Realms -> MinecraftRealms (Socials) */}
+        {gameState === 'REALMS' && <MinecraftRealms onBack={handleBackToMenu} />}
 
-        {gameState === 'EXPERIENCE' && (
-          <MinecraftModal title="Minecraft Realms" onClose={handleBackToMenu}>
-             <p>Select a Realm (Work Experience):</p>
-             {/* We will populate this later */}
-             <div style={{ padding: '20px' }}>
-               <p>Course Assistant - Stevens Institute</p>
-               <p>Software Engineer - Blueprint</p>
-             </div>
-          </MinecraftModal>
-        )}
-
-        {gameState === 'OPTIONS' && (
-          <MinecraftModal title="Options" onClose={handleBackToMenu}>
-             <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', alignItems: 'center' }}>
-                <p>Music: OFF</p>
-                <p>Difficulty: HARD (Engineering Major)</p>
-                <p>FOV: Quake Pro</p>
-             </div>
-          </MinecraftModal>
-        )}
-
-        {/* --- INVENTORY (Specific Logic) --- */}
-        {gameState === 'INVENTORY' && (
-          <Inventory onClose={handleBackToMenu} />
-        )}
+        {gameState === 'OPTIONS' && <Options onBack={handleBackToMenu} />}
 
       </div>
     </>
