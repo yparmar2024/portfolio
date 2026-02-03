@@ -35,15 +35,10 @@ export default function App() {
 
   const currentTheme = getCurrentTheme();
 
-  /**
-   * Navigates to Singleplayer through a simulated loading screen.
-   * Mimics the "Building Terrain" phase of Minecraft.
-   */
   const handleSingleplayerStart = () => {
     startMusic();
     setGameState('LOADING');
     
-    // Use standardized timing from refactor report
     setTimeout(() => {
       setGameState('SINGLEPLAYER');
     }, TIMINGS.SERVER_REFRESH_DELAY);
@@ -78,7 +73,6 @@ export default function App() {
           />
         )}
 
-        {/* Loading Transition Screen */}
         {gameState === 'LOADING' && (
           <DirtScreen>
             <div style={{ textAlign: 'center' }}>

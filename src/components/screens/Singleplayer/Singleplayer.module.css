@@ -1,0 +1,126 @@
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.75);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 50;
+}
+
+.container {
+  width: 732px;
+  height: 674px;
+  background: #c6c6c6;
+  border: 2px solid #000;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end; 
+  padding: 24px; 
+  box-shadow: inset 5px 5px 0px #fff, inset -5px -5px 0px #555;
+  image-rendering: pixelated;
+  box-sizing: border-box; 
+}
+
+.topSection {
+  display: flex;
+  width: 100%;
+  gap: 0px;
+  margin-bottom: auto;
+}
+
+.armorColumn {
+  display: flex;
+  flex-direction: column;
+}
+
+.characterPreview {
+  width: 220px;
+  height: 290px;
+  background: rgba(0, 0, 0, 0.99);
+  box-shadow: inset 4px 4px 2px #373737, inset -3px -3px 2px #ffffff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-sizing: border-box;
+}
+
+.rightColumn {
+    display: flex;
+    flex-direction: column;
+    height: 290px;
+    justify-content: flex-end;
+    margin-left: 4px;
+}
+
+.inventorySection {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px; 
+  width: 100%;
+}
+
+.grid9x3 {
+  display: grid;
+  grid-template-columns: repeat(9, 72px);
+  gap: 4px; 
+  padding: 8px;
+  background: rgba(0, 0, 0, 0.05);
+}
+.topSection {
+  display: flex;
+  width: 100%;
+  gap: 0px;
+  margin-bottom: auto;
+}
+
+.armorColumn {
+  display: flex;
+  flex-direction: column;
+}
+
+.characterPreview {
+  width: 220px;
+  height: 290px;
+  background: rgba(0, 0, 0, 0.99);
+  box-shadow: inset 4px 4px 2px #373737, inset -3px -3px 2px #ffffff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-sizing: border-box;
+}
+
+.rightColumn {
+    display: flex;
+    flex-direction: column;
+    height: 290px;
+    justify-content: flex-end;
+    margin-left: 4px;
+}
+
+.inventorySection {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px; 
+  width: 100%;
+}
+
+.grid9x3 {
+  display: grid;
+  grid-template-columns: repeat(9, 72px);
+  gap: 4px; 
+  padding: 8px;
+  background: rgba(0, 0, 0, 0.05);
+}
+
+.hotbar9x1 {
+  display: grid;
+  grid-template-columns: repeat(9, 72px);
+  gap: 4px;
+  margin-top: 8px; 
+}
