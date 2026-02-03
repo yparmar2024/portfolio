@@ -315,49 +315,46 @@ Extract to CSS modules for:
 
 ---
 
-### 5.2 Magic Numbers
+### 5.2 Magic Numbers ✅ **RESOLVED**
 
-**Issue:** Hardcoded values for timeouts, dimensions, etc.
-
+**Solution Implemented:**
 ```javascript
-setTimeout(() => setIsHurt(false), 300);  // Menu.jsx
-setTimeout(() => { /* ... */ }, 800);     // useServerList.js
-```
-
-**Recommendation:**
-```javascript
-// Create /src/constants/timings.js
+// /src/constants/timings.js
 export const TIMINGS = {
   DAMAGE_OVERLAY_DURATION: 300,
   SERVER_REFRESH_DELAY: 800,
-  MUSIC_FADE_INTERVAL: 100
+  MUSIC_FADE_INTERVAL: 100,
+  WORLD_LOADING_DELAY: 800,
 };
 ```
 
-**Priority:** Low (values are reasonable and unlikely to change)
+**Updated Files:**
+- `Menu.jsx` - Uses `TIMINGS.DAMAGE_OVERLAY_DURATION`
+- `useServerList.js` - Uses `TIMINGS.SERVER_REFRESH_DELAY`
+- `Singleplayer.jsx` - Uses `TIMINGS.WORLD_LOADING_DELAY`
+
+**Status:** ✅ Centralized and documented
 
 ---
 
 ### 5.3 Data File Organization
+ ✅ **RESOLVED**
 
 **Current Structure:**
 ```
 /src/data/
-  experiences.json
-  items.json
-  projects.json
-  socials.json
+  experiences.json  ✅ (Used in Multiplayer)
+  items.json       ✅ (Used in Singleplayer - Skills)
+  projects.json    ✅ (Used in Singleplayer - Portfolio)
+  socials.json     ✅ (Used in Realms)
 ```
 
-**Issue:** `items.json` and `projects.json` exist but aren't used (Singleplayer is "Coming Soon").
+**Status:** All data files are now actively used with proper structure:
+- **items.json**: Technical skills with stack counts and lore
+- **projects.json**: Portfolio projects with rarity and detailed descriptions
+- Both integrated into the Singleplayer inventory system
 
-**Recommendation:**
-- Document planned usage in README
-- Create placeholder components for future features
-- Consider TypeScript interfaces for JSON structure validation
-
-**Priority:** Low (doesn't affect current functionality)
-
+**Priority:** ✅ Complete
 ---
 
 ## 6. Best Practices Validated ✅
@@ -392,17 +389,29 @@ export const TIMINGS = {
 3. `/src/hooks/useServerList.js` - Server list state management
 
 ### Components Refactored
+4. `/src/constants/timings.js` - Animation timing constants
+5. `/src/components/screens/Singleplayer/Singleplayer.module.css` - Inventory styling
+
+### Components Refactored
 1. `App.jsx` - Theme logic extracted, JSDoc added
-2. `Menu.jsx` - Comments removed, documentation added
-3. `Singleplayer.jsx` - Documented placeholder
-4. `Multiplayer.jsx` - Integrated useServerList hook and ERROR_MESSAGES
-5. `Realms.jsx` - Integrated useServerList hook and ERROR_MESSAGES
+2. `Menu.jsx` - Comments removed, documentation added, uses TIMINGS
+3. `Singleplayer.jsx` - **Fully implemented inventory system** with:
+   - Loading transition with DirtScreen
+   - 9×3 inventory grid + 9×1 hotbar
+   - Character preview and player stats
+   - Interactive tooltips with rarity colors
+   - Integration with projects.json and items.jsonk and ERROR_MESSAGES
 6. `Options.jsx` - Added JSDoc, used ERROR_MESSAGES constant
 7. `MinecraftButton.jsx` - Comprehensive documentation
 8. `MinecraftModal.jsx` - Removed inline comments
 9. `DirtScreen.jsx` - Added JSDoc
 10. `ErrorModal.jsx` - Documented component architecture
-11. `ServerSlot.jsx` - Integrated getSignalBarColor utility
+11. `ServerSlot.jsx` - Integrated getSignalBarCo
+3. `useServerList.js` - Uses TIMINGS constant
+
+### Data Files
+1. `projects.json` - Populated with portfolio projects (4 entries)
+2. `items.json` - Populated with technical skills (8 entries)lor utility
 12. `Panorama.jsx` - Documented Three.js implementation
 
 ### Context & Hooks
@@ -466,10 +475,15 @@ test('useServerList enriches data with ping values', () => {
 ## 10. Future Enhancements 🚀
 
 ### High Priority
-1. **Implement Singleplayer/Inventory**
-   - Display projects from `projects.json`
-   - Use Minecraft inventory slot design
-   - Modal with project details on click
+1. ✅ **Implement Singleplayer/Inventory** *(COMPLETED)*
+   - ✅ Displays projects from `projects.json`
+   - ✅ Uses Minecraft inventory 9×3 grid design
+   - ✅ Includes 9×1 hotbar with item stacks
+   - ✅ Character preview with profile.png
+   - ✅ Player stats display (Location, Server, Quest, Level)
+   - ✅ Interactive tooltips with item lore and rarity colors
+   - ✅ Loading transition ("Building Terrain...")
+   - ✅ Level-up sound effect on reveal
 
 2. **TypeScript Migration**
    - Add type safety for JSON data
@@ -495,10 +509,11 @@ test('useServerList enriches data with ping values', () => {
 
 ---
 
-## Conclusion
-
-This refactor elevates the codebase to **industry-standard quality** suitable for showcasing to employers and technical interviewers. The application demonstrates:
-
+## ✅ ~~Implement Singleplayer inventory system~~ **COMPLETE**
+2. ✅ ~~Centralize timing constants~~ **COMPLETE**
+3. Implement TypeScript for enhanced type safety
+4. Add comprehensive unit tests (80%+ coverage target)
+5
 - **Professional software engineering practices** (DRY, separation of concerns)
 - **Strong documentation culture** (JSDoc, clear architecture)
 - **Maintainability** (utilities, hooks, centralized constants)

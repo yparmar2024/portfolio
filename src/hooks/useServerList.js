@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { enrichWithPing, generateRandomPing } from '../utils/serverUtils';
+import { TIMINGS } from '../constants/timings';
 
 /**
  * Custom hook for managing server/realm list state
@@ -26,7 +27,7 @@ const useServerList = (initialData) => {
         ping: generateRandomPing()
       })));
       setIsRefreshing(false);
-    }, 800);
+    }, TIMINGS.SERVER_REFRESH_DELAY);
   };
 
   /**

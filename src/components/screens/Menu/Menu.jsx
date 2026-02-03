@@ -19,6 +19,7 @@
 import { useState, useEffect } from 'react';
 import useSound from '../../../hooks/useSound';
 import MinecraftButton from '../../common/MinecraftButton/MinecraftButton';
+import { TIMINGS } from '../../../constants/timings';
 
 const SPLASH_TEXTS = [
   "Hire me!",
@@ -46,7 +47,7 @@ export default function Menu({ onSingleplayer, onMultiplayer, onRealms, onOption
 
   const handleQuit = () => {
     setIsHurt(true);
-    setTimeout(() => setIsHurt(false), 300);
+    setTimeout(() => setIsHurt(false), TIMINGS.DAMAGE_OVERLAY_DURATION);
     playHurt();
   };
 

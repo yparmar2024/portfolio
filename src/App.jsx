@@ -1,17 +1,12 @@
 /**
- * Main application component for the Minecraft-themed portfolio
- * 
- * Manages global navigation state, theme switching, and sound initialization.
- * Renders a Three.js panorama background with UI overlays for different screens.
- * 
- * Architecture:
- * - Canvas layer: Three.js panorama (blurs when navigating away from menu)
- * - UI layer: React-based screen components (Menu, Options, Work Experience, etc.)
- * 
- * @component
+ * Main application component for the Minecraft-themed portfolio.
+ * * This version implements:
+ * 1. Orientation Lock: Forces landscape mode via OrientationGuard.
+ * 2. Singleplayer Transition: Menu -> Loading (DirtScreen) -> Singleplayer GUI.
+ * * @component
  */
 
-import { useState, Suspense } from 'react';
+import { useState, Suspense, useEffect } from 'react';
 import { Canvas } from '@react-three/fiber';
 import Panorama from './components/3d/Panorama';
 import { useSoundSettings } from './context/SoundContext';
@@ -20,7 +15,10 @@ import Singleplayer from './components/screens/Singleplayer/Singleplayer';
 import Multiplayer from './components/screens/Multiplayer/Multiplayer';
 import MinecraftRealms from './components/screens/Realms/Realms';
 import Options from './components/screens/Options/Options';
+import DirtScreen from './components/common/DirtScreen/DirtScreen';
+import OrientationGuard from './components/common/OrientationGuard/OrientationGuard';
 import { getThemeFromTime } from './utils/serverUtils';
+import { TIMINGS } from './constants/timings';
 
 export default function App() {
   const [gameState, setGameState] = useState('MENU'); 
@@ -38,10 +36,19 @@ export default function App() {
   const currentTheme = getCurrentTheme();
 
   /**
-   * Handles navigation between screens and initiates music playback
-   * Browser autoplay restrictions require user interaction before audio can play
-   * @param {string} state - Target screen state identifier
+   * Navigates to Singleplayer through a simulated loading screen.
+   * Mimics the "Building Terrain" phase of Minecraft.
    */
+  const handleSingleplayerStart = () => {
+    startMusic();
+    setGameState('LOADING');
+    
+    // Use standardized timing from refactor report
+    setTimeout(() => {
+      setGameState('SINGLEPLAYER');
+    }, TIMINGS.SERVER_REFRESH_DELAY);
+  };
+
   const navigateTo = (state) => {
     startMusic();
     setGameState(state);
@@ -52,7 +59,7 @@ export default function App() {
   };
 
   return (
-    <>
+    <OrientationGuard>
       <div className={`canvas-layer ${gameState !== 'MENU' ? 'blurred' : ''}`}>
         <Canvas camera={{ fov: 75, position: [0, 0, 0.1] }}>
           <Suspense fallback={null}>
@@ -64,11 +71,21 @@ export default function App() {
       <div className="ui-layer">
         {gameState === 'MENU' && (
           <Menu 
-            onSingleplayer={() => navigateTo('SINGLEPLAYER')}
+            onSingleplayer={handleSingleplayerStart}
             onMultiplayer={() => navigateTo('MULTIPLAYER')}
             onRealms={() => navigateTo('REALMS')}
             onOptions={() => navigateTo('OPTIONS')} 
           />
+        )}
+
+        {/* Loading Transition Screen */}
+        {gameState === 'LOADING' && (
+          <DirtScreen>
+            <div style={{ textAlign: 'center' }}>
+              <div style={{ fontSize: '24px', color: '#fff', marginBottom: '10px' }}>Loading World...</div>
+              <div style={{ color: '#aaa' }}>Building Terrain</div>
+            </div>
+          </DirtScreen>
         )}
 
         {gameState === 'SINGLEPLAYER' && <Singleplayer onClose={handleBackToMenu} />}
@@ -85,6 +102,6 @@ export default function App() {
           />
         )}
       </div>
-    </>
+    </OrientationGuard>
   );
 }

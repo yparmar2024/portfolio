@@ -1,3 +1,20 @@
+@media screen and (max-width: 932px) and (orientation: portrait) {
+  #root {
+    transform: rotate(-90deg);
+    transform-origin: left top;
+    width: 100vh;
+    height: 100vw;
+    overflow-x: hidden;
+    position: absolute;
+    top: 100%;
+    left: 0;
+  }
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
 @font-face {
   font-family: 'Mojangles';
   src: url('/fonts/Mojangles.ttf') format('truetype');
