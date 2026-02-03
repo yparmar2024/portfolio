@@ -1,24 +1,38 @@
+/**
+ * Custom hook for playing UI sound effects
+ * 
+ * Creates a persistent Audio instance for a given sound file and provides
+ * a play function that respects volume settings from SoundContext.
+ * 
+ * Used for button clicks, menu interactions, and other short sound effects.
+ * For background music, use SoundContext's playTrack method instead.
+ * 
+ * @param {string} url - Path to the sound file
+ * @param {string} type - Audio category for volume mixing (default: 'ui')
+ * @returns {Function} Play function for the sound effect
+ * 
+ * @example
+ * const playClick = useSound('/sounds/click.ogg', 'ui');
+ * playClick(); // Plays the sound at the current volume level
+ */
+
 import { useState, useEffect, useCallback } from 'react';
 import { useSoundSettings } from '../context/SoundContext';
 
 const useSound = (url, type = 'ui') => {
-  // Use a state-managed audio object
   const [audio] = useState(new Audio(url));
   const { volume, getEffectiveVolume } = useSoundSettings();
 
-  // Stable function to calculate and apply volume
   const syncVolume = useCallback(() => {
     const effectiveVol = getEffectiveVolume(type);
     audio.volume = effectiveVol;
   }, [getEffectiveVolume, type, audio]);
 
-  // Sync volume immediately when the global 'volume' state changes
   useEffect(() => {
     syncVolume();
   }, [volume, syncVolume]);
 
   const play = () => {
-    // Final sync before playing
     syncVolume();
     audio.currentTime = 0;
     audio.play().catch(e => console.warn("Playback blocked:", e));

@@ -6,7 +6,6 @@
   left: 0;
   width: 100vw;
   height: 100vh;
-  /* Darken the background significantly to focus on the modal */
   background-color: rgba(0, 0, 0, 0.75);
   backdrop-filter: blur(4px);
   display: flex;
@@ -19,10 +18,8 @@
 .container {
   display: flex;
   flex-direction: column;
-  /* Match typical Minecraft menu width */
   width: 800px;
   max-width: 95vw;
-  /* Use a fixed height or max-height to force scrolling */
   height: 80vh; 
   color: white;
   text-align: center;
@@ -34,20 +31,17 @@
   color: #ffffff;
   margin-bottom: 10px;
   text-shadow: 2px 2px 0px #3f3f3f;
-  flex-shrink: 0; /* Prevents title from shrinking */
+  flex-shrink: 0;
 }
 
-/* THE NEW "GREYED OUT" SCROLL AREA */
 .scrollArea {
-  flex: 1; /* Takes up all remaining vertical space */
-  background-color: rgba(0, 0, 0, 0.5); /* The classic "Server List" darkness */
-  border: 1px solid rgba(255, 255, 255, 0.1); /* Subtle border */
-  box-shadow: inset 0 0 10px rgba(0,0,0,0.5); /* Inner shadow for depth */
-  overflow-y: auto; /* Enable scrolling */
+  flex: 1;
+  background-color: rgba(0, 0, 0, 0.5);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: inset 0 0 10px rgba(0,0,0,0.5);
+  overflow-y: auto;
   padding: 10px;
   margin-bottom: 20px;
-  
-  /* Custom Scrollbar to look like Minecraft */
   scrollbar-width: thin;
   scrollbar-color: #c6c6c6 #2e2e2e;
 }
@@ -66,7 +60,6 @@
   border: 1px solid #fff;
 }
 
-/* FOOTER AREA FOR BUTTONS */
 .controls {
   flex-shrink: 0;
   display: flex;
@@ -76,7 +69,6 @@
   align-items: center;
 }
 
-/* Helper to organize buttons in rows (like the screenshot) */
 .buttonRow {
   display: flex;
   gap: 10px;

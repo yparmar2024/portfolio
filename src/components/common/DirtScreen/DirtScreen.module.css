@@ -1,32 +1,24 @@
 .screen {
-  /* 1. Full Screen Takeover */
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  z-index: 200; /* High z-index to sit on top of everything */
-
-  /* 2. The Dirt Background */
+  z-index: 200;
   background-color: #2e2117;
   background-image: url('/textures/dirt.png');
   background-size: 64px;
   image-rendering: pixelated;
-
-  /* 3. Centering Layout */
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-
-  /* 4. Default Text Styling */
   color: #ffffff;
   font-family: 'Mojangles', sans-serif;
   text-shadow: 2px 2px 0px #000000;
   text-align: center;
 }
 
-/* Inner content wrapper to handle spacing/scrolling */
 .content {
   display: flex;
   flex-direction: column;
@@ -34,6 +26,6 @@
   justify-content: center;
   gap: 20px;
   width: 100%;
-  max-width: 900px; /* Prevent text from spanning edge-to-edge on wide screens */
+  max-width: 900px;
   padding: 40px;
 }

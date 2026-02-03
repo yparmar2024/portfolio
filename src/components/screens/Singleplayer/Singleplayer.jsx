@@ -1,7 +1,17 @@
+/**
+ * Singleplayer/Inventory screen component
+ * 
+ * Placeholder for projects/portfolio items section.
+ * Styled after Minecraft's inventory UI with classic grey background.
+ * 
+ * @component
+ * @param {Object} props
+ * @param {Function} props.onClose - Handler to return to main menu
+ */
+
 import React from 'react';
 import MinecraftButton from '../../common/MinecraftButton/MinecraftButton';
 
-// Inline styles for the placeholder to avoid needing a CSS file immediately
 const styles = {
   overlay: {
     position: 'fixed',
@@ -9,16 +19,16 @@ const styles = {
     left: 0,
     width: '100vw',
     height: '100vh',
-    backgroundColor: 'rgba(0, 0, 0, 0.75)', // Darkens the background like standard MC Inventory
+    backgroundColor: 'rgba(0, 0, 0, 0.75)',
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
     zIndex: 50,
   },
   container: {
-    width: '176px', // Standard MC Inventory width approx
+    width: '176px',
     height: '166px',
-    background: '#c6c6c6', // Standard grey UI color
+    background: '#c6c6c6',
     border: '2px solid #000',
     display: 'flex',
     flexDirection: 'column',

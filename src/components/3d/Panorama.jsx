@@ -1,30 +1,39 @@
+/**
+ * Three.js panorama background component
+ * 
+ * Renders a slowly rotating 360° skybox sphere with day/night texture switching.
+ * The camera is positioned inside the sphere looking outward.
+ * 
+ * Theming:
+ * - 'Auto': Switches based on time of day (6 AM - 6 PM = Day)
+ * - 'Day': Daytime skybox
+ * - 'Night': Nighttime skybox
+ * 
+ * @component
+ * @param {Object} props
+ * @param {('Auto'|'Day'|'Night')} props.theme - Theme mode (default: 'Auto')
+ */
+
 import { useRef } from 'react';
 import { useFrame, useLoader } from '@react-three/fiber';
 import * as THREE from 'three';
+import { getThemeFromTime } from '../../utils/serverUtils';
 
 export default function Panorama({ theme = 'Auto' }) {
   const meshRef = useRef();
 
-  // 1. Resolve the theme
-  // If 'Auto' is passed (or default), calculate based on time. 
-  // If 'Day' or 'Night' is passed, use it directly.
   let currentMode = theme;
   
   if (theme === 'Auto') {
-    const hour = new Date().getHours();
-    // Night is before 6 AM or after 6 PM
-    currentMode = (hour < 6 || hour >= 18) ? 'Night' : 'Day';
+    currentMode = getThemeFromTime();
   }
 
-  // 2. Select Texture Path
   const texturePath = currentMode === 'Night' 
     ? '/textures/background_night.png' 
     : '/textures/background_day.png';
 
-  // 3. Load the texture (Suspense will handle the loading state)
   const texture = useLoader(THREE.TextureLoader, texturePath);
 
-  // 4. Rotation Logic (Preserved)
   useFrame((state, delta) => {
     if (meshRef.current) {
       meshRef.current.rotation.y += delta * 0.05; 

@@ -1,4 +1,28 @@
+/**
+ * Server/Realm list item component
+ * 
+ * Replicates Minecraft's server list UI with:
+ * - Server icon (64x64 pixelated)
+ * - Server name and MOTD (message of the day)
+ * - Connection quality bars (color-coded by ping)
+ * - Ping display in milliseconds
+ * - Selection highlighting
+ * 
+ * Used in both Multiplayer (work experience) and Realms (social links) screens.
+ * 
+ * @component
+ * @param {Object} props
+ * @param {string} props.name - Server/realm name
+ * @param {string} props.motd - Server description/status message
+ * @param {number} props.ping - Latency in milliseconds (default: 0)
+ * @param {string} props.dates - Additional info (dates, status, etc.)
+ * @param {string} props.icon - Path to server icon image
+ * @param {Function} props.onClick - Selection handler
+ * @param {boolean} props.selected - Whether this item is currently selected
+ */
+
 import styles from './ServerSlot.module.css';
+import { getSignalBarColor } from '../../../utils/serverUtils';
 
 export default function ServerSlot({ 
   name, 
@@ -9,23 +33,11 @@ export default function ServerSlot({
   onClick,
   selected 
 }) {
-  
-  const getBarColor = (barIndex) => {
-    if (ping < 0) return '#aa0000'; 
-    if (barIndex === 0) return '#00aa00'; 
-    if (barIndex === 1) return '#00aa00';
-    if (barIndex === 2) return ping < 300 ? '#00aa00' : '#aaaa00';
-    if (barIndex === 3) return ping < 150 ? '#00aa00' : '#555555'; 
-    if (barIndex === 4) return ping < 50 ? '#00aa00' : '#555555';
-    return '#555555';
-  };
-
   return (
     <div 
       className={`${styles.container} ${selected ? styles.selected : ''}`} 
       onClick={onClick}
     >
-      
       <img src={icon} alt="Server Icon" className={styles.icon} />
       
       <div className={styles.details}>
@@ -43,7 +55,7 @@ export default function ServerSlot({
                className={styles.bar} 
                style={{ 
                  height: `${(i + 2) * 2}px`, 
-                 backgroundColor: getBarColor(i)
+                 backgroundColor: getSignalBarColor(ping, i)
                }} 
              />
            ))}

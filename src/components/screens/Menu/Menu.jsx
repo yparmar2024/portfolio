@@ -1,3 +1,21 @@
+/**
+ * Main menu screen component
+ * 
+ * The portfolio's home screen styled after Minecraft Java Edition's main menu.
+ * Features:
+ * - Animated title logo with splash text
+ * - Damage overlay effect when clicking "Quit Game"
+ * - Responsive button layout
+ * - Random splash text selection on mount
+ * 
+ * @component
+ * @param {Object} props
+ * @param {Function} props.onSingleplayer - Navigate to projects/inventory
+ * @param {Function} props.onMultiplayer - Navigate to work experience
+ * @param {Function} props.onRealms - Navigate to social links
+ * @param {Function} props.onOptions - Navigate to settings/about
+ */
+
 import { useState, useEffect } from 'react';
 import useSound from '../../../hooks/useSound';
 import MinecraftButton from '../../common/MinecraftButton/MinecraftButton';
@@ -36,7 +54,6 @@ export default function Menu({ onSingleplayer, onMultiplayer, onRealms, onOption
     <>
       <div className={`damage-overlay ${isHurt ? 'active' : ''}`} />
 
-      {/* VERSION TEXT */}
       <div style={{
         position: 'absolute', bottom: '10px', left: '20px',
         color: '#ffffff', fontFamily: 'Mojangles, sans-serif', fontSize: '20px',
@@ -58,7 +75,6 @@ export default function Menu({ onSingleplayer, onMultiplayer, onRealms, onOption
         justifyContent: 'center', height: '100%', width: '100%', zIndex: 10
       }}>
         
-        {/* LOGO */}
         <div style={{ position: 'relative', marginBottom: '40px', marginTop: '-10vh' }}>
             <div style={{
               position: 'absolute', top: '100px', right: '-75px',
@@ -80,11 +96,6 @@ export default function Menu({ onSingleplayer, onMultiplayer, onRealms, onOption
             />
         </div>
 
-        {/* RESPONSIVE BUTTON CONTAINER 
-           1. width: 100% -> Tries to fill the screen
-           2. maxWidth: 450px -> Stops growing at 450px (Desktop look)
-           3. padding: 0 20px -> Ensures buttons don't touch screen edges on mobile
-        */}
         <div style={{
           display: 'flex', 
           flexDirection: 'column', 
@@ -92,10 +103,8 @@ export default function Menu({ onSingleplayer, onMultiplayer, onRealms, onOption
           width: '100%', 
           maxWidth: '450px', 
           padding: '0 20px',
-          boxSizing: 'border-box'
         }}>
           
-          {/* Main Buttons - Set to fill the container */}
           <MinecraftButton style={{ width: '100%' }} onClick={onSingleplayer}>
             Singleplayer
           </MinecraftButton>
@@ -108,7 +117,6 @@ export default function Menu({ onSingleplayer, onMultiplayer, onRealms, onOption
             Minecraft Realms
           </MinecraftButton>
 
-          {/* Bottom Row - Flex Container fills the parent width */}
           <div style={{ display: 'flex', gap: '14px', width: '100%' }}>
             <MinecraftButton style={{ flex: 1 }} onClick={onOptions}>
               Options...
@@ -117,9 +125,7 @@ export default function Menu({ onSingleplayer, onMultiplayer, onRealms, onOption
               Quit Game
             </MinecraftButton>
           </div>
-
         </div>
-        
       </div>
     </>
   );

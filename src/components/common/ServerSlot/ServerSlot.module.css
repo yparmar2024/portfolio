@@ -13,13 +13,11 @@
   user-select: none;
 }
 
-/* Hover Effect */
 .container:hover {
   background-color: rgba(0, 0, 0, 0.7);
   border-color: #a0a0a0; 
 }
 
-/* Selected State */
 .selected {
   background-color: #000000; 
   border-color: #ffffff; 

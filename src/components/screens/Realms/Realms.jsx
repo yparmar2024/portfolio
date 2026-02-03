@@ -1,25 +1,35 @@
+/**
+ * Minecraft Realms (Social Links) screen component
+ * 
+ * Displays social media profiles and contact links as Minecraft Realms.
+ * Features:
+ * - Realm list with status indicators
+ * - Direct links to LinkedIn, GitHub, Email, LeetCode, etc.
+ * - Humorous error messages for restricted actions
+ * 
+ * @component
+ * @param {Object} props
+ * @param {Function} props.onBack - Handler to return to main menu
+ */
+
 import React, { useState } from 'react';
 import MinecraftModal from '../../common/MinecraftModal/MinecraftModal';
 import MinecraftButton from '../../common/MinecraftButton/MinecraftButton';
 import ServerSlot from '../../common/ServerSlot/ServerSlot';
 import ErrorModal from '../../common/ErrorModal/ErrorModal';
 import socialsData from '../../../data/socials.json';
+import useServerList from '../../../hooks/useServerList';
+import { ERROR_MESSAGES } from '../../../utils/errorMessages';
 
 const Realms = ({ onBack }) => {
-  // 1. Initialize State with Random Pings
-  const [realms, setRealms] = useState(() => {
-    return socialsData.map(realm => ({
-      ...realm,
-      ping: Math.floor(Math.random() * 350) + 20
-    }));
-  });
-
   const [error, setError] = useState(null);
-  const [selectedId, setSelectedId] = useState(null);
 
-  const selectedRealm = realms.find(r => r.id === selectedId);
-
-  // --- HANDLERS ---
+  const {
+    items: realms,
+    selectedId,
+    selectedItem: selectedRealm,
+    handleSelect
+  } = useServerList(socialsData);
 
   const handlePlay = () => {
     if (selectedRealm) {
@@ -27,37 +37,13 @@ const Realms = ({ onBack }) => {
     }
   };
 
-  const handleConfigure = () => {
-    setError({
-      title: "Command Blocked", 
-      message: "Hey! I see what you're doing.\n\nDon't even think about trying to replace my socials with yours. This is *my* portfolio!\n\n(Go build your own server if you want to self-promote.)\n\nError Code: NO_FREE_CLOUT"
-    });
-  };
-
-  const handleRenew = () => {
-    setError({
-      title: "Subscription Status",
-      message: "This Realm is currently active!\n\nHowever, if you would like to sponsor a 'Realm Extension' (Employment), please click the Email realm.\n\nStatus: OPEN_TO_WORK"
-    });
-  };
-
-  const handleLeave = () => {
-    setError({
-      title: "Cannot Leave Realm",
-      message: "Are you sure you want to leave?\n\nThere is still so much code to explore! Please stick around a bit longer.\n\nError Code: STAY_WITH_ME"
-    });
-  };
-
-  const handleAddRealm = () => {
-    setError({
-      title: "Limit Reached",
-      message: "I am already active on too many platforms!\n\nIf you really need me to join another one, send me an invite via Email.\n\nError Code: TOO_MANY_TABS"
-    });
-  };
+  const handleConfigure = () => setError(ERROR_MESSAGES.CONFIGURE_REALM);
+  const handleRenew = () => setError(ERROR_MESSAGES.RENEW_REALM);
+  const handleLeave = () => setError(ERROR_MESSAGES.LEAVE_REALM);
+  const handleAddRealm = () => setError(ERROR_MESSAGES.ADD_REALM);
 
   return (
     <>
-      {/* ERROR MODAL */}
       {error && (
         <ErrorModal 
           title={error.title} 
@@ -66,14 +52,11 @@ const Realms = ({ onBack }) => {
         />
       )}
 
-      {/* REALMS MODAL */}
       <MinecraftModal 
         title="Minecraft Realms" 
         onClose={onBack}
         controls={
           <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', width: '100%', alignItems: 'center' }}>
-            
-            {/* Top Row: Play, Configure, Leave - USING FLEX: 1 */}
             <div style={{ display: 'flex', gap: '10px', justifyContent: 'center', width: '100%' }}>
               <MinecraftButton style={{ flex: 1 }} onClick={handlePlay} disabled={!selectedId}>
                 Play
@@ -86,7 +69,6 @@ const Realms = ({ onBack }) => {
               </MinecraftButton>
             </div>
 
-            {/* Bottom Row: Renew, Add, Back - USING FLEX: 1 */}
             <div style={{ display: 'flex', gap: '10px', justifyContent: 'center', width: '100%' }}>
                <MinecraftButton style={{ flex: 1 }} onClick={handleRenew} disabled={!selectedId}>
                  Renew
@@ -101,7 +83,6 @@ const Realms = ({ onBack }) => {
           </div>
         }
       >
-         {/* REALMS LIST */}
          <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
            {realms.map((realm) => (
              <ServerSlot 
@@ -112,7 +93,7 @@ const Realms = ({ onBack }) => {
                dates={realm.status} 
                icon={realm.icon}
                selected={selectedId === realm.id} 
-               onClick={() => setSelectedId(realm.id)}
+               onClick={() => handleSelect(realm.id)}
              />
            ))}
          </div>

@@ -1,3 +1,25 @@
+/**
+ * Options/Settings screen component
+ * 
+ * Multi-view settings interface featuring:
+ * - Profile information with location and university
+ * - Interactive jukebox with drag-and-drop music discs
+ * - Video theme switcher (Auto/Day/Night)
+ * - Audio volume controls (Master/Music/UI)
+ * - Resume downloads (SWE and ML variants)
+ * - Credits and attributions
+ * 
+ * The jukebox implements HTML5 drag-and-drop for changing background music.
+ * 
+ * @component
+ * @param {Object} props
+ * @param {Function} props.onBack - Handler to return to main menu
+ * @param {string} props.videoSetting - Current video theme setting
+ * @param {Function} props.setVideoSetting - Update video theme
+ * @param {string} props.difficulty - Current difficulty (locked to "Unemployed")
+ * @param {Function} props.setDifficulty - Update difficulty (placeholder)
+ */
+
 import React, { useState } from 'react';
 import MinecraftModal from '../../common/MinecraftModal/MinecraftModal';
 import MinecraftButton from '../../common/MinecraftButton/MinecraftButton';
@@ -5,6 +27,16 @@ import DirtScreen from '../../common/DirtScreen/DirtScreen';
 import ErrorModal from '../../common/ErrorModal/ErrorModal';
 import styles from './Options.module.css';
 import { useSoundSettings } from '../../../context/SoundContext';
+import { ERROR_MESSAGES } from '../../../utils/errorMessages';
+
+const MUSIC_DISCS = [
+  { id: 'sweden', label: 'C418 - Sweden' },
+  { id: 'mice', label: 'C418 - Mice on Venus' },
+  { id: 'otherside', label: 'Lena Raine - Otherside' },
+  { id: 'pigstep', label: 'Lena Raine - Pigstep' },
+  { id: 'stal', label: 'C418 - Stal' },
+  { id: 'wait', label: 'C418 - Wait' }
+];
 
 const Options = ({ onBack, videoSetting, setVideoSetting, difficulty, setDifficulty }) => {
   const [currentView, setCurrentView] = useState('MAIN');
@@ -14,29 +46,13 @@ const Options = ({ onBack, videoSetting, setVideoSetting, difficulty, setDifficu
 
   const { volume, setVolume, playTrack, currentTrackName } = useSoundSettings();
 
-  // --- DATA ---
-  const musicDiscs = [
-    { id: 'sweden', label: 'C418 - Sweden' },
-    { id: 'mice', label: 'C418 - Mice on Venus' },
-    { id: 'otherside', label: 'Lena Raine - Otherside' },
-    { id: 'pigstep', label: 'Lena Raine - Pigstep' },
-    { id: 'stal', label: 'C418 - Stal' },
-    { id: 'wait', label: 'C418 - Wait' }
-  ];
-
-  // --- HANDLERS ---
   const handleVideoToggle = () => {
     if (videoSetting === 'Auto') setVideoSetting('Day');
     else if (videoSetting === 'Day') setVideoSetting('Night');
     else setVideoSetting('Auto');
   };
 
-  const handleDifficulty = () => {
-    setError({
-      title: "Difficulty Locked",
-      message: "Difficulty is locked to 'Unemployed' by the server admin (The Economy).\n\nTo unlock 'New Grad' or 'Internship' mode, please acquire a Job Offer.\n\nError Code: GRIND_LEETCODE"
-    });
-  };
+  const handleDifficulty = () => setError(ERROR_MESSAGES.DIFFICULTY_LOCKED);
 
   const handleViewPdf = (type) => {
     const fileName = type === 'SWE' ? 'Yash_Parmar_Resume_SWE.pdf' : 'Yash_Parmar_Resume_ML.pdf';
@@ -47,7 +63,6 @@ const Options = ({ onBack, videoSetting, setVideoSetting, difficulty, setDifficu
     setVolume(prev => ({ ...prev, [type]: value }));
   };
 
-  // --- INTERNAL DRAG AND DROP ---
   const onDragStart = (e, track) => {
     e.dataTransfer.setData("trackId", track.id);
     e.dataTransfer.setData("trackLabel", track.label);
@@ -65,11 +80,9 @@ const Options = ({ onBack, videoSetting, setVideoSetting, difficulty, setDifficu
     }
   };
 
-  // --- RENDER HELPERS ---
   const renderMainOptions = () => (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', alignItems: 'center', width: '100%', userSelect: 'none' }}>
       
-      {/* 1. PROFILE SECTION */}
       <div style={{ display: 'flex', gap: '15px', width: '100%', height: '200px', alignItems: 'stretch' }}>
         <div style={{ 
           flex: '0 0 200px', border: '4px solid #000', backgroundColor: '#333',
@@ -88,9 +101,7 @@ const Options = ({ onBack, videoSetting, setVideoSetting, difficulty, setDifficu
         </div>
       </div>
 
-      {/* 2. JUKEBOX DRAG-TARGET SECTION */}
       <div style={{ display: 'flex', width: '100%', gap: '15px', height: '200px' }}>
-        {/* THE JUKEBOX (Drop Target) */}
         <div 
           onDragOver={(e) => { e.preventDefault(); setIsDraggingOver(true); }}
           onDragLeave={() => setIsDraggingOver(false)}
@@ -109,7 +120,6 @@ const Options = ({ onBack, videoSetting, setVideoSetting, difficulty, setDifficu
           </div>
         </div>
 
-        {/* THE INVENTORY (Draggable Items) */}
         <div style={{ flex: 1, display: 'flex', flexDirection: 'column', backgroundColor: 'rgba(0,0,0,0.5)', padding: '15px', border: '2px solid #333', overflow: 'hidden' }}>
           <div style={{ textAlign: 'left', borderBottom: '2px solid #444', marginBottom: '4px' }}>
               <span style={{ color: '#aaa', fontSize: '14px' }}>NOW PLAYING: </span>
@@ -117,7 +127,7 @@ const Options = ({ onBack, videoSetting, setVideoSetting, difficulty, setDifficu
           </div>
           
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '12px', justifyItems: 'center' }}>
-            {musicDiscs.map((track, i) => (
+            {MUSIC_DISCS.map((track, i) => (
               <div 
                 key={track.id} 
                 draggable
@@ -139,7 +149,6 @@ const Options = ({ onBack, videoSetting, setVideoSetting, difficulty, setDifficu
 
       <div style={{ width: '100%', height: '2px', backgroundColor: '#444', margin: '5px 0' }} />
 
-      {/* 3. SETTINGS GRID */}
       <div style={{ display: 'flex', gap: '8px', width: '100%' }}>
         <MinecraftButton style={{ flex: 1 }} onClick={handleVideoToggle}>Video: {videoSetting}</MinecraftButton>
         <MinecraftButton style={{ flex: 1 }} onClick={() => setCurrentView('MUSIC')}>Audio Settings...</MinecraftButton>
@@ -179,7 +188,7 @@ const Options = ({ onBack, videoSetting, setVideoSetting, difficulty, setDifficu
         <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
           <img src="/icons/command_block.png" alt="SWE" style={{ width: '32px', height: '32px', imageRendering: 'pixelated' }} />
           <div style={{ flex: 1, textAlign: 'left' }}>
-            <div style={{ color: '#fff' }}>Software Engineering</div>
+            <div style={{ color: '#fff' }}>Software Engineer</div>
             <div style={{ color: '#aaa', fontSize: '12px' }}>Engineering & Architecture</div>
           </div>
           <MinecraftButton style={{ width: '40px', paddingTop: '0px' }} onClick={() => handleViewPdf('SWE')}><span style={{ position: 'relative', top: '-5px' }}>⬇</span></MinecraftButton>
