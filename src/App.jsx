@@ -1,7 +1,7 @@
 /**
  * Main application component for the Minecraft-themed portfolio.
  * * This version implements:
- * 1. Orientation Lock: Forces landscape mode via OrientationGuard.
+ * 1. Orientation Lock: Forces landscape mode via DeviceGuard.
  * 2. Singleplayer Transition: Menu -> Loading (DirtScreen) -> Singleplayer GUI.
  * * @component
  */
@@ -16,7 +16,7 @@ import Multiplayer from './components/screens/Multiplayer/Multiplayer';
 import MinecraftRealms from './components/screens/Realms/Realms';
 import Options from './components/screens/Options/Options';
 import DirtScreen from './components/common/DirtScreen/DirtScreen';
-import OrientationGuard from './components/common/OrientationGuard/OrientationGuard';
+import DeviceGuard from './components/common/DeviceGuard/DeviceGuard';
 import { getThemeFromTime } from './utils/serverUtils';
 import { TIMINGS } from './constants/timings';
 
@@ -59,7 +59,7 @@ export default function App() {
   };
 
   return (
-    <OrientationGuard>
+    <DeviceGuard>
       <div className={`canvas-layer ${gameState !== 'MENU' ? 'blurred' : ''}`}>
         <Canvas camera={{ fov: 75, position: [0, 0, 0.1] }}>
           <Suspense fallback={null}>
@@ -102,6 +102,6 @@ export default function App() {
           />
         )}
       </div>
-    </OrientationGuard>
+    </DeviceGuard>
   );
 }
