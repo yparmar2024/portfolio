@@ -34,24 +34,22 @@ const Multiplayer = ({ onBack }) => {
 
   const handleAddServer = () => {
     setError({
-      title: "Unknown Host", // Classic Minecraft error title
+      title: "Unknown Host", 
       message: "You can't add a server to this list... unless you're hiring me!\n\nTo unlock this feature, please send a valid Job Offer to: yparmar2024@gmail.com\n\nError Code: OFFER_REQUIRED"
     });
   };
 
-  // --- UPDATED FUNNY HANDLERS ---
-
   const handleEdit = () => { 
     setError({
-      title: "Creative Mode Restricted", // Sounds official...
-      message: "Hey! You can't rewrite my history!\nOnly the server admin (Me) has write access to these files.\n\nError Code: NOT_THE_MAIN_CHARACTER" // ...but the message is clearly a joke
+      title: "Creative Mode Restricted", 
+      message: "Hey! You can't rewrite my history!\nOnly the server admin (Me) has write access to these files.\n\nError Code: NOT_THE_MAIN_CHARACTER"
     });
   };
 
   const handleDelete = () => { 
     setError({
-      title: "Time Paradox Detected", // Sci-fi / Game trope title
-      message: "Wait, that actually happened!\nDeleting this experience would cause a timeline collapse.\n\nError Code: CANON_EVENT" // Spider-verse reference / clear joke
+      title: "Time Paradox Detected", 
+      message: "Wait, that actually happened!\nDeleting this experience would cause a timeline collapse.\n\nError Code: CANON_EVENT"
     });
   };
 
@@ -71,7 +69,7 @@ const Multiplayer = ({ onBack }) => {
   // --- RENDER ---
   return (
     <>
-      {/* ERROR MODAL (The Grey Box) */}
+      {/* ERROR MODAL */}
       {error && (
         <ErrorModal 
           title={error.title} 
@@ -99,9 +97,9 @@ const Multiplayer = ({ onBack }) => {
              Connection established securely.
            </div>
            
-           <div style={{ display: 'flex', gap: '10px', marginTop: '20px' }}>
-             <MinecraftButton style={{ width: '200px' }} onClick={handleDirectConnect}>Direct Connect</MinecraftButton>
-             <MinecraftButton style={{ width: '200px' }} onClick={() => setView('LIST')}>Back to Server List</MinecraftButton>
+           <div style={{ display: 'flex', gap: '10px', marginTop: '20px', width: '100%', maxWidth: '600px' }}>
+             <MinecraftButton style={{ flex: 1 }} onClick={handleDirectConnect}>Direct Connect</MinecraftButton>
+             <MinecraftButton style={{ flex: 1 }} onClick={() => setView('LIST')}>Back to Server List</MinecraftButton>
            </div>
         </DirtScreen>
       ) : (
@@ -111,16 +109,20 @@ const Multiplayer = ({ onBack }) => {
           onClose={onBack}
           controls={
             <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', width: '100%', alignItems: 'center' }}>
+              
+              {/* Top Row: Using flex: 1 to share space equally */}
               <div style={{ display: 'flex', gap: '10px', justifyContent: 'center', width: '100%' }}>
-                <MinecraftButton style={{ width: '150px' }} onClick={handleJoin} disabled={!selectedId}>Join Server</MinecraftButton>
-                <MinecraftButton style={{ width: '150px' }} onClick={handleDirectConnect}>Direct Connect</MinecraftButton>
-                <MinecraftButton style={{ width: '150px' }} onClick={handleAddServer}>Add Server</MinecraftButton>
+                <MinecraftButton style={{ flex: 1 }} onClick={handleJoin} disabled={!selectedId}>Join Server</MinecraftButton>
+                <MinecraftButton style={{ flex: 1 }} onClick={handleDirectConnect} disabled={!selectedId}>Direct Connect</MinecraftButton>
+                <MinecraftButton style={{ flex: 1 }} onClick={handleAddServer}>Add Server</MinecraftButton>
               </div>
+
+              {/* Bottom Row: Using flex: 1 to share space equally */}
               <div style={{ display: 'flex', gap: '10px', justifyContent: 'center', width: '100%' }}>
-                 <MinecraftButton style={{ width: '100px' }} onClick={handleEdit} disabled={!selectedId}>Edit</MinecraftButton>
-                 <MinecraftButton style={{ width: '100px' }} onClick={handleDelete} disabled={!selectedId}>Delete</MinecraftButton>
-                 <MinecraftButton style={{ width: '100px' }} onClick={handleRefresh}>{isRefreshing ? "..." : "Refresh"}</MinecraftButton>
-                 <MinecraftButton style={{ width: '100px' }} onClick={onBack}>Cancel</MinecraftButton>
+                 <MinecraftButton style={{ flex: 1 }} onClick={handleEdit} disabled={!selectedId}>Edit</MinecraftButton>
+                 <MinecraftButton style={{ flex: 1 }} onClick={handleDelete} disabled={!selectedId}>Delete</MinecraftButton>
+                 <MinecraftButton style={{ flex: 1 }} onClick={handleRefresh}>{isRefreshing ? "..." : "Refresh"}</MinecraftButton>
+                 <MinecraftButton style={{ flex: 1 }} onClick={onBack}>Cancel</MinecraftButton>
               </div>
             </div>
           }
@@ -133,7 +135,7 @@ const Multiplayer = ({ onBack }) => {
                  motd={job.role}
                  ping={job.ping}
                  dates={job.dates} 
-                 icon={job.icon || "/icons/default_server.png"}
+                 icon={job.icon}
                  selected={selectedId === job.id} 
                  onClick={() => setSelectedId(job.id)}
                />

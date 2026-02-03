@@ -7,11 +7,9 @@ import socialsData from '../../../data/socials.json';
 
 const Realms = ({ onBack }) => {
   // 1. Initialize State with Random Pings
-  // This ensures every time you open the menu, the connection strength varies slightly
   const [realms, setRealms] = useState(() => {
     return socialsData.map(realm => ({
       ...realm,
-      // Random ping between 20ms (5 bars) and 370ms (2 bars)
       ping: Math.floor(Math.random() * 350) + 20
     }));
   });
@@ -19,7 +17,6 @@ const Realms = ({ onBack }) => {
   const [error, setError] = useState(null);
   const [selectedId, setSelectedId] = useState(null);
 
-  // Find the selected realm from our STATE (so it includes the generated ping)
   const selectedRealm = realms.find(r => r.id === selectedId);
 
   // --- HANDLERS ---
@@ -76,28 +73,28 @@ const Realms = ({ onBack }) => {
         controls={
           <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', width: '100%', alignItems: 'center' }}>
             
-            {/* Top Row: Play, Configure, Leave */}
+            {/* Top Row: Play, Configure, Leave - USING FLEX: 1 */}
             <div style={{ display: 'flex', gap: '10px', justifyContent: 'center', width: '100%' }}>
-              <MinecraftButton style={{ width: '150px' }} onClick={handlePlay} disabled={!selectedId}>
+              <MinecraftButton style={{ flex: 1 }} onClick={handlePlay} disabled={!selectedId}>
                 Play
               </MinecraftButton>
-              <MinecraftButton style={{ width: '150px' }} onClick={handleConfigure} disabled={!selectedId}>
+              <MinecraftButton style={{ flex: 1 }} onClick={handleConfigure} disabled={!selectedId}>
                 Configure
               </MinecraftButton>
-              <MinecraftButton style={{ width: '150px' }} onClick={handleLeave} disabled={!selectedId}>
+              <MinecraftButton style={{ flex: 1 }} onClick={handleLeave} disabled={!selectedId}>
                 Leave Realm
               </MinecraftButton>
             </div>
 
-            {/* Bottom Row: Renew, Add, Back */}
+            {/* Bottom Row: Renew, Add, Back - USING FLEX: 1 */}
             <div style={{ display: 'flex', gap: '10px', justifyContent: 'center', width: '100%' }}>
-               <MinecraftButton style={{ width: '150px' }} onClick={handleRenew} disabled={!selectedId}>
+               <MinecraftButton style={{ flex: 1 }} onClick={handleRenew} disabled={!selectedId}>
                  Renew
                </MinecraftButton>
-               <MinecraftButton style={{ width: '150px' }} onClick={handleAddRealm}>
+               <MinecraftButton style={{ flex: 1 }} onClick={handleAddRealm}>
                  Add Realm
                </MinecraftButton>
-               <MinecraftButton style={{ width: '150px' }} onClick={onBack}>
+               <MinecraftButton style={{ flex: 1 }} onClick={onBack}>
                  Back
                </MinecraftButton>
             </div>
@@ -106,20 +103,14 @@ const Realms = ({ onBack }) => {
       >
          {/* REALMS LIST */}
          <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
-           {/* Map over 'realms' state to use the random pings */}
            {realms.map((realm) => (
              <ServerSlot 
                key={realm.id}
                name={realm.name}
                motd={realm.motd}
-               
-               // 1. Randomized Ping (Green Bars)
                ping={realm.ping}   
-               
-               // 2. Custom Status Text (e.g. "Active", "Grinding")
                dates={realm.status} 
-               
-               icon={realm.icon || "/icons/default_server.png"}
+               icon={realm.icon}
                selected={selectedId === realm.id} 
                onClick={() => setSelectedId(realm.id)}
              />

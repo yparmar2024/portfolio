@@ -1,21 +1,30 @@
-// src/hooks/useSound.js
-import { useRef, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
+import { useSoundSettings } from '../context/SoundContext';
 
-export default function useSound(path, volume = 1.0) {
-  // Create the audio object once
-  const audioRef = useRef(new Audio(path));
+const useSound = (url, type = 'ui') => {
+  // Use a state-managed audio object
+  const [audio] = useState(new Audio(url));
+  const { volume, getEffectiveVolume } = useSoundSettings();
 
+  // Stable function to calculate and apply volume
+  const syncVolume = useCallback(() => {
+    const effectiveVol = getEffectiveVolume(type);
+    audio.volume = effectiveVol;
+  }, [getEffectiveVolume, type, audio]);
+
+  // Sync volume immediately when the global 'volume' state changes
   useEffect(() => {
-    audioRef.current.volume = volume;
-  }, [volume]);
+    syncVolume();
+  }, [volume, syncVolume]);
 
   const play = () => {
-    // Clone node allows overlapping sounds (spam-clicking)
-    // catch handles potential "user didn't interact with document" errors
-    const sound = audioRef.current.cloneNode();
-    sound.volume = volume;
-    sound.play().catch(e => console.error("Audio play failed", e));
+    // Final sync before playing
+    syncVolume();
+    audio.currentTime = 0;
+    audio.play().catch(e => console.warn("Playback blocked:", e));
   };
 
   return play;
-}
+};
+
+export default useSound;

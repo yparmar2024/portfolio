@@ -6,11 +6,12 @@
   align-items: center; 
   height: 50px;
   /* Remove fixed width if you want it to stretch, or keep it */
-  width: 100%; 
+  width: auto; 
+  min-width: 50px;
   max-width: 90vw;
   box-sizing: border-box; 
-  padding-top: 15px; 
-  padding-bottom: 0px; 
+  padding: 0 20px;
+  padding-top: 15px;  
 
   /* 2. Text Styling */
   color: #e0e0e0;

@@ -36,5 +36,4 @@
   width: 100%;
   max-width: 900px; /* Prevent text from spanning edge-to-edge on wide screens */
   padding: 40px;
-  overflow-y: auto;
 }

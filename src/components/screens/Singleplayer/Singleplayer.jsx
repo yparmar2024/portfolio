@@ -37,11 +37,11 @@ const styles = {
   }
 };
 
-const Inventory = ({ onClose }) => {
+const Singleplayer = ({ onClose }) => {
   return (
     <div style={styles.overlay}>
       <div style={styles.container}>
-        <div style={styles.text}>Inventory<br/>Coming Soon</div>
+        <div style={styles.text}>Singleplayer<br/>Coming Soon</div>
         
         <MinecraftButton onClick={onClose} style={{ width: '100%' }}>
           Close
@@ -51,4 +51,4 @@ const Inventory = ({ onClose }) => {
   );
 };
 
-export default Inventory;
+export default Singleplayer;

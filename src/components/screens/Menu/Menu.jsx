@@ -15,7 +15,7 @@ const SPLASH_TEXTS = [
   "Compiles on first try!"
 ];
 
-export default function MainMenu({ onSingleplayer, onMultiplayer, onRealms, onOptions }) {
+export default function Menu({ onSingleplayer, onMultiplayer, onRealms, onOptions }) {
   const [isHurt, setIsHurt] = useState(false);
   const [splash, setSplash] = useState('');
   
@@ -36,7 +36,7 @@ export default function MainMenu({ onSingleplayer, onMultiplayer, onRealms, onOp
     <>
       <div className={`damage-overlay ${isHurt ? 'active' : ''}`} />
 
-      {/* VERSION TEXT - Updated to 1.0.0 for release! */}
+      {/* VERSION TEXT */}
       <div style={{
         position: 'absolute', bottom: '10px', left: '20px',
         color: '#ffffff', fontFamily: 'Mojangles, sans-serif', fontSize: '20px',
@@ -55,7 +55,7 @@ export default function MainMenu({ onSingleplayer, onMultiplayer, onRealms, onOp
 
       <div style={{
         display: 'flex', flexDirection: 'column', alignItems: 'center',
-        justifyContent: 'center', height: '100%', width: '100%', zIndex: 10, gap: '24px'
+        justifyContent: 'center', height: '100%', width: '100%', zIndex: 10
       }}>
         
         {/* LOGO */}
@@ -80,18 +80,44 @@ export default function MainMenu({ onSingleplayer, onMultiplayer, onRealms, onOp
             />
         </div>
 
-        {/* BUTTONS - 1:1 Mapping to App.jsx Props */}
-        <MinecraftButton onClick={onSingleplayer}>Singleplayer</MinecraftButton>
-        <MinecraftButton onClick={onMultiplayer}>Multiplayer</MinecraftButton>
-        <MinecraftButton onClick={onRealms}>Minecraft Realms</MinecraftButton>
+        {/* RESPONSIVE BUTTON CONTAINER 
+           1. width: 100% -> Tries to fill the screen
+           2. maxWidth: 450px -> Stops growing at 450px (Desktop look)
+           3. padding: 0 20px -> Ensures buttons don't touch screen edges on mobile
+        */}
+        <div style={{
+          display: 'flex', 
+          flexDirection: 'column', 
+          gap: '14px', 
+          width: '100%', 
+          maxWidth: '450px', 
+          padding: '0 20px',
+          boxSizing: 'border-box'
+        }}>
+          
+          {/* Main Buttons - Set to fill the container */}
+          <MinecraftButton style={{ width: '100%' }} onClick={onSingleplayer}>
+            Singleplayer
+          </MinecraftButton>
+          
+          <MinecraftButton style={{ width: '100%' }} onClick={onMultiplayer}>
+            Multiplayer
+          </MinecraftButton>
+          
+          <MinecraftButton style={{ width: '100%' }} onClick={onRealms}>
+            Minecraft Realms
+          </MinecraftButton>
 
-        <div style={{ display: 'flex', gap: '24px', width: '450px' }}>
-          <MinecraftButton style={{ flex: 1 }} onClick={onOptions}>
-            Options...
-          </MinecraftButton>
-          <MinecraftButton style={{ flex: 1 }} onClick={handleQuit} muteSound={true}>
-            Quit Game
-          </MinecraftButton>
+          {/* Bottom Row - Flex Container fills the parent width */}
+          <div style={{ display: 'flex', gap: '14px', width: '100%' }}>
+            <MinecraftButton style={{ flex: 1 }} onClick={onOptions}>
+              Options...
+            </MinecraftButton>
+            <MinecraftButton style={{ flex: 1 }} onClick={handleQuit} muteSound={true}>
+              Quit Game
+            </MinecraftButton>
+          </div>
+
         </div>
         
       </div>

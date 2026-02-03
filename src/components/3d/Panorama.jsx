@@ -1,27 +1,31 @@
-// src/components/3d/Panorama.jsx
 import { useRef } from 'react';
 import { useFrame, useLoader } from '@react-three/fiber';
 import * as THREE from 'three';
 
-export default function Panorama() {
+export default function Panorama({ theme = 'Auto' }) {
   const meshRef = useRef();
-  
-  // 1. Get the current hour (0 - 23)
-  const hour = new Date().getHours();
 
-  // 2. Logic: Night is before 6 AM or after 6 PM (18:00)
-  // Otherwise, it is Day.
-  const isNight = hour < 6 || hour >= 18;
+  // 1. Resolve the theme
+  // If 'Auto' is passed (or default), calculate based on time. 
+  // If 'Day' or 'Night' is passed, use it directly.
+  let currentMode = theme;
   
-  const texturePath = isNight 
+  if (theme === 'Auto') {
+    const hour = new Date().getHours();
+    // Night is before 6 AM or after 6 PM
+    currentMode = (hour < 6 || hour >= 18) ? 'Night' : 'Day';
+  }
+
+  // 2. Select Texture Path
+  const texturePath = currentMode === 'Night' 
     ? '/textures/background_night.png' 
     : '/textures/background_day.png';
 
-  // 3. Load the selected texture
+  // 3. Load the texture (Suspense will handle the loading state)
   const texture = useLoader(THREE.TextureLoader, texturePath);
 
+  // 4. Rotation Logic (Preserved)
   useFrame((state, delta) => {
-    // Rotates the world slowly around the Y-axis
     if (meshRef.current) {
       meshRef.current.rotation.y += delta * 0.05; 
     }

@@ -21,6 +21,10 @@ body, html, #root {
 
   /* Set custom cursor */
   cursor: url('/icons/cursor.png'), auto;
+
+  /* Disable selecting text globally */
+  user-select: none;
+  -webkit-user-select: none;
 }
 
 /* This block fixes the cursor resetting when you hover over buttons */
