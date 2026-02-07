@@ -18,23 +18,33 @@
   border: 2px solid #000;
   display: flex;
   flex-direction: column;
-  justify-content: flex-end; 
-  padding: 24px; 
+  padding: 24px;
   box-shadow: inset 5px 5px 0px #fff, inset -5px -5px 0px #555;
   image-rendering: pixelated;
-  box-sizing: border-box; 
+  transition: transform 0.2s ease-in-out;
+}
+
+.bookOpen {
+  transform: translateX(140px);
 }
 
 .topSection {
   display: flex;
   width: 100%;
-  gap: 0px;
+  height: 290px;
   margin-bottom: auto;
+}
+
+/* --- Left Group: Armor + Player --- */
+.leftGroup {
+  display: flex;
+  gap: 0px;
 }
 
 .armorColumn {
   display: flex;
   flex-direction: column;
+  gap: 0px;
 }
 
 .characterPreview {
@@ -48,72 +58,82 @@
   box-sizing: border-box;
 }
 
-.rightColumn {
-    display: flex;
-    flex-direction: column;
-    height: 290px;
-    justify-content: flex-end;
-    margin-left: 4px;
+/* --- Middle Group: Offhand Slot --- */
+.middleGroup {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end; /* Aligns to bottom (feet) */
+  margin-left: 4px; 
 }
 
+/* --- Right Group: Crafting Complex --- */
+.craftingGroup {
+  display: flex;
+  flex-direction: column;
+  margin-left: auto; /* Pushes everything to the right edge */
+  padding-right: 4px; /* Matches inventory padding */
+}
+
+.craftingLabel {
+  font-family: 'Mojangles', sans-serif;
+  font-size: 32px;
+  color: #3f3f3f;
+  margin-top: -4px;
+  margin-bottom: -22px;
+  margin-left: 2px; /* Slight offset to align with grid */
+}
+
+.craftingArea {
+  display: flex;
+  align-items: flex-start; /* Aligns top of grid with top of output area */
+  gap: 16px; /* Space between crafting grid and output area */
+}
+
+.craftingInputColumn {
+  display: flex;
+  flex-direction: column;
+  gap: 4px; /* Gap between Grid and Recipe Book */
+}
+
+.craftingGrid2x2 {
+  display: grid;
+  grid-template-columns: repeat(2, 72px);
+  gap: 4px;
+}
+
+.recipeBookWrapper {
+  /* No special margin needed if stacked; it aligns left with the grid naturally */
+  width: 56px; /* Matches RecipeButton width */
+}
+
+.craftingOutputRow {
+  display: flex;
+  align-items: center; /* Vertically center arrow and output slot relative to Grid */
+  height: 148px; /* Match height of 2x2 grid (72*2 + 4) */
+  gap: 8px;
+}
+
+.arrow {
+  width: 48px;
+  height: 36px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='22' height='17' viewBox='0 0 22 17'%3E%3Cpath d='M0 7h15V4l7 4.5-7 4.5v-3H0z' fill='%238B8B8B'/%3E%3C/svg%3E");
+  background-size: contain;
+  background-repeat: no-repeat;
+}
+
+/* --- Bottom Inventory --- */
 .inventorySection {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 4px; 
+  gap: 4px;
   width: 100%;
 }
 
 .grid9x3 {
   display: grid;
   grid-template-columns: repeat(9, 72px);
-  gap: 4px; 
-  padding: 8px;
-  background: rgba(0, 0, 0, 0.05);
-}
-.topSection {
-  display: flex;
-  width: 100%;
-  gap: 0px;
-  margin-bottom: auto;
-}
-
-.armorColumn {
-  display: flex;
-  flex-direction: column;
-}
-
-.characterPreview {
-  width: 220px;
-  height: 290px;
-  background: rgba(0, 0, 0, 0.99);
-  box-shadow: inset 4px 4px 2px #373737, inset -3px -3px 2px #ffffff;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  box-sizing: border-box;
-}
-
-.rightColumn {
-    display: flex;
-    flex-direction: column;
-    height: 290px;
-    justify-content: flex-end;
-    margin-left: 4px;
-}
-
-.inventorySection {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 4px; 
-  width: 100%;
-}
-
-.grid9x3 {
-  display: grid;
-  grid-template-columns: repeat(9, 72px);
-  gap: 4px; 
+  gap: 4px;
   padding: 8px;
   background: rgba(0, 0, 0, 0.05);
 }
@@ -122,5 +142,5 @@
   display: grid;
   grid-template-columns: repeat(9, 72px);
   gap: 4px;
-  margin-top: 8px; 
+  margin-top: 8px;
 }
