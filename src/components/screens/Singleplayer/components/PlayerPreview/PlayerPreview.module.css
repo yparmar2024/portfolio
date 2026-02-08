@@ -1,0 +1,9 @@
+.container {
+  width: 100%;
+  height: 100%;
+  background: #000; /* Black background like Minecraft */
+  border: 2px solid #fff; /* White border inside the UI */
+  box-shadow: inset 4px 4px 2px #373737;
+  display: block; /* Ensure it's not hidden */
+  overflow: hidden;
+}

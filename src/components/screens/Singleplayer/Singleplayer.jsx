@@ -148,7 +148,9 @@ const Singleplayer = ({ onClose }) => {
                 <ItemSlot key={index} item={slots[index]} index={index} onSlotClick={handleSlotClick} />
               ))}
             </div>
-            <div className={styles.characterPreview} />
+            <div className={styles.characterPreview}>
+              <PlayerPreview isBookOpen={isBookOpen}/>
+            </div>
           </div>
 
           <div className={styles.middleGroup}>
