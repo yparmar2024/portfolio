@@ -6,9 +6,6 @@ import styles from './Singleplayer.module.css';
 const Singleplayer = ({ onClose }) => {
   const [isBookOpen, setIsBookOpen] = useState(false);
   
-  // 46 slots total: 
-  // 0-26: Inv, 27-35: Hotbar, 36-39: Armor, 40: Offhand
-  // 41-44: Crafting Input (2x2), 45: Crafting Output
   const [slots, setSlots] = useState(() => {
     const initial = Array(46).fill(null);
     initial[27] = { id: 'python', name: 'Python', icon: '/icons/diamond_ore.png' };
@@ -49,29 +46,29 @@ const Singleplayer = ({ onClose }) => {
             </div>
           </div>
 
-          {/* --- MIDDLE ZONE: Offhand Slot --- */}
+          {/* --- MIDDLE ZONE: Offhand & Recipe Book --- */}
           <div className={styles.middleGroup}>
-            <ItemSlot item={slots[40]} index={40} onMoveItem={handleMoveItem} />
+            {/* Offhand Slot (Left side of middle) */}
+            <div className={styles.offhandWrapper}>
+               <ItemSlot item={slots[40]} index={40} onMoveItem={handleMoveItem} />
+            </div>
+
+            {/* Recipe Book (Right side of middle, offset) */}
+            <div className={styles.recipeBookWrapper}>
+               <RecipeBook isOpen={isBookOpen} onClick={() => setIsBookOpen(!isBookOpen)} />
+            </div>
           </div>
 
-          {/* --- RIGHT ZONE: Crafting & Recipe Book --- */}
+          {/* --- RIGHT ZONE: Crafting Grid Only --- */}
           <div className={styles.craftingGroup}>
             <span className={styles.craftingLabel}>Crafting</span>
             
             <div className={styles.craftingArea}>
-              {/* Column containing Grid and Recipe Book (Stacked) */}
-              <div className={styles.craftingInputColumn}>
-                <div className={styles.craftingGrid2x2}>
-                  <ItemSlot item={slots[41]} index={41} onMoveItem={handleMoveItem} />
-                  <ItemSlot item={slots[42]} index={42} onMoveItem={handleMoveItem} />
-                  <ItemSlot item={slots[43]} index={43} onMoveItem={handleMoveItem} />
-                  <ItemSlot item={slots[44]} index={44} onMoveItem={handleMoveItem} />
-                </div>
-                
-                {/* Recipe Book sits below the grid, aligned with it */}
-                <div className={styles.recipeBookWrapper}>
-                  <RecipeBook isOpen={isBookOpen} onClick={() => setIsBookOpen(!isBookOpen)} />
-                </div>
+              <div className={styles.craftingGrid2x2}>
+                <ItemSlot item={slots[41]} index={41} onMoveItem={handleMoveItem} />
+                <ItemSlot item={slots[42]} index={42} onMoveItem={handleMoveItem} />
+                <ItemSlot item={slots[43]} index={43} onMoveItem={handleMoveItem} />
+                <ItemSlot item={slots[44]} index={44} onMoveItem={handleMoveItem} />
               </div>
 
               {/* Arrow and Output Slot */}

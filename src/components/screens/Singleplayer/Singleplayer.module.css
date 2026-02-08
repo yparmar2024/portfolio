@@ -58,41 +58,50 @@
   box-sizing: border-box;
 }
 
-/* --- Middle Group: Offhand Slot --- */
+/* --- Middle Group: Offhand & Recipe Book --- */
 .middleGroup {
   display: flex;
-  flex-direction: column;
-  justify-content: flex-end; /* Aligns to bottom (feet) */
+  align-items: flex-end; /* Align both items to the bottom line */
   margin-left: 4px; 
+  /* This gap creates the spacing between Offhand and Recipe Book */
+  gap: 52px; 
+}
+
+.offhandWrapper {
+  /* Just a wrapper to ensure flex behavior doesn't squash the slot */
+  width: 72px;
+  height: 72px;
+}
+
+.recipeBookWrapper {
+  /* Enforce size to match Offhand Slot (72px) */
+  width: 72px; 
+  height: 72px;
+  /* Adjust margin if you need specific offset relative to crafting grid */
+  margin-bottom: 0px; 
 }
 
 /* --- Right Group: Crafting Complex --- */
 .craftingGroup {
   display: flex;
   flex-direction: column;
-  margin-left: auto; /* Pushes everything to the right edge */
-  padding-right: 4px; /* Matches inventory padding */
+  margin-top: -20px;
+  margin-left: -114px; /* Pushes everything to the right edge */
 }
 
 .craftingLabel {
   font-family: 'Mojangles', sans-serif;
   font-size: 32px;
   color: #3f3f3f;
-  margin-top: -4px;
-  margin-bottom: -22px;
-  margin-left: 2px; /* Slight offset to align with grid */
+  margin-top: 20px;
+  margin-bottom: -20px;
+  margin-left: 2px;
 }
 
 .craftingArea {
   display: flex;
-  align-items: flex-start; /* Aligns top of grid with top of output area */
-  gap: 16px; /* Space between crafting grid and output area */
-}
-
-.craftingInputColumn {
-  display: flex;
-  flex-direction: column;
-  gap: 4px; /* Gap between Grid and Recipe Book */
+  align-items: center; /* Vertically centers the grid and output row */
+  gap: 16px; 
 }
 
 .craftingGrid2x2 {
@@ -101,16 +110,10 @@
   gap: 4px;
 }
 
-.recipeBookWrapper {
-  /* No special margin needed if stacked; it aligns left with the grid naturally */
-  width: 56px; /* Matches RecipeButton width */
-}
-
 .craftingOutputRow {
   display: flex;
-  align-items: center; /* Vertically center arrow and output slot relative to Grid */
-  height: 148px; /* Match height of 2x2 grid (72*2 + 4) */
-  gap: 8px;
+  align-items: center;
+  gap: 16px;
 }
 
 .arrow {
