@@ -5,6 +5,17 @@ import styles from './Singleplayer.module.css';
 import itemsData from '../../../data/items.json';
 import PlayerPreview from './components/PlayerPreview/PlayerPreview';
 
+// --- PLACEHOLDER ASSETS ---
+// Ensure these files exist in public/icons/ui/
+const ARMOR_PLACEHOLDERS = {
+  39: '/icons/ui/empty_armor_slot_helmet.png',
+  38: '/icons/ui/empty_armor_slot_chestplate.png',
+  37: '/icons/ui/empty_armor_slot_leggings.png',
+  36: '/icons/ui/empty_armor_slot_boots.png'
+};
+
+const OFFHAND_PLACEHOLDER = '/icons/ui/empty_armor_slot_shield.png';
+
 const canPlaceItem = (item, slotIndex) => {
   if (!item) return true;
   if (slotIndex <= 35) return true; 
@@ -85,8 +96,9 @@ const Singleplayer = ({ onClose }) => {
 
       // Move Tooltip
       if (tooltipRef.current) {
-        tooltipRef.current.style.left = `${e.clientX}px`;
-        tooltipRef.current.style.top = `${e.clientY}px`;
+        // Simple offset to prevent cursor from covering text
+        tooltipRef.current.style.left = `${e.clientX + 15}px`;
+        tooltipRef.current.style.top = `${e.clientY - 30}px`;
       }
     };
 
@@ -171,8 +183,10 @@ const Singleplayer = ({ onClose }) => {
       <div className={`${styles.container} ${isBookOpen ? styles.bookOpen : ''}`}>
         <div className={styles.topSection}>
           <div className={styles.leftGroup}>
+            
+            {/* ARMOR COLUMN (Helmet 39 -> Boots 36) */}
             <div className={styles.armorColumn}>
-              {[36, 37, 38, 39].map((index) => (
+              {[39, 38, 37, 36].map((index) => (
                 <ItemSlot 
                   key={index} 
                   item={slots[index]} 
@@ -180,22 +194,26 @@ const Singleplayer = ({ onClose }) => {
                   onSlotClick={handleSlotClick}
                   onHover={setHoveredItem}
                   onLeave={() => setHoveredItem(null)} 
+                  placeholder={ARMOR_PLACEHOLDERS[index]}
                 />
               ))}
             </div>
+            
             <div className={styles.characterPreview}>
               <PlayerPreview isBookOpen={isBookOpen}/>
             </div>
           </div>
 
           <div className={styles.middleGroup}>
+            {/* OFFHAND SLOT */}
             <div className={styles.offhandWrapper}>
                <ItemSlot 
                  item={slots[40]} 
                  index={40} 
                  onSlotClick={handleSlotClick}
                  onHover={setHoveredItem}
-                 onLeave={() => setHoveredItem(null)} 
+                 onLeave={() => setHoveredItem(null)}
+                 placeholder={OFFHAND_PLACEHOLDER}
                />
             </div>
             <div className={styles.recipeBookWrapper}>

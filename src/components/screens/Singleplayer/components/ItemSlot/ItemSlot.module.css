@@ -29,3 +29,11 @@
   image-rendering: pixelated;
   pointer-events: none; /* Prevents image from blocking the div's onClick */
 }
+
+.placeholderIcon {
+  width: 90%; /* Or 16px scaled up, usually fills the slot */
+  height: 90%;
+  image-rendering: pixelated;
+  opacity: 1; /* Minecraft placeholders are actually fully opaque, just dark gray */
+  pointer-events: none;
+}
