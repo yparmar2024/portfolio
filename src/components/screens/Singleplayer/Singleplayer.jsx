@@ -3,6 +3,7 @@ import ItemSlot from './components/ItemSlot/ItemSlot';
 import RecipeBook from './components/RecipeBook/RecipeBook';
 import styles from './Singleplayer.module.css';
 import itemsData from '../../../data/items.json';
+import PlayerPreview from './components/PlayerPreview/PlayerPreview';
 
 const canPlaceItem = (item, slotIndex) => {
   if (!item) return true;
