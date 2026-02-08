@@ -5,7 +5,7 @@
     "motd": "The Code Repository",
     "status": "Active",
     "link": "https://github.com/yparmar2024",
-    "icon": "/icons/github.png"
+    "icon": "/icons/socials/github.png"
   },
   {
     "id": 2,
@@ -13,7 +13,7 @@
     "motd": "Professional Network",
     "status": "Online",
     "link": "https://linkedin.com/in/yparmar",
-    "icon": "/icons/linkedin.png"
+    "icon": "/icons/socials/linkedin.png"
   },
   {
     "id": 3,
@@ -21,7 +21,7 @@
     "motd": "Training Dojo",
     "status": "Grinding",
     "link": "https://leetcode.com/u/yparmar",
-    "icon": "/icons/leetcode.png"
+    "icon": "/icons/socials/leetcode.png"
   },
   {
     "id": 4,
@@ -29,6 +29,6 @@
     "motd": "Direct Communication",
     "status": "Open",
     "link": "mailto:yparmar2024@gmail.com",
-    "icon": "/icons/book_and_quill.png"
+    "icon": "/icons/socials/book_and_quill.png"
   }
 ]

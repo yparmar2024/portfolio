@@ -147,3 +147,22 @@
   gap: 4px;
   margin-top: 8px;
 }
+
+.floatingItem {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 64px;
+  height: 64px;
+  pointer-events: none; /* Critical: Allows clicks to pass through to the slot below */
+  z-index: 9999; /* Ensure it floats above everything */
+  transform: translate(-50%, -50%); /* Centers item on cursor */
+  image-rendering: pixelated;
+}
+
+.floatingItem img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  filter: drop-shadow(4px 4px 0px rgba(0,0,0,0.5)); /* Adds depth like in-game */
+}

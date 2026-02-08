@@ -88,7 +88,7 @@ const Options = ({ onBack, videoSetting, setVideoSetting, difficulty, setDifficu
           flex: '0 0 200px', border: '4px solid #000', backgroundColor: '#333',
           display: 'flex', justifyContent: 'center', alignItems: 'center', overflow: 'hidden'
         }}>
-          <img src="/icons/profile.png" alt="Yash" style={{ width: '100%', height: '100%', objectFit: 'cover', imageRendering: 'pixelated' }} />
+          <img src="/icons/socials/profile.png" alt="Yash" style={{ width: '100%', height: '100%', objectFit: 'cover', imageRendering: 'pixelated' }} />
         </div>
 
         <div style={{ 
@@ -114,7 +114,7 @@ const Options = ({ onBack, videoSetting, setVideoSetting, difficulty, setDifficu
             transition: 'all 0.2s'
           }}
         >
-          <img src="/icons/jukebox.png" style={{ width: '100px', imageRendering: 'pixelated' }} alt="jukebox" />
+          <img src="/icons/items/jukebox.png" style={{ width: '100px', imageRendering: 'pixelated' }} alt="jukebox" />
           <div style={{ fontSize: '16px', color: isDraggingOver ? '#ffff55' : '#888', marginTop: '10px' }}>
             {isDraggingOver ? "RELEASE DISC" : "INSERT DISC"}
           </div>
@@ -137,7 +137,7 @@ const Options = ({ onBack, videoSetting, setVideoSetting, difficulty, setDifficu
                 onMouseLeave={(e) => e.currentTarget.style.transform = 'scale(1)'}
               >
                 <img 
-                  src={`/icons/disc_${i+1}.png`} 
+                  src={`/icons/items/disc_${i+1}.png`} 
                   alt={track.label} 
                   style={{ width: '40px', height: '40px', imageRendering: 'pixelated' }} 
                 />
@@ -186,7 +186,7 @@ const Options = ({ onBack, videoSetting, setVideoSetting, difficulty, setDifficu
       <div style={{ color: '#aaaaaa', marginBottom: '5px' }}>Select Resource Pack (Resume)</div>
       <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', border: '2px solid #555', padding: '10px', backgroundColor: 'rgba(0,0,0,0.3)', width: '100%', maxWidth: '320px' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-          <img src="/icons/command_block.png" alt="SWE" style={{ width: '32px', height: '32px', imageRendering: 'pixelated' }} />
+          <img src="/icons/items/command_block.png" alt="SWE" style={{ width: '32px', height: '32px', imageRendering: 'pixelated' }} />
           <div style={{ flex: 1, textAlign: 'left' }}>
             <div style={{ color: '#fff' }}>Software Engineer</div>
             <div style={{ color: '#aaa', fontSize: '12px' }}>Engineering & Architecture</div>
@@ -194,7 +194,7 @@ const Options = ({ onBack, videoSetting, setVideoSetting, difficulty, setDifficu
           <MinecraftButton style={{ width: '40px', paddingTop: '0px' }} onClick={() => handleViewPdf('SWE')}><span style={{ position: 'relative', top: '-5px' }}>⬇</span></MinecraftButton>
         </div>
         <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-          <img src="/icons/redstone_dust.png" alt="ML" style={{ width: '32px', height: '32px', imageRendering: 'pixelated' }} />
+          <img src="/icons/items/redstone_dust.png" alt="ML" style={{ width: '32px', height: '32px', imageRendering: 'pixelated' }} />
           <div style={{ flex: 1, textAlign: 'left' }}>
             <div style={{ color: '#fff' }}>Machine Learning</div>
             <div style={{ color: '#aaa', fontSize: '12px' }}>Research & Analytics</div>

@@ -18,7 +18,7 @@ body, html, #root {
   background-color: #000;
   font-family: 'Mojangles', sans-serif;
   -webkit-font-smoothing: none;
-  cursor: url('/icons/cursor.png'), auto;
+  cursor: url('/icons/ui/cursor.png'), auto;
   user-select: none;
   -webkit-user-select: none;
 }
@@ -30,7 +30,7 @@ a,
 input, 
 select, 
 textarea {
-  cursor: url('/icons/cursor.png') 0 0, pointer !important;
+  cursor: url('/icons/ui/cursor.png') 0 0, pointer !important;
 }
 
 .canvas-layer {

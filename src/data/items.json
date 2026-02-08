@@ -1,5 +1,194 @@
 {
-  "name": "Python",
-  "icon": "/icons/diamond_ore.png",
-  "lore": "Expertise in automation and ML"
+  "python": {
+    "id": "python",
+    "name": "Python Block",
+    "icon": "/icons/items/python.png",
+    "isBlock": true,
+    "type": "language",
+    "description": "The foundation for ML and backend logic."
+  },
+  "java": {
+    "id": "java",
+    "name": "Java Block",
+    "icon": "/icons/items/java.png",
+    "isBlock": true,
+    "type": "language",
+    "description": "Robust object-oriented programming."
+  },
+  "typescript": {
+    "id": "typescript",
+    "name": "TypeScript Block",
+    "icon": "/icons/items/typescript.png",
+    "isBlock": true,
+    "type": "language",
+    "description": "Type-safe JavaScript for scalable apps."
+  },
+  "javascript": {
+    "id": "javascript",
+    "name": "JavaScript Block",
+    "icon": "/icons/items/javascript.png",
+    "isBlock": true,
+    "type": "language",
+    "description": "Interactive web logic."
+  },
+  "cpp": {
+    "id": "cpp",
+    "name": "C++ Block",
+    "icon": "/icons/items/cpp.png",
+    "isBlock": true,
+    "type": "language",
+    "description": "High-performance systems code."
+  },
+  "postgresql": {
+    "id": "postgresql",
+    "name": "PostgreSQL Block",
+    "icon": "/icons/items/postgresql.png",
+    "isBlock": true,
+    "type": "language",
+    "description": "Database querying and management."
+  },
+  "react": {
+    "id": "react",
+    "name": "React Block",
+    "icon": "/icons/items/react.png",
+    "isBlock": true,
+    "type": "framework",
+    "description": "Frontend UI library."
+  },
+  "fastapi": {
+    "id": "fastapi",
+    "name": "FastAPI Block",
+    "icon": "/icons/items/fastapi.png",
+    "isBlock": true,
+    "type": "framework",
+    "description": "High-performance API framework."
+  },
+  "nodejs": {
+    "id": "nodejs",
+    "name": "Node.js Block",
+    "icon": "/icons/items/nodejs.png",
+    "isBlock": true,
+    "type": "framework",
+    "description": "Backend JavaScript runtime."
+  },
+  "flutter": {
+    "id": "flutter",
+    "name": "Flutter Block",
+    "icon": "/icons/items/flutter.png",
+    "isBlock": true,
+    "type": "framework",
+    "description": "Cross-platform mobile UI."
+  },
+  "langchain": {
+    "id": "langchain",
+    "name": "LangChain Block",
+    "icon": "/icons/items/langchain.png",
+    "isBlock": true,
+    "type": "framework",
+    "description": "LLM application framework."
+  },
+  "tensorflow": {
+    "id": "tensorflow",
+    "name": "TensorFlow Block",
+    "icon": "/icons/items/tensorflow.png",
+    "isBlock": true,
+    "type": "library",
+    "description": "End-to-end ML platform."
+  },
+  "keras": {
+    "id": "keras",
+    "name": "Keras Block",
+    "icon": "/icons/items/keras.png",
+    "isBlock": true,
+    "type": "library",
+    "description": "Deep learning API."
+  },
+  "pytorch": {
+    "id": "pytorch",
+    "name": "PyTorch Block",
+    "icon": "/icons/items/pytorch.png",
+    "isBlock": true,
+    "type": "library",
+    "description": "Flexible ML framework."
+  },
+  "scikit_learn": {
+    "id": "scikit_learn",
+    "name": "Scikit-learn Block",
+    "icon": "/icons/items/scikit_learn.png",
+    "isBlock": true,
+    "type": "library",
+    "description": "Predictive data analysis."
+  },
+  "pandas": {
+    "id": "pandas",
+    "name": "Pandas Block",
+    "icon": "/icons/items/pandas.png",
+    "isBlock": true,
+    "type": "library",
+    "description": "Data manipulation tool."
+  },
+  "numpy": {
+    "id": "numpy",
+    "name": "NumPy Block",
+    "icon": "/icons/items/numpy.png",
+    "isBlock": true,
+    "type": "library",
+    "description": "Scientific computing."
+  },
+  "aws_lambda": {
+    "id": "aws_lambda",
+    "name": "AWS Lambda Block",
+    "icon": "/icons/items/aws_lambda.png",
+    "isBlock": true,
+    "type": "infrastructure",
+    "description": "Serverless compute."
+  },
+  "dynamodb": {
+    "id": "dynamodb",
+    "name": "DynamoDB Block",
+    "icon": "/icons/items/dynamodb.png",
+    "isBlock": true,
+    "type": "infrastructure",
+    "description": "NoSQL database."
+  },
+  "s3": {
+    "id": "s3",
+    "name": "S3 Block",
+    "icon": "/icons/items/s3.png",
+    "isBlock": true,
+    "type": "infrastructure",
+    "description": "Cloud object storage."
+  },
+  "firebase": {
+    "id": "firebase",
+    "name": "Firebase Block",
+    "icon": "/icons/items/firebase.png",
+    "isBlock": true,
+    "type": "infrastructure",
+    "description": "App development platform."
+  },
+  "supabase": {
+    "id": "supabase",
+    "name": "Supabase Block",
+    "icon": "/icons/items/supabase.png",
+    "isBlock": true,
+    "type": "infrastructure",
+    "description": "Open source backend."
+  },
+  "docker": {
+    "id": "docker",
+    "name": "Docker Block",
+    "icon": "/icons/items/docker.png",
+    "isBlock": true,
+    "type": "tool",
+    "description": "Containerization platform."
+  },
+  "git": {
+    "id": "git",
+    "name": "Git Block",
+    "icon": "/icons/items/git.png",
+    "isBlock": true,
+    "type": "tool",
+    "description": "Version control."
+  }
 }

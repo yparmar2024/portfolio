@@ -1,15 +1,67 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import ItemSlot from './components/ItemSlot/ItemSlot';
 import RecipeBook from './components/RecipeBook/RecipeBook';
 import styles from './Singleplayer.module.css';
+import itemsData from '../../../data/items.json';
+
+const canPlaceItem = (item, slotIndex) => {
+  if (!item) return true;
+  if (slotIndex <= 35) return true; 
+  if (slotIndex >= 36 && slotIndex <= 39) return item.isArmor === true;
+  if (slotIndex === 40) return item.isShield === true || item.type === 'tool';
+  if (slotIndex >= 41 && slotIndex <= 44) {
+    const validCraftingTypes = ['language', 'framework', 'library', 'infrastructure', 'tool'];
+    return item.isBlock === true || validCraftingTypes.includes(item.type);
+  }
+  if (slotIndex === 45) return false;
+  return false;
+};
 
 const Singleplayer = ({ onClose }) => {
   const [isBookOpen, setIsBookOpen] = useState(false);
+  const [heldItem, setHeldItem] = useState(null);
   
+  const mousePos = useRef({ x: 0, y: 0 });
+  const floatingItemRef = useRef(null);
+
   const [slots, setSlots] = useState(() => {
     const initial = Array(46).fill(null);
-    initial[27] = { id: 'python', name: 'Python', icon: '/icons/diamond_ore.png' };
-    initial[0] = { id: 'blueprint', name: 'Blueprint', icon: '/icons/blueprint.png' };
+
+    // --- HOTBAR (Slots 27-35): Core Languages & Tools ---
+    if (itemsData.python)      initial[27] = itemsData.python;
+    if (itemsData.java)        initial[28] = itemsData.java;
+    if (itemsData.cpp)         initial[29] = itemsData.cpp;
+    if (itemsData.typescript)  initial[30] = itemsData.typescript;
+    if (itemsData.javascript)  initial[31] = itemsData.javascript;
+    if (itemsData.sql)         initial[32] = itemsData.sql;
+    if (itemsData.react)       initial[33] = itemsData.react;
+    if (itemsData.docker)      initial[34] = itemsData.docker;
+    // Slot 35 left empty for swapping
+
+    // --- INVENTORY ROW 1 (Slots 0-8): ML & Data Science ---
+    if (itemsData.tensorflow)  initial[0] = itemsData.tensorflow;
+    if (itemsData.pytorch)     initial[1] = itemsData.pytorch;
+    if (itemsData.keras)       initial[2] = itemsData.keras;
+    if (itemsData.scikit_learn) initial[3] = itemsData.scikit_learn;
+    if (itemsData.pandas)      initial[4] = itemsData.pandas;
+    if (itemsData.numpy)       initial[5] = itemsData.numpy;
+    if (itemsData.langchain)   initial[6] = itemsData.langchain;
+
+    // --- INVENTORY ROW 2 (Slots 9-17): Backend & Mobile Frameworks ---
+    if (itemsData.fastapi)     initial[9] = itemsData.fastapi;
+    if (itemsData.nodejs)      initial[10] = itemsData.nodejs;
+    if (itemsData.flutter)     initial[11] = itemsData.flutter;
+
+    // --- INVENTORY ROW 3 (Slots 18-26): Infrastructure & Cloud ---
+    if (itemsData.aws_lambda)  initial[18] = itemsData.aws_lambda;
+    if (itemsData.dynamodb)    initial[19] = itemsData.dynamodb;
+    if (itemsData.s3)          initial[20] = itemsData.s3;
+    if (itemsData.firebase)    initial[21] = itemsData.firebase;
+    if (itemsData.supabase)    initial[22] = itemsData.supabase;
+
+    // --- OFFHAND (Slot 40): Version Control ---
+    if (itemsData.git)         initial[40] = itemsData.git;
+
     return initial;
   });
 
@@ -17,83 +69,123 @@ const Singleplayer = ({ onClose }) => {
     const handleKeyDown = (event) => {
       if (event.key === 'Escape') onClose();
     };
+    
+    const handleMouseMove = (e) => {
+      mousePos.current = { x: e.clientX, y: e.clientY };
+      if (floatingItemRef.current) {
+        floatingItemRef.current.style.left = `${e.clientX}px`;
+        floatingItemRef.current.style.top = `${e.clientY}px`;
+      }
+    };
+
     window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
+    window.addEventListener('mousemove', handleMouseMove);
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+      window.removeEventListener('mousemove', handleMouseMove);
+    };
   }, [onClose]);
 
-  const handleMoveItem = (fromIndex, toIndex) => {
-    const newSlots = [...slots];
-    const temp = newSlots[toIndex];
-    newSlots[toIndex] = newSlots[fromIndex];
-    newSlots[fromIndex] = temp;
-    setSlots(newSlots);
+  const handleSlotClick = (index) => {
+    // Output Slot Logic (Take Only)
+    if (index === 45) {
+      if (slots[45] && !heldItem) {
+         const newSlots = [...slots];
+         // Logic to consume ingredients would go here
+         setHeldItem(slots[45]);
+         newSlots[45] = null;
+         setSlots(newSlots);
+      }
+      return;
+    }
+
+    const clickedItem = slots[index];
+
+    // Pick Up
+    if (!heldItem && clickedItem) {
+      setHeldItem(clickedItem);
+      const newSlots = [...slots];
+      newSlots[index] = null;
+      setSlots(newSlots);
+      return;
+    }
+
+    // Place or Swap
+    if (heldItem) {
+      if (!canPlaceItem(heldItem, index)) return;
+
+      const newSlots = [...slots];
+      const itemToPickup = newSlots[index]; 
+
+      newSlots[index] = heldItem;
+      setHeldItem(itemToPickup); 
+      setSlots(newSlots);
+    }
   };
 
   return (
     <div className={styles.overlay}>
+      
+      {heldItem && (
+        <div 
+          ref={floatingItemRef} 
+          className={styles.floatingItem}
+          style={{ 
+            left: `${mousePos.current.x}px`, 
+            top: `${mousePos.current.y}px` 
+          }}
+        >
+          <img src={heldItem.icon} alt="Held Item" />
+        </div>
+      )}
+
       <div className={`${styles.container} ${isBookOpen ? styles.bookOpen : ''}`}>
-        
         <div className={styles.topSection}>
-          {/* --- LEFT ZONE: Armor & Character --- */}
           <div className={styles.leftGroup}>
             <div className={styles.armorColumn}>
               {[36, 37, 38, 39].map((index) => (
-                <ItemSlot key={index} item={slots[index]} index={index} onMoveItem={handleMoveItem} />
+                <ItemSlot key={index} item={slots[index]} index={index} onSlotClick={handleSlotClick} />
               ))}
             </div>
-            <div className={styles.characterPreview}>
-              {/* Player Model will go here */}
-            </div>
+            <div className={styles.characterPreview} />
           </div>
 
-          {/* --- MIDDLE ZONE: Offhand & Recipe Book --- */}
           <div className={styles.middleGroup}>
-            {/* Offhand Slot (Left side of middle) */}
             <div className={styles.offhandWrapper}>
-               <ItemSlot item={slots[40]} index={40} onMoveItem={handleMoveItem} />
+               <ItemSlot item={slots[40]} index={40} onSlotClick={handleSlotClick} />
             </div>
-
-            {/* Recipe Book (Right side of middle, offset) */}
             <div className={styles.recipeBookWrapper}>
                <RecipeBook isOpen={isBookOpen} onClick={() => setIsBookOpen(!isBookOpen)} />
             </div>
           </div>
 
-          {/* --- RIGHT ZONE: Crafting Grid Only --- */}
           <div className={styles.craftingGroup}>
             <span className={styles.craftingLabel}>Crafting</span>
-            
             <div className={styles.craftingArea}>
               <div className={styles.craftingGrid2x2}>
-                <ItemSlot item={slots[41]} index={41} onMoveItem={handleMoveItem} />
-                <ItemSlot item={slots[42]} index={42} onMoveItem={handleMoveItem} />
-                <ItemSlot item={slots[43]} index={43} onMoveItem={handleMoveItem} />
-                <ItemSlot item={slots[44]} index={44} onMoveItem={handleMoveItem} />
+                {[41, 42, 43, 44].map((index) => (
+                  <ItemSlot key={index} item={slots[index]} index={index} onSlotClick={handleSlotClick} />
+                ))}
               </div>
-
-              {/* Arrow and Output Slot */}
               <div className={styles.craftingOutputRow}>
                 <div className={styles.arrow} />
-                <ItemSlot item={slots[45]} index={45} onMoveItem={handleMoveItem} />
+                <ItemSlot item={slots[45]} index={45} onSlotClick={handleSlotClick} />
               </div>
             </div>
           </div>
-
         </div>
 
         <div style={{ flex: 1 }} />
 
-        {/* --- BOTTOM SECTION: Inventory --- */}
         <div className={styles.inventorySection}>
           <div className={styles.grid9x3}>
             {slots.slice(0, 27).map((item, index) => (
-              <ItemSlot key={index} item={item} index={index} onMoveItem={handleMoveItem} />
+              <ItemSlot key={index} item={item} index={index} onSlotClick={handleSlotClick} />
             ))}
           </div>
-
           <div className={styles.hotbar9x1}>
             {slots.slice(27, 36).map((item, index) => (
-              <ItemSlot key={index + 27} item={item} index={index + 27} onMoveItem={handleMoveItem} />
+              <ItemSlot key={index + 27} item={item} index={index + 27} onSlotClick={handleSlotClick} />
             ))}
           </div>
         </div>

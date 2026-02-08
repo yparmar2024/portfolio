@@ -29,7 +29,7 @@ export default function ServerSlot({
   motd, 
   ping = 0, 
   dates,
-  icon = '/icons/default_server.png', 
+  icon = '', 
   onClick,
   selected 
 }) {

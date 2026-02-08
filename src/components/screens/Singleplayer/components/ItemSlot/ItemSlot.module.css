@@ -2,8 +2,10 @@
   width: 72px;
   height: 72px;
   background-color: #8b8b8b;
-  /* Bevel effect: light on top-left, dark on bottom-right */
-  box-shadow: inset 4px 4px 2px #373737, inset -3px -3px 2px #ffffff;
+  /* Authentic Minecraft Recessed Slot Look */
+  /* Top-Left: Dark Shadow | Bottom-Right: White Highlight */
+  /* Blur is set to 0px to keep it pixelated */
+  box-shadow: inset 4px 4px 0px #373737, inset -4px -4px 0px #ffffff;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -11,16 +13,19 @@
   box-sizing: border-box;
 }
 
+/* White overlay when hovering a valid drop target */
 .slotHovered {
+  background-color: rgba(255, 255, 255, 0.5);
+}
+
+/* Optional: Regular mouse hover for interactivity feedback */
+.slot:hover {
   background-color: rgba(255, 255, 255, 0.2);
-  outline: 4px solid white;
-  outline-offset: -8px;
 }
 
 .itemIcon {
-  width: 56px;
-  height: 56px;
+  width: 60px;
+  height: 60px;
   image-rendering: pixelated;
-  /* Prevents the image itself from interfering with drag events */
-  pointer-events: none; 
+  pointer-events: none; /* Prevents image from blocking the div's onClick */
 }
