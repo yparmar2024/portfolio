@@ -1,25 +1,3 @@
-/**
- * Options/Settings screen component
- * 
- * Multi-view settings interface featuring:
- * - Profile information with location and university
- * - Interactive jukebox with drag-and-drop music discs
- * - Video theme switcher (Auto/Day/Night)
- * - Audio volume controls (Master/Music/UI)
- * - Resume downloads (SWE and ML variants)
- * - Credits and attributions
- * 
- * The jukebox implements HTML5 drag-and-drop for changing background music.
- * 
- * @component
- * @param {Object} props
- * @param {Function} props.onBack - Handler to return to main menu
- * @param {string} props.videoSetting - Current video theme setting
- * @param {Function} props.setVideoSetting - Update video theme
- * @param {string} props.difficulty - Current difficulty (locked to "Unemployed")
- * @param {Function} props.setDifficulty - Update difficulty (placeholder)
- */
-
 import React, { useState } from 'react';
 import MinecraftModal from '../../common/MinecraftModal/MinecraftModal';
 import MinecraftButton from '../../common/MinecraftButton/MinecraftButton';
@@ -28,6 +6,9 @@ import ErrorModal from '../../common/ErrorModal/ErrorModal';
 import styles from './Options.module.css';
 import { useSoundSettings } from '../../../context/SoundContext';
 import { ERROR_MESSAGES } from '../../../utils/errorMessages';
+
+// 1. Import the JSON directly (Vite handles this automatically)
+import creditsData from '../../../data/credits.json';
 
 const MUSIC_DISCS = [
   { id: 'sweden', label: 'C418 - Sweden' },
@@ -206,6 +187,7 @@ const Options = ({ onBack, videoSetting, setVideoSetting, difficulty, setDifficu
     </div>
   );
 
+  // 2. Dynamic Rendering Loop
   const renderCredits = () => (
     <div style={{ 
         display: 'flex', 
@@ -220,47 +202,36 @@ const Options = ({ onBack, videoSetting, setVideoSetting, difficulty, setDifficu
         <div style={{ color: '#aaaaaa', marginBottom: '10px' }}>Credits & Attributions</div>
         
         <div style={{ 
-        flex: 1, 
-        width: '100%', 
-        overflowY: 'auto', 
-        overflowX: 'hidden', 
-        backgroundColor: 'rgba(0,0,0,0.5)', 
-        border: '2px solid #555', 
-        padding: '15px', 
-        color: '#ffffff', 
-        fontSize: '14px', 
-        lineHeight: '1.8',
-        textAlign: 'center', 
-        boxSizing: 'border-box' 
+          flex: 1, 
+          width: '100%', 
+          overflowY: 'auto', 
+          overflowX: 'hidden', 
+          backgroundColor: 'rgba(0,0,0,0.5)', 
+          border: '2px solid #555', 
+          padding: '15px', 
+          color: '#ffffff', 
+          fontSize: '14px', 
+          lineHeight: '1.8',
+          textAlign: 'center', 
+          boxSizing: 'border-box' 
         }}>
-        <div style={{ color: '#ffff55', marginBottom: '5px' }}>Created by Yash Parmar</div>
-        <div style={{ marginBottom: '15px' }}>Built with React, Vite, and Three.js</div>
-
-        <div style={{ color: '#ffff55', marginBottom: '5px' }}>Music & Sounds</div>
-        <div>• Original Music: C418 (Sweden, Mice, Stal, Wait)</div>
-        <div>• Original Music: Lena Raine (Otherside, Pigstep)</div>
-        <div style={{ marginBottom: '15px' }}>• Sound Effects: Minecraft Wiki / Mojang Studios</div>
-
-        <div style={{ color: '#ffff55', marginBottom: '5px' }}>Visual Assets</div>
-        <div>• Block & Item Icons: Minecraft Wiki</div>
-        <div>• Branded Icons: LinkedIn, GitHub, LeetCode</div>
-        <div>• Panorama Textures: Flickr</div>
-        <div>• Background Dirt: CurseForge</div>
-        <div style={{ marginBottom: '15px' }}>• Title Logo: Blockbench / Textcraft</div>
-
-        <div style={{ color: '#ffff55', marginBottom: '5px' }}>Typography & Concept</div>
-        <div>• Mojangles Font: Minecraft (Mojang Studios)</div>
-        <div>• Original Game Concept: Mojang Studios</div>
-        <div>• UI Design: Java Edition Menu Style</div>
+          {creditsData.map((section, index) => (
+            <div key={index} style={{ marginBottom: index === creditsData.length - 1 ? '0' : '15px' }}>
+              <div style={{ color: '#ffff55', marginBottom: '5px' }}>{section.title}</div>
+              {section.items.map((item, i) => (
+                <div key={i}>{item}</div>
+              ))}
+            </div>
+          ))}
         </div>
 
         <div style={{ marginTop: '20px' }}>
-        <MinecraftButton style={{ width: '200px' }} onClick={() => setCurrentView('MAIN')}>
+          <MinecraftButton style={{ width: '200px' }} onClick={() => setCurrentView('MAIN')}>
             Done
-        </MinecraftButton>
+          </MinecraftButton>
         </div>
     </div>
-    );
+  );
 
   if (viewingPdf) {
     return (

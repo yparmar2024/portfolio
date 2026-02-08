@@ -1,0 +1,36 @@
+[
+  {
+    "title": "Created by Yash Parmar",
+    "items": [
+      "Built with React, Vite, and Three.js"
+    ]
+  },
+  {
+    "title": "Music & Sounds",
+    "items": [
+      "• Original Music: C418 (Sweden, Mice, Stal, Wait)",
+      "• Original Music: Lena Raine (Otherside, Pigstep)",
+      "• Sound Effects: Minecraft Wiki / Mojang Studios"
+    ]
+  },
+  {
+    "title": "Visual Assets",
+    "items": [
+      "• Block & Item Icons: Minecraft Wiki",
+      "• Branded Icons: LinkedIn, GitHub, LeetCode",
+      "• Panorama Textures: Flickr",
+      "• Background Dirt: CurseForge",
+      "• Title Logo: Textcraft",
+      "• Player Skin: NameMC",
+      "• 3D Model & Compilation: Blockbench"
+    ]
+  },
+  {
+    "title": "Typography & Concept",
+    "items": [
+      "• Mojangles Font: Minecraft (Mojang Studios)",
+      "• Original Game Concept: Mojang Studios",
+      "• UI Design: Java Edition Menu Style"
+    ]
+  }
+]
