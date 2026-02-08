@@ -1,7 +1,7 @@
 {
   "python": {
     "id": "python",
-    "name": "Python Block",
+    "name": "Python",
     "icon": "/icons/items/python.png",
     "isBlock": true,
     "type": "language",
@@ -9,7 +9,7 @@
   },
   "java": {
     "id": "java",
-    "name": "Java Block",
+    "name": "Java",
     "icon": "/icons/items/java.png",
     "isBlock": true,
     "type": "language",
@@ -17,7 +17,7 @@
   },
   "typescript": {
     "id": "typescript",
-    "name": "TypeScript Block",
+    "name": "TypeScript",
     "icon": "/icons/items/typescript.png",
     "isBlock": true,
     "type": "language",
@@ -25,7 +25,7 @@
   },
   "javascript": {
     "id": "javascript",
-    "name": "JavaScript Block",
+    "name": "JavaScript",
     "icon": "/icons/items/javascript.png",
     "isBlock": true,
     "type": "language",
@@ -33,7 +33,7 @@
   },
   "cpp": {
     "id": "cpp",
-    "name": "C++ Block",
+    "name": "C++",
     "icon": "/icons/items/cpp.png",
     "isBlock": true,
     "type": "language",
@@ -41,7 +41,7 @@
   },
   "postgresql": {
     "id": "postgresql",
-    "name": "PostgreSQL Block",
+    "name": "PostgreSQL",
     "icon": "/icons/items/postgresql.png",
     "isBlock": true,
     "type": "language",
@@ -49,7 +49,7 @@
   },
   "react": {
     "id": "react",
-    "name": "React Block",
+    "name": "React",
     "icon": "/icons/items/react.png",
     "isBlock": true,
     "type": "framework",
@@ -57,7 +57,7 @@
   },
   "fastapi": {
     "id": "fastapi",
-    "name": "FastAPI Block",
+    "name": "FastAPI",
     "icon": "/icons/items/fastapi.png",
     "isBlock": true,
     "type": "framework",
@@ -65,7 +65,7 @@
   },
   "nodejs": {
     "id": "nodejs",
-    "name": "Node.js Block",
+    "name": "Node.js",
     "icon": "/icons/items/nodejs.png",
     "isBlock": true,
     "type": "framework",
@@ -73,7 +73,7 @@
   },
   "flutter": {
     "id": "flutter",
-    "name": "Flutter Block",
+    "name": "Flutter",
     "icon": "/icons/items/flutter.png",
     "isBlock": true,
     "type": "framework",
@@ -81,7 +81,7 @@
   },
   "langchain": {
     "id": "langchain",
-    "name": "LangChain Block",
+    "name": "LangChain",
     "icon": "/icons/items/langchain.png",
     "isBlock": true,
     "type": "framework",
@@ -89,7 +89,7 @@
   },
   "tensorflow": {
     "id": "tensorflow",
-    "name": "TensorFlow Block",
+    "name": "TensorFlow",
     "icon": "/icons/items/tensorflow.png",
     "isBlock": true,
     "type": "library",
@@ -97,7 +97,7 @@
   },
   "keras": {
     "id": "keras",
-    "name": "Keras Block",
+    "name": "Keras",
     "icon": "/icons/items/keras.png",
     "isBlock": true,
     "type": "library",
@@ -105,7 +105,7 @@
   },
   "pytorch": {
     "id": "pytorch",
-    "name": "PyTorch Block",
+    "name": "PyTorch",
     "icon": "/icons/items/pytorch.png",
     "isBlock": true,
     "type": "library",
@@ -113,7 +113,7 @@
   },
   "scikit_learn": {
     "id": "scikit_learn",
-    "name": "Scikit-learn Block",
+    "name": "Scikit-learn",
     "icon": "/icons/items/scikit_learn.png",
     "isBlock": true,
     "type": "library",
@@ -121,7 +121,7 @@
   },
   "pandas": {
     "id": "pandas",
-    "name": "Pandas Block",
+    "name": "Pandas",
     "icon": "/icons/items/pandas.png",
     "isBlock": true,
     "type": "library",
@@ -129,7 +129,7 @@
   },
   "numpy": {
     "id": "numpy",
-    "name": "NumPy Block",
+    "name": "NumPy",
     "icon": "/icons/items/numpy.png",
     "isBlock": true,
     "type": "library",
@@ -137,15 +137,23 @@
   },
   "aws_lambda": {
     "id": "aws_lambda",
-    "name": "AWS Lambda Block",
+    "name": "AWS Lambda",
     "icon": "/icons/items/aws_lambda.png",
     "isBlock": true,
     "type": "infrastructure",
     "description": "Serverless compute."
   },
+  "aws_ec2": {
+    "id": "aws_ec2",
+    "name": "AWS EC2",
+    "icon": "/icons/items/aws_ec2.png",
+    "isBlock": true,
+    "type": "infrastructure",
+    "description": "Scalable virtual servers."
+  },
   "dynamodb": {
     "id": "dynamodb",
-    "name": "DynamoDB Block",
+    "name": "DynamoDB",
     "icon": "/icons/items/dynamodb.png",
     "isBlock": true,
     "type": "infrastructure",
@@ -153,7 +161,7 @@
   },
   "s3": {
     "id": "s3",
-    "name": "S3 Block",
+    "name": "S3",
     "icon": "/icons/items/s3.png",
     "isBlock": true,
     "type": "infrastructure",
@@ -161,7 +169,7 @@
   },
   "firebase": {
     "id": "firebase",
-    "name": "Firebase Block",
+    "name": "Firebase",
     "icon": "/icons/items/firebase.png",
     "isBlock": true,
     "type": "infrastructure",
@@ -169,7 +177,7 @@
   },
   "supabase": {
     "id": "supabase",
-    "name": "Supabase Block",
+    "name": "Supabase",
     "icon": "/icons/items/supabase.png",
     "isBlock": true,
     "type": "infrastructure",
@@ -177,7 +185,7 @@
   },
   "docker": {
     "id": "docker",
-    "name": "Docker Block",
+    "name": "Docker",
     "icon": "/icons/items/docker.png",
     "isBlock": true,
     "type": "tool",
@@ -185,7 +193,7 @@
   },
   "git": {
     "id": "git",
-    "name": "Git Block",
+    "name": "Git",
     "icon": "/icons/items/git.png",
     "isBlock": true,
     "type": "tool",

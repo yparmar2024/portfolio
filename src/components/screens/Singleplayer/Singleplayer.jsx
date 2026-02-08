@@ -22,13 +22,16 @@ const Singleplayer = ({ onClose }) => {
   const [isBookOpen, setIsBookOpen] = useState(false);
   const [heldItem, setHeldItem] = useState(null);
   
+  // Tooltip & Mouse State
+  const [hoveredItem, setHoveredItem] = useState(null);
+  const tooltipRef = useRef(null);
   const mousePos = useRef({ x: 0, y: 0 });
   const floatingItemRef = useRef(null);
 
   const [slots, setSlots] = useState(() => {
     const initial = Array(46).fill(null);
 
-    // --- HOTBAR (Slots 27-35): Core Languages & Tools ---
+    // --- HOTBAR (Slots 27-35) ---
     if (itemsData.python)      initial[27] = itemsData.python;
     if (itemsData.java)        initial[28] = itemsData.java;
     if (itemsData.cpp)         initial[29] = itemsData.cpp;
@@ -37,9 +40,8 @@ const Singleplayer = ({ onClose }) => {
     if (itemsData.sql)         initial[32] = itemsData.sql;
     if (itemsData.react)       initial[33] = itemsData.react;
     if (itemsData.docker)      initial[34] = itemsData.docker;
-    // Slot 35 left empty for swapping
 
-    // --- INVENTORY ROW 1 (Slots 0-8): ML & Data Science ---
+    // --- ROW 1 (Slots 0-8) ---
     if (itemsData.tensorflow)  initial[0] = itemsData.tensorflow;
     if (itemsData.pytorch)     initial[1] = itemsData.pytorch;
     if (itemsData.keras)       initial[2] = itemsData.keras;
@@ -48,19 +50,20 @@ const Singleplayer = ({ onClose }) => {
     if (itemsData.numpy)       initial[5] = itemsData.numpy;
     if (itemsData.langchain)   initial[6] = itemsData.langchain;
 
-    // --- INVENTORY ROW 2 (Slots 9-17): Backend & Mobile Frameworks ---
+    // --- ROW 2 (Slots 9-17) ---
     if (itemsData.fastapi)     initial[9] = itemsData.fastapi;
     if (itemsData.nodejs)      initial[10] = itemsData.nodejs;
     if (itemsData.flutter)     initial[11] = itemsData.flutter;
 
-    // --- INVENTORY ROW 3 (Slots 18-26): Infrastructure & Cloud ---
+    // --- ROW 3 (Slots 18-26) ---
     if (itemsData.aws_lambda)  initial[18] = itemsData.aws_lambda;
     if (itemsData.dynamodb)    initial[19] = itemsData.dynamodb;
     if (itemsData.s3)          initial[20] = itemsData.s3;
-    if (itemsData.firebase)    initial[21] = itemsData.firebase;
-    if (itemsData.supabase)    initial[22] = itemsData.supabase;
+    if (itemsData.aws_ec2)     initial[21] = itemsData.aws_ec2;
+    if (itemsData.firebase)    initial[22] = itemsData.firebase;
+    if (itemsData.supabase)    initial[23] = itemsData.supabase;
 
-    // --- OFFHAND (Slot 40): Version Control ---
+    // --- OFFHAND (Slot 40) ---
     if (itemsData.git)         initial[40] = itemsData.git;
 
     return initial;
@@ -73,9 +76,17 @@ const Singleplayer = ({ onClose }) => {
     
     const handleMouseMove = (e) => {
       mousePos.current = { x: e.clientX, y: e.clientY };
+      
+      // Move Held Item
       if (floatingItemRef.current) {
         floatingItemRef.current.style.left = `${e.clientX}px`;
         floatingItemRef.current.style.top = `${e.clientY}px`;
+      }
+
+      // Move Tooltip
+      if (tooltipRef.current) {
+        tooltipRef.current.style.left = `${e.clientX}px`;
+        tooltipRef.current.style.top = `${e.clientY}px`;
       }
     };
 
@@ -92,7 +103,6 @@ const Singleplayer = ({ onClose }) => {
     if (index === 45) {
       if (slots[45] && !heldItem) {
          const newSlots = [...slots];
-         // Logic to consume ingredients would go here
          setHeldItem(slots[45]);
          newSlots[45] = null;
          setSlots(newSlots);
@@ -127,6 +137,24 @@ const Singleplayer = ({ onClose }) => {
   return (
     <div className={styles.overlay}>
       
+      {/* --- TOOLTIP --- */}
+      {hoveredItem && !heldItem && (
+        <div 
+          ref={tooltipRef}
+          className={styles.tooltip}
+          style={{
+            left: mousePos.current.x,
+            top: mousePos.current.y
+          }}
+        >
+          <span className={styles.tooltipTitle}>{hoveredItem.name}</span>
+          {hoveredItem.description && (
+            <span className={styles.tooltipDesc}>{hoveredItem.description}</span>
+          )}
+        </div>
+      )}
+
+      {/* --- FLOATING ITEM --- */}
       {heldItem && (
         <div 
           ref={floatingItemRef} 
@@ -145,7 +173,14 @@ const Singleplayer = ({ onClose }) => {
           <div className={styles.leftGroup}>
             <div className={styles.armorColumn}>
               {[36, 37, 38, 39].map((index) => (
-                <ItemSlot key={index} item={slots[index]} index={index} onSlotClick={handleSlotClick} />
+                <ItemSlot 
+                  key={index} 
+                  item={slots[index]} 
+                  index={index} 
+                  onSlotClick={handleSlotClick}
+                  onHover={setHoveredItem}
+                  onLeave={() => setHoveredItem(null)} 
+                />
               ))}
             </div>
             <div className={styles.characterPreview}>
@@ -155,7 +190,13 @@ const Singleplayer = ({ onClose }) => {
 
           <div className={styles.middleGroup}>
             <div className={styles.offhandWrapper}>
-               <ItemSlot item={slots[40]} index={40} onSlotClick={handleSlotClick} />
+               <ItemSlot 
+                 item={slots[40]} 
+                 index={40} 
+                 onSlotClick={handleSlotClick}
+                 onHover={setHoveredItem}
+                 onLeave={() => setHoveredItem(null)} 
+               />
             </div>
             <div className={styles.recipeBookWrapper}>
                <RecipeBook isOpen={isBookOpen} onClick={() => setIsBookOpen(!isBookOpen)} />
@@ -167,12 +208,25 @@ const Singleplayer = ({ onClose }) => {
             <div className={styles.craftingArea}>
               <div className={styles.craftingGrid2x2}>
                 {[41, 42, 43, 44].map((index) => (
-                  <ItemSlot key={index} item={slots[index]} index={index} onSlotClick={handleSlotClick} />
+                  <ItemSlot 
+                    key={index} 
+                    item={slots[index]} 
+                    index={index} 
+                    onSlotClick={handleSlotClick}
+                    onHover={setHoveredItem}
+                    onLeave={() => setHoveredItem(null)} 
+                  />
                 ))}
               </div>
               <div className={styles.craftingOutputRow}>
                 <div className={styles.arrow} />
-                <ItemSlot item={slots[45]} index={45} onSlotClick={handleSlotClick} />
+                <ItemSlot 
+                  item={slots[45]} 
+                  index={45} 
+                  onSlotClick={handleSlotClick}
+                  onHover={setHoveredItem}
+                  onLeave={() => setHoveredItem(null)} 
+                />
               </div>
             </div>
           </div>
@@ -183,12 +237,26 @@ const Singleplayer = ({ onClose }) => {
         <div className={styles.inventorySection}>
           <div className={styles.grid9x3}>
             {slots.slice(0, 27).map((item, index) => (
-              <ItemSlot key={index} item={item} index={index} onSlotClick={handleSlotClick} />
+              <ItemSlot 
+                key={index} 
+                item={item} 
+                index={index} 
+                onSlotClick={handleSlotClick}
+                onHover={setHoveredItem}
+                onLeave={() => setHoveredItem(null)} 
+              />
             ))}
           </div>
           <div className={styles.hotbar9x1}>
             {slots.slice(27, 36).map((item, index) => (
-              <ItemSlot key={index + 27} item={item} index={index + 27} onSlotClick={handleSlotClick} />
+              <ItemSlot 
+                key={index + 27} 
+                item={item} 
+                index={index + 27} 
+                onSlotClick={handleSlotClick}
+                onHover={setHoveredItem}
+                onLeave={() => setHoveredItem(null)} 
+              />
             ))}
           </div>
         </div>

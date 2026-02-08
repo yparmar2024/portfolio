@@ -3,17 +3,22 @@ import styles from './ItemSlot.module.css';
 
 /**
  * ItemSlot component
- * Now purely handles clicks for the "Click-to-Carry" interaction.
+ * Handles "Click-to-Carry" interaction and Tooltip reporting.
  */
-const ItemSlot = ({ item, index, onSlotClick }) => {
+const ItemSlot = ({ item, index, onSlotClick, onHover, onLeave }) => {
   const [isHovered, setIsHovered] = useState(false);
 
   return (
     <div 
       className={`${styles.slot} ${isHovered ? styles.slotHovered : ''}`}
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
-      // Left click triggers the interaction
+      onMouseEnter={() => {
+        setIsHovered(true);
+        if (item && onHover) onHover(item); // Report to parent for tooltip
+      }}
+      onMouseLeave={() => {
+        setIsHovered(false);
+        if (onLeave) onLeave(); // Hide tooltip
+      }}
       onClick={(e) => {
         e.preventDefault(); // Prevent accidental selection
         onSlotClick(index);

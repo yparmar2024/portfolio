@@ -166,3 +166,33 @@
   object-fit: contain;
   filter: drop-shadow(4px 4px 0px rgba(0,0,0,0.5)); /* Adds depth like in-game */
 }
+
+.tooltip {
+  position: fixed;
+  z-index: 10000; /* Above everything */
+  pointer-events: none; /* Mouse must pass through it */
+  background-color: rgba(16, 0, 16, 0.94); /* Authentic Minecraft BG color */
+  border: 2px solid;
+  border-radius: 8px;
+  border-color: #5000ff #28007f #28007f #5000ff; /* Authentic 3D Border */
+  padding: 4px 6px;
+  min-width: 100px;
+  font-family: 'Mojangles', sans-serif;
+  color: #fff;
+  text-shadow: 2px 2px 0px #3f3f3f;
+  white-space: pre-wrap; /* Allows multi-line descriptions */
+  image-rendering: pixelated;
+  transform: translate(15px, -15px); /* Offset from cursor so it doesn't block it */
+}
+
+.tooltipTitle {
+  color: #ffff55; /* Yellow for item name */
+  margin-bottom: 2px;
+  display: block;
+}
+
+.tooltipDesc {
+  color: #aaaaaa; /* Gray for lore/description */
+  font-size: 0.9em;
+  display: block;
+}
