@@ -355,7 +355,7 @@ const Singleplayer = ({ onClose }) => {
                 ))}
               </div>
               <div className={styles.characterPreview}>
-                <PlayerPreview isBookOpen={isBookOpen}/>
+                <PlayerPreview isBookOpen={isBookOpen} slots={slots}/>
               </div>
             </div>
 
