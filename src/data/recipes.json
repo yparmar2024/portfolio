@@ -6,14 +6,13 @@
       "id": "item_recrootly",
       "name": "Recrootly",
       "description": "AI-Powered Resume Scorer",
-      "icon": "/icons/items/paper.png",
+      "icon": "/icons/items/netherite_helmet.png",
       "isProject": true
     },
     "ingredients": [
       { "item": "react", "slot": 0 },
       { "item": "python", "slot": 1 },
-      { "item": "supabase", "slot": 2 },
-      { "item": "sql", "slot": 3 }
+      { "item": "supabase", "slot": 2 }
     ]
   },
   {
@@ -23,7 +22,7 @@
       "id": "item_nudge_ai",
       "name": "Nudge AI",
       "description": "Smart Task Manager",
-      "icon": "/icons/items/clock.png",
+      "icon": "/icons/items/netherite_chestplate.png",
       "isProject": true
     },
     "ingredients": [
@@ -40,7 +39,7 @@
       "id": "item_blueprint_rag",
       "name": "Blueprint RAG",
       "description": "Enterprise Knowledge Search",
-      "icon": "/icons/blocks/bookshelf.png",
+      "icon": "/icons/items/netherite_leggings.png",
       "isProject": true
     },
     "ingredients": [
@@ -57,7 +56,7 @@
       "id": "item_twitter_nlp",
       "name": "Hate Speech Detector",
       "description": "NLP Sentiment Analysis",
-      "icon": "/icons/blocks/note_block.png",
+      "icon": "/icons/items/netherite_boots.png",
       "isProject": true
     },
     "ingredients": [

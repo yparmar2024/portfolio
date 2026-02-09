@@ -1,10 +1,9 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import ItemSlot from './components/ItemSlot/ItemSlot';
 import RecipeBook from './components/RecipeBook/RecipeBook';
 import RecipeSidebar from './components/RecipeBook/RecipeSidebar';
 import styles from './Singleplayer.module.css';
 import itemsData from '../../../data/items.json';
-import recipesData from '../../../data/recipes.json'; // Needed if we reference recipes directly
 import PlayerPreview from './components/PlayerPreview/PlayerPreview';
 import { useSoundSettings } from '../../../context/SoundContext';
 
@@ -18,18 +17,39 @@ const ARMOR_PLACEHOLDERS = {
 
 const OFFHAND_PLACEHOLDER = '/icons/ui/empty_armor_slot_shield.png';
 
-// --- LOGIC: Can we place item X in slot Y? ---
+// --- PLACEMENT LOGIC ---
 const canPlaceItem = (item, slotIndex) => {
   if (!item) return true;
-  if (slotIndex <= 35) return true; // Inventory/Hotbar
-  if (slotIndex >= 36 && slotIndex <= 39) return item.isArmor === true; // Armor
-  if (slotIndex === 40) return item.isShield === true || item.type === 'tool'; // Offhand
-  if (slotIndex >= 41 && slotIndex <= 44) {
-    // Crafting Grid: Allow ingredients
-    const validCraftingTypes = ['language', 'framework', 'library', 'infrastructure', 'tool', 'project_item'];
-    return item.isBlock === true || validCraftingTypes.includes(item.type);
+
+  // 1. Inventory & Hotbar (0-35)
+  // FIX: Allow ANYTHING to go here. It's your backpack.
+  if (slotIndex <= 35) {
+     return true; 
   }
-  if (slotIndex === 45) return false; // Output slot is output-only
+
+  // 2. Armor Slots (36-39)
+  if (slotIndex >= 36 && slotIndex <= 39) {
+     if (!item.isArmor) return false;
+     if (slotIndex === 39) return item.armorType === 'helmet';
+     if (slotIndex === 38) return item.armorType === 'chestplate';
+     if (slotIndex === 37) return item.armorType === 'leggings';
+     if (slotIndex === 36) return item.armorType === 'boots';
+     return false;
+  }
+
+  // 3. Offhand / Shield Slot (40)
+  if (slotIndex === 40) {
+     return item.isShield === true;
+  }
+
+  // 4. Crafting Grid (41-44)
+  if (slotIndex >= 41 && slotIndex <= 44) {
+    return item.isBlock || item.isArmor || item.isShield;
+  }
+
+  // 5. Output Slot (45)
+  if (slotIndex === 45) return false;
+
   return false;
 };
 
@@ -42,14 +62,11 @@ const Singleplayer = ({ onClose }) => {
   const mousePos = useRef({ x: 0, y: 0 });
   const floatingItemRef = useRef(null);
 
-  // Sound Context
   const { getEffectiveVolume } = useSoundSettings();
 
   // --- INITIALIZE INVENTORY ---
   const [slots, setSlots] = useState(() => {
     const initial = Array(46).fill(null);
-    
-    // Helper to safely set item if it exists in JSON
     const setItem = (index, id) => {
       if (itemsData[id]) initial[index] = { ...itemsData[id] };
     };
@@ -87,7 +104,7 @@ const Singleplayer = ({ onClose }) => {
     setItem(23, 'supabase');
 
     // --- OFFHAND ---
-    setItem(40, 'git');
+    setItem(40, 'git'); // Git is now a shield
     
     return initial;
   });
@@ -105,7 +122,6 @@ const Singleplayer = ({ onClose }) => {
         floatingItemRef.current.style.top = `${e.clientY}px`;
       }
       if (tooltipRef.current) {
-        // Offset tooltip slightly from cursor
         tooltipRef.current.style.left = `${e.clientX + 15}px`;
         tooltipRef.current.style.top = `${e.clientY - 30}px`;
       }
@@ -119,7 +135,6 @@ const Singleplayer = ({ onClose }) => {
     };
   }, [onClose]);
 
-  // --- HELPER: Play Click Sound ---
   const playUiClick = () => {
     try {
       const audio = new Audio('/sounds/click.ogg');
@@ -130,67 +145,60 @@ const Singleplayer = ({ onClose }) => {
     }
   };
 
-  // --- HANDLE: Recipe Click (Auto-Fill) ---
-  const handleRecipeClick = (recipe) => {
-    playUiClick();
-    const newSlots = [...slots];
-
-    // 1. Clear Crafting Grid (41-44) and Result (45)
-    [41, 42, 43, 44, 45].forEach(i => newSlots[i] = null);
-
-    // 2. Map Ingredients to Grid
-    let missingIngredients = false;
-
-    recipe.ingredients.forEach(ing => {
-      // Determine Grid Slot (0=41, 1=42, 2=43, 3=44)
-      const offset = typeof ing.slot === 'number' ? ing.slot : 0;
-      const targetSlot = 41 + offset;
-
-      // Lookup Item Data
-      const itemData = itemsData[ing.item];
-
-      if (itemData) {
-        // Check if user has this item anywhere in main inventory (0-40)
-        const userHasItem = slots.slice(0, 41).some(s => s && s.id === ing.item);
-
-        if (!userHasItem) missingIngredients = true;
-
-        newSlots[targetSlot] = {
-          ...itemData,
-          count: 1,
-          isGhost: !userHasItem // Red Background if missing
-        };
-      }
-    });
-
-    // 3. Set Result (Only if NO ghosts)
-    if (!missingIngredients && recipe.result) {
-      // If result is an ID string, hydration might be needed, 
-      // but recipes.json usually has the full object or we map it here.
-      // Assuming recipe.result is the object from JSON:
-      newSlots[45] = { ...recipe.result, count: 1 };
+  const handleSidebarHover = useCallback((content) => {
+    if (typeof content === 'string') {
+      setHoveredItem({ name: content, description: null });
+    } else {
+      setHoveredItem(content);
     }
+  }, []);
 
-    setSlots(newSlots);
-  };
+  const handleSidebarLeave = useCallback(() => {
+    setHoveredItem(null);
+  }, []);
 
-  // --- HANDLE: Slot Click (Inventory Management) ---
+  const handleRecipeClick = useCallback((recipe) => {
+    playUiClick();
+    setSlots(currentSlots => {
+      const newSlots = [...currentSlots];
+      [41, 42, 43, 44, 45].forEach(i => newSlots[i] = null);
+
+      let missingIngredients = false;
+
+      recipe.ingredients.forEach(ing => {
+        const offset = typeof ing.slot === 'number' ? ing.slot : 0;
+        const targetSlot = 41 + offset;
+        const itemData = itemsData[ing.item];
+
+        if (itemData) {
+          const userHasItem = currentSlots.slice(0, 41).some(s => s && s.id === ing.item);
+          if (!userHasItem) missingIngredients = true;
+          newSlots[targetSlot] = {
+            ...itemData,
+            count: 1,
+            isGhost: !userHasItem 
+          };
+        }
+      });
+
+      if (!missingIngredients && recipe.result) {
+        newSlots[45] = { ...recipe.result, count: 1 };
+      }
+
+      return newSlots;
+    });
+  }, []);
+
   const handleSlotClick = (index) => {
-    // Output Slot Logic (Crafting Result)
     if (index === 45) {
       if (slots[45] && !heldItem) {
-         // Crafting Logic: Check for ghosts
          const hasGhosts = [41, 42, 43, 44].some(i => slots[i] && slots[i].isGhost);
-         if (hasGhosts) return; // Cannot craft with ghosts
+         if (hasGhosts) return; 
 
          const newSlots = [...slots];
          setHeldItem(slots[45]);
-         
-         // Consume Ingredients (This is "Creative" style, so we just clear grid)
-         // In survival we would decrement.
          newSlots[45] = null;
          [41, 42, 43, 44].forEach(i => newSlots[i] = null);
-         
          setSlots(newSlots);
          playUiClick();
       }
@@ -199,11 +207,8 @@ const Singleplayer = ({ onClose }) => {
 
     const clickedItem = slots[index];
 
-    // Case 1: Picking up an item
     if (!heldItem && clickedItem) {
-      // Don't pick up ghosts
       if (clickedItem.isGhost) {
-        // Optional: Clear ghost on click?
         const newSlots = [...slots];
         newSlots[index] = null;
         setSlots(newSlots);
@@ -219,12 +224,11 @@ const Singleplayer = ({ onClose }) => {
       return;
     }
 
-    // Case 2: Placing/Swapping an item
     if (heldItem) {
       if (!canPlaceItem(heldItem, index)) return;
 
       const newSlots = [...slots];
-      const itemToPickup = newSlots[index]; // Could be null
+      const itemToPickup = newSlots[index]; 
 
       newSlots[index] = heldItem;
       setHeldItem(itemToPickup); 
@@ -233,19 +237,8 @@ const Singleplayer = ({ onClose }) => {
     }
   };
 
-  // --- HANDLE: Sidebar Hover (Tooltip proxy) ---
-  const handleSidebarHover = (content) => {
-    if (typeof content === 'string') {
-      setHoveredItem({ name: content, description: null });
-    } else {
-      setHoveredItem(content);
-    }
-  };
-
   return (
     <div className={styles.overlay}>
-      
-      {/* --- TOOLTIP --- */}
       {hoveredItem && !heldItem && (
         <div 
           ref={tooltipRef}
@@ -259,7 +252,6 @@ const Singleplayer = ({ onClose }) => {
         </div>
       )}
 
-      {/* --- FLOATING HELD ITEM --- */}
       {heldItem && (
         <div 
           ref={floatingItemRef} 
@@ -270,23 +262,17 @@ const Singleplayer = ({ onClose }) => {
         </div>
       )}
 
-      {/* --- CENTER LAYOUT --- */}
       <div className={styles.centerWrapper}>
-        
-        {/* LEFT: Recipe Sidebar */}
         <RecipeSidebar 
           isOpen={isBookOpen} 
           inventory={slots}
           onRecipeClick={handleRecipeClick}
           onHover={handleSidebarHover} 
-          onLeave={() => setHoveredItem(null)}
+          onLeave={handleSidebarLeave}
         />
 
-        {/* RIGHT: Main Inventory Interface */}
         <div className={styles.container}>
           <div className={styles.topSection}>
-            
-            {/* Armor & Character */}
             <div className={styles.leftGroup}>
               <div className={styles.armorColumn}>
                 {[39, 38, 37, 36].map((index) => (
@@ -306,7 +292,6 @@ const Singleplayer = ({ onClose }) => {
               </div>
             </div>
 
-            {/* Offhand & Recipe Book Toggle */}
             <div className={styles.middleGroup}>
               <div className={styles.offhandWrapper}>
                 <ItemSlot 
@@ -329,7 +314,6 @@ const Singleplayer = ({ onClose }) => {
               </div>
             </div>
 
-            {/* Crafting Grid */}
             <div className={styles.craftingGroup}>
               <span className={styles.craftingLabel}>Crafting</span>
               <div className={styles.craftingArea}>
@@ -342,7 +326,7 @@ const Singleplayer = ({ onClose }) => {
                       onSlotClick={handleSlotClick}
                       onHover={setHoveredItem}
                       onLeave={() => setHoveredItem(null)} 
-                      isGhost={slots[index]?.isGhost} // Pass Ghost Flag
+                      isGhost={slots[index]?.isGhost} 
                     />
                   ))}
                 </div>
@@ -362,7 +346,6 @@ const Singleplayer = ({ onClose }) => {
 
           <div style={{ flex: 1 }} />
 
-          {/* Main Inventory Grid */}
           <div className={styles.inventorySection}>
             <div className={styles.grid9x3}>
               {slots.slice(0, 27).map((item, index) => (
@@ -376,7 +359,6 @@ const Singleplayer = ({ onClose }) => {
                 />
               ))}
             </div>
-            {/* Hotbar */}
             <div className={styles.hotbar9x1}>
               {slots.slice(27, 36).map((item, index) => (
                 <ItemSlot 

@@ -98,8 +98,8 @@
 /* --- RECIPE GRID STYLES --- */
 .recipeGrid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(72px, 1fr));
-  gap: 8px;
+  grid-template-columns: repeat(auto-fill, minmax(110px, 0fr));
+  gap: 2px;
   overflow-y: auto;
   height: 100%;
   padding-right: 4px;
@@ -115,14 +115,16 @@
 /* Background: Grey */
 /* Shadows: Shades of White/Grey (Standard GUI) */
 .craftableSlot {
-  background-color: #8b8b8b; /* Standard GUI Grey */
+  width: 105px;
+  height: 105px;
+  background-color: #969696; /* Standard GUI Grey */
   
   /* The "Button" Look (Raised) */
   /* Top/Left = Light, Bottom/Right = Dark */
-  border-top: 2px solid #ffffff;
-  border-left: 2px solid #ffffff;
-  border-bottom: 2px solid #555555;
-  border-right: 2px solid #555555;
+  border-top: 4px solid #d2d2d2;
+  border-left: 4px solid #d2d2d2;
+  border-bottom: 4px solid #d2d2d2;
+  border-right: 4px solid #d2d2d2;
 }
 
 .craftableSlot:hover {
@@ -133,22 +135,20 @@
 /* Background: Dark Grey */
 /* Shadows: Shades of Red */
 .uncraftableSlot {
-  background-color: #505050; /* Darker Grey */
+  width: 105px;
+  height: 105px;
+  background-color: #757575; /* Darker Grey */
   
   /* The "Red Warning" Look */
   /* Top/Left = Dark Red, Bottom/Right = Bright Red */
-  border-top: 2px solid #4a0000;
-  border-left: 2px solid #4a0000;
-  border-bottom: 2px solid #ff5555;
-  border-right: 2px solid #ff5555;
+  border-top: 4px solid #8d2524;
+  border-left: 4px solid #8d2524;
+  border-bottom: 4px solid #8d2524;
+  border-right: 4px solid #8d2524;
+
+  box-shadow: inset 4px 4px 0px #561d1c, inset -4px -4px 0px #c05958;
 }
 
 .uncraftableSlot:hover {
   background-color: #606060;
-}
-
-/* Optional: Tint the item inside uncraftable slots slightly red */
-.uncraftableSlot img {
-  opacity: 0.8;
-  filter: sepia(1) hue-rotate(-50deg) saturate(3); /* Red filter */
 }

@@ -2,201 +2,237 @@
   "python": {
     "id": "python",
     "name": "Python",
-    "icon": "/icons/items/python.png",
-    "isBlock": true,
     "type": "language",
-    "description": "The foundation for ML and backend logic."
+    "description": "The foundation for ML and backend logic.",
+    "icon": "/icons/items/python.png",
+    "isBlock": true
   },
   "java": {
     "id": "java",
     "name": "Java",
-    "icon": "/icons/items/java.png",
-    "isBlock": true,
     "type": "language",
-    "description": "Robust object-oriented programming."
+    "description": "Robust object-oriented programming.",
+    "icon": "/icons/items/java.png",
+    "isBlock": true
   },
   "typescript": {
     "id": "typescript",
     "name": "TypeScript",
-    "icon": "/icons/items/typescript.png",
-    "isBlock": true,
     "type": "language",
-    "description": "Type-safe JavaScript for scalable apps."
+    "description": "Type-safe JavaScript for scalable apps.",
+    "icon": "/icons/items/typescript.png",
+    "isBlock": true
   },
   "javascript": {
     "id": "javascript",
     "name": "JavaScript",
-    "icon": "/icons/items/javascript.png",
-    "isBlock": true,
     "type": "language",
-    "description": "Interactive web logic."
+    "description": "Interactive web logic.",
+    "icon": "/icons/items/javascript.png",
+    "isBlock": true
   },
   "cpp": {
     "id": "cpp",
     "name": "C++",
+    "type": "language",
+    "description": "High-performance systems code.",
     "icon": "/icons/items/cpp.png",
-    "isBlock": true,
-    "type": "language",
-    "description": "High-performance systems code."
+    "isBlock": true
   },
-  "postgresql": {
-    "id": "postgresql",
+  "sql": {
+    "id": "sql",
     "name": "PostgreSQL",
-    "icon": "/icons/items/postgresql.png",
-    "isBlock": true,
     "type": "language",
-    "description": "Database querying and management."
+    "description": "Database querying and management.",
+    "icon": "/icons/items/postgresql.png",
+    "isBlock": true
   },
   "react": {
     "id": "react",
     "name": "React",
-    "icon": "/icons/items/react.png",
-    "isBlock": true,
     "type": "framework",
-    "description": "Frontend UI library."
+    "description": "Frontend UI library.",
+    "icon": "/icons/items/react.png",
+    "isBlock": true
   },
   "fastapi": {
     "id": "fastapi",
     "name": "FastAPI",
-    "icon": "/icons/items/fastapi.png",
-    "isBlock": true,
     "type": "framework",
-    "description": "High-performance API framework."
+    "description": "High-performance API framework.",
+    "icon": "/icons/items/fastapi.png",
+    "isBlock": true
   },
   "nodejs": {
     "id": "nodejs",
     "name": "Node.js",
-    "icon": "/icons/items/nodejs.png",
-    "isBlock": true,
     "type": "framework",
-    "description": "Backend JavaScript runtime."
+    "description": "Backend JavaScript runtime.",
+    "icon": "/icons/items/nodejs.png",
+    "isBlock": true
   },
   "flutter": {
     "id": "flutter",
     "name": "Flutter",
-    "icon": "/icons/items/flutter.png",
-    "isBlock": true,
     "type": "framework",
-    "description": "Cross-platform mobile UI."
+    "description": "Cross-platform mobile UI.",
+    "icon": "/icons/items/flutter.png",
+    "isBlock": true
   },
   "langchain": {
     "id": "langchain",
     "name": "LangChain",
-    "icon": "/icons/items/langchain.png",
-    "isBlock": true,
     "type": "framework",
-    "description": "LLM application framework."
+    "description": "LLM application framework.",
+    "icon": "/icons/items/langchain.png",
+    "isBlock": true
   },
   "tensorflow": {
     "id": "tensorflow",
     "name": "TensorFlow",
-    "icon": "/icons/items/tensorflow.png",
-    "isBlock": true,
     "type": "library",
-    "description": "End-to-end ML platform."
+    "description": "End-to-end ML platform.",
+    "icon": "/icons/items/tensorflow.png",
+    "isBlock": true
   },
   "keras": {
     "id": "keras",
     "name": "Keras",
-    "icon": "/icons/items/keras.png",
-    "isBlock": true,
     "type": "library",
-    "description": "Deep learning API."
+    "description": "Deep learning API.",
+    "icon": "/icons/items/keras.png",
+    "isBlock": true
   },
   "pytorch": {
     "id": "pytorch",
     "name": "PyTorch",
-    "icon": "/icons/items/pytorch.png",
-    "isBlock": true,
     "type": "library",
-    "description": "Flexible ML framework."
+    "description": "Flexible ML framework.",
+    "icon": "/icons/items/pytorch.png",
+    "isBlock": true
   },
   "scikit_learn": {
     "id": "scikit_learn",
     "name": "Scikit-learn",
-    "icon": "/icons/items/scikit_learn.png",
-    "isBlock": true,
     "type": "library",
-    "description": "Predictive data analysis."
+    "description": "Predictive data analysis.",
+    "icon": "/icons/items/scikit_learn.png",
+    "isBlock": true
   },
   "pandas": {
     "id": "pandas",
     "name": "Pandas",
-    "icon": "/icons/items/pandas.png",
-    "isBlock": true,
     "type": "library",
-    "description": "Data manipulation tool."
+    "description": "Data manipulation tool.",
+    "icon": "/icons/items/pandas.png",
+    "isBlock": true
   },
   "numpy": {
     "id": "numpy",
     "name": "NumPy",
-    "icon": "/icons/items/numpy.png",
-    "isBlock": true,
     "type": "library",
-    "description": "Scientific computing."
+    "description": "Scientific computing.",
+    "icon": "/icons/items/numpy.png",
+    "isBlock": true
   },
   "aws_lambda": {
     "id": "aws_lambda",
     "name": "AWS Lambda",
-    "icon": "/icons/items/aws_lambda.png",
-    "isBlock": true,
     "type": "infrastructure",
-    "description": "Serverless compute."
+    "description": "Serverless compute.",
+    "icon": "/icons/items/aws_lambda.png",
+    "isBlock": true
   },
   "aws_ec2": {
     "id": "aws_ec2",
     "name": "AWS EC2",
-    "icon": "/icons/items/aws_ec2.png",
-    "isBlock": true,
     "type": "infrastructure",
-    "description": "Scalable virtual servers."
+    "description": "Scalable virtual servers.",
+    "icon": "/icons/items/aws_ec2.png",
+    "isBlock": true
   },
   "dynamodb": {
     "id": "dynamodb",
     "name": "DynamoDB",
-    "icon": "/icons/items/dynamodb.png",
-    "isBlock": true,
     "type": "infrastructure",
-    "description": "NoSQL database."
+    "description": "NoSQL database.",
+    "icon": "/icons/items/dynamodb.png",
+    "isBlock": true
   },
   "s3": {
     "id": "s3",
     "name": "S3",
-    "icon": "/icons/items/s3.png",
-    "isBlock": true,
     "type": "infrastructure",
-    "description": "Cloud object storage."
+    "description": "Cloud object storage.",
+    "icon": "/icons/items/s3.png",
+    "isBlock": true
   },
   "firebase": {
     "id": "firebase",
     "name": "Firebase",
-    "icon": "/icons/items/firebase.png",
-    "isBlock": true,
     "type": "infrastructure",
-    "description": "App development platform."
+    "description": "App development platform.",
+    "icon": "/icons/items/firebase.png",
+    "isBlock": true
   },
   "supabase": {
     "id": "supabase",
     "name": "Supabase",
-    "icon": "/icons/items/supabase.png",
-    "isBlock": true,
     "type": "infrastructure",
-    "description": "Open source backend."
+    "description": "Open source backend.",
+    "icon": "/icons/items/supabase.png",
+    "isBlock": true
   },
   "docker": {
     "id": "docker",
     "name": "Docker",
-    "icon": "/icons/items/docker.png",
-    "isBlock": true,
     "type": "tool",
-    "description": "Containerization platform."
+    "description": "Containerization platform.",
+    "icon": "/icons/items/docker.png",
+    "isBlock": true
   },
   "git": {
     "id": "git",
     "name": "Git",
-    "icon": "/icons/items/git.png",
-    "isBlock": true,
     "type": "tool",
-    "description": "Version control."
+    "description": "Version control.",
+    "icon": "/icons/items/git.png",
+    "isShield": true
+  },
+  "item_recrootly": {
+    "id": "item_recrootly",
+    "name": "Recrootly",
+    "type": "armor",
+    "description": "AI-Powered Resume Scorer",
+    "icon": "/icons/items/netherite_helmet.png",
+    "armorType": "helmet",
+    "isArmor": true
+  },
+  "item_nudge_ai": {
+    "id": "item_nudge_ai",
+    "name": "Nudge AI",
+    "type": "armor",
+    "description": "Smart Task Manager",
+    "icon": "/icons/items/netherite_chestplate.png",
+    "armorType": "chestplate",
+    "isArmor": true
+  },
+  "item_blueprint_rag": {
+    "id": "item_blueprint_rag",
+    "name": "Blueprint RAG",
+    "type": "armor",
+    "description": "Enterprise Knowledge Search",
+    "icon": "/icons/items/netherite_leggings.png",
+    "armorType": "leggings",
+    "isArmor": true
+  },
+  "item_twitter_nlp": {
+    "id": "item_twitter_nlp",
+    "name": "Hate Speech Detector",
+    "type": "armor",
+    "description": "NLP Sentiment Analysis",
+    "icon": "/icons/items/netherite_boots.png",
+    "armorType": "boots",
+    "isArmor": true
   }
 }
