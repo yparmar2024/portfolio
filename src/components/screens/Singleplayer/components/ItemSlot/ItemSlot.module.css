@@ -37,3 +37,14 @@
   opacity: 1; /* Minecraft placeholders are actually fully opaque, just dark gray */
   pointer-events: none;
 }
+
+/* Add this class for the "Red Ghost" effect */
+.ghostItem {
+  background-color: rgba(255, 0, 0, 0.4); /* Light Red Background */
+  border: 1px solid #ff5555;
+}
+
+/* Ensure the image inside doesn't block the background tint */
+.ghostItem img {
+  opacity: 0.7; /* Make the item itself look a bit ghostly */
+}

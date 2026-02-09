@@ -1,12 +1,14 @@
 import React, { useState } from 'react';
 import styles from './ItemSlot.module.css';
 
-const ItemSlot = ({ item, index, onSlotClick, onHover, onLeave, placeholder }) => {
+// Added className prop
+const ItemSlot = ({ item, index, onSlotClick, onHover, onLeave, placeholder, isGhost, className }) => {
   const [isHovered, setIsHovered] = useState(false);
 
   return (
     <div 
-      className={`${styles.slot} ${isHovered ? styles.slotHovered : ''}`}
+      // Merge default styles with your custom class
+      className={`${styles.slot} ${isHovered ? styles.slotHovered : ''} ${isGhost ? styles.ghostItem : ''} ${className || ''}`}
       onMouseEnter={() => {
         setIsHovered(true);
         if (item && onHover) onHover(item);
@@ -17,20 +19,18 @@ const ItemSlot = ({ item, index, onSlotClick, onHover, onLeave, placeholder }) =
       }}
       onClick={(e) => {
         e.preventDefault();
-        onSlotClick(index);
+        if (onSlotClick) onSlotClick(index);
       }}
     >
-      {/* 1. RENDER PLACEHOLDER IF NO ITEM */}
       {!item && placeholder && (
         <img 
           src={placeholder} 
           alt="Slot placeholder" 
-          className={styles.placeholderIcon} // New CSS class needed
+          className={styles.placeholderIcon}
           draggable="false"
         />
       )}
 
-      {/* 2. RENDER ACTUAL ITEM */}
       {item && (
         <img 
           src={item.icon} 

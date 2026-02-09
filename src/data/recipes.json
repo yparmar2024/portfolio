@@ -1,0 +1,70 @@
+[
+  {
+    "id": "recrootly",
+    "category": "swe", 
+    "result": {
+      "id": "item_recrootly",
+      "name": "Recrootly",
+      "description": "AI-Powered Resume Scorer",
+      "icon": "/icons/items/paper.png",
+      "isProject": true
+    },
+    "ingredients": [
+      { "item": "react", "slot": 0 },
+      { "item": "python", "slot": 1 },
+      { "item": "supabase", "slot": 2 },
+      { "item": "sql", "slot": 3 }
+    ]
+  },
+  {
+    "id": "nudge_ai",
+    "category": "swe",
+    "result": {
+      "id": "item_nudge_ai",
+      "name": "Nudge AI",
+      "description": "Smart Task Manager",
+      "icon": "/icons/items/clock.png",
+      "isProject": true
+    },
+    "ingredients": [
+      { "item": "flutter", "slot": 0 },
+      { "item": "fastapi", "slot": 1 },
+      { "item": "firebase", "slot": 2 },
+      { "item": "python", "slot": 3 }
+    ]
+  },
+  {
+    "id": "blueprint_rag",
+    "category": "ai",
+    "result": {
+      "id": "item_blueprint_rag",
+      "name": "Blueprint RAG",
+      "description": "Enterprise Knowledge Search",
+      "icon": "/icons/blocks/bookshelf.png",
+      "isProject": true
+    },
+    "ingredients": [
+      { "item": "langchain", "slot": 0 },
+      { "item": "aws_lambda", "slot": 1 },
+      { "item": "s3", "slot": 2 },
+      { "item": "dynamodb", "slot": 3 }
+    ]
+  },
+  {
+    "id": "twitter_nlp",
+    "category": "ai",
+    "result": {
+      "id": "item_twitter_nlp",
+      "name": "Hate Speech Detector",
+      "description": "NLP Sentiment Analysis",
+      "icon": "/icons/blocks/note_block.png",
+      "isProject": true
+    },
+    "ingredients": [
+      { "item": "tensorflow", "slot": 0 },
+      { "item": "keras", "slot": 1 },
+      { "item": "pandas", "slot": 2 },
+      { "item": "python", "slot": 3 }
+    ]
+  }
+]

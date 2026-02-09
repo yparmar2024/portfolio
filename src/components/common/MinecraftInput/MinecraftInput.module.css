@@ -1,0 +1,61 @@
+.highlight {
+    background-color: #ffffff;
+    color: #3700ff;
+    text-shadow: 5px 5px 0px #cbc7ff;
+}
+
+.container {
+  position: relative;
+  cursor: text;
+  display: flex;
+  align-items: center;
+  overflow: hidden; /* Prevents overflow if text is too long */
+}
+
+.hiddenInput {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0; /* Completely invisible */
+  z-index: 2; /* Sits on top to catch clicks */
+  cursor: text;
+}
+
+.visualText {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  white-space: pre; /* Preserves spaces */
+  pointer-events: none; /* Let clicks pass through to input */
+  z-index: 1;
+  font-family: 'Mojangles', sans-serif;
+  font-size: 32px;
+  padding-top: 20px;
+  text-shadow: 5px 5px 0px #3f3f3f;
+}
+
+.placeholder {
+  font-style: italic;
+  color: #aaaaaa;
+  position: absolute; /* Sits behind cursor */
+}
+
+.textContent {
+  color: #ffffff; /* Default text color */
+}
+
+/* THE BLINKING UNDERSCORE */
+.cursor {
+  display: inline-block;
+  color: #ffffff;
+  animation: blink 0.75s step-end infinite;
+  vertical-align: bottom; /* Ensures it sits on the baseline */
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}

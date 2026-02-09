@@ -1,0 +1,154 @@
+.sidebar {
+  width: 0;
+  height: 674px; 
+  overflow: visible; 
+  transition: width 0.3s cubic-bezier(0.4, 0.0, 0.2, 1), margin-right 0.3s ease;
+  border: 0 solid #000;
+  background: #c6c6c6;
+  box-shadow: none;
+  margin-right: 0;
+  opacity: 0;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  image-rendering: pixelated;
+  position: relative; 
+}
+
+.open {
+  width: 600px; 
+  margin-right: 12px; 
+  opacity: 1;
+  border: 2px solid #000;
+  box-shadow: inset 5px 5px 0px #fff, inset -5px -5px 0px #555;
+  padding: 24px; 
+}
+
+.innerContainer {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  background-color: #3f3f3f; 
+  box-shadow: inset 4px 4px 0px #272727, inset -4px -4px 0px #ffffff;
+  padding: 12px; 
+  box-sizing: border-box; 
+}
+
+.header {
+  display: flex;
+  align-items: center; 
+  gap: 16px; 
+}
+
+.searchIcon {
+  width: 52px;
+  height: 52px;
+  image-rendering: pixelated;
+  margin-bottom: 12px; 
+  margin-top: 18px;
+  align-self: flex-start;
+  cursor: url('/icons/ui/cursor.png'), auto;
+}
+
+/* INPUT STYLES */
+.searchInputWrapper {
+  flex: 1;
+  height: 64px; 
+  box-sizing: border-box;
+  background-color: #000000;
+  margin-top: 6px; 
+  padding: 0 12px; 
+}
+
+.inputFocused {
+  border: 4px solid #ffffff;
+}
+
+.inputFilled {
+  border: 4px solid #aaaaaa; 
+}
+
+.inputEmpty {
+  border: 4px solid #aaaaaa;
+}
+
+/* FILTER BUTTON */
+.filterContainer {
+  cursor: pointer;
+  margin-top: 6px; 
+  margin-right: 6px;
+}
+
+.filterIcon {
+  height: 64px; /* Matches Search Bar Height */
+  width: auto;  /* Allows image to be rectangular */
+  image-rendering: pixelated;
+  display: block; 
+}
+
+.contentArea {
+  flex: 1;
+  border: none;
+  background-color: transparent;
+  overflow: hidden; /* Important for inner scroll */
+  padding-top: 10px;
+}
+
+/* --- RECIPE GRID STYLES --- */
+.recipeGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(72px, 1fr));
+  gap: 8px;
+  overflow-y: auto;
+  height: 100%;
+  padding-right: 4px;
+}
+
+/* Base Override for Recipe Slots */
+/* We use !important or high specificity to override the default ItemSlot grey/borders */
+.recipeSlot {
+  transition: background-color 0.1s;
+}
+
+/* STATE 1: CRAFTABLE */
+/* Background: Grey */
+/* Shadows: Shades of White/Grey (Standard GUI) */
+.craftableSlot {
+  background-color: #8b8b8b; /* Standard GUI Grey */
+  
+  /* The "Button" Look (Raised) */
+  /* Top/Left = Light, Bottom/Right = Dark */
+  border-top: 2px solid #ffffff;
+  border-left: 2px solid #ffffff;
+  border-bottom: 2px solid #555555;
+  border-right: 2px solid #555555;
+}
+
+.craftableSlot:hover {
+  background-color: #a0a0a0; /* Highlight on hover */
+}
+
+/* STATE 2: NOT CRAFTABLE */
+/* Background: Dark Grey */
+/* Shadows: Shades of Red */
+.uncraftableSlot {
+  background-color: #505050; /* Darker Grey */
+  
+  /* The "Red Warning" Look */
+  /* Top/Left = Dark Red, Bottom/Right = Bright Red */
+  border-top: 2px solid #4a0000;
+  border-left: 2px solid #4a0000;
+  border-bottom: 2px solid #ff5555;
+  border-right: 2px solid #ff5555;
+}
+
+.uncraftableSlot:hover {
+  background-color: #606060;
+}
+
+/* Optional: Tint the item inside uncraftable slots slightly red */
+.uncraftableSlot img {
+  opacity: 0.8;
+  filter: sepia(1) hue-rotate(-50deg) saturate(3); /* Red filter */
+}

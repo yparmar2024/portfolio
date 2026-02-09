@@ -1,0 +1,151 @@
+import React, { useState, useEffect, useRef } from 'react';
+import styles from './RecipeSidebar.module.css';
+import MinecraftInput from '../../../../common/MinecraftInput/MinecraftInput'; 
+import { useSoundSettings } from '../../../../../context/SoundContext'; 
+import ItemSlot from '../ItemSlot/ItemSlot';
+import recipesData from '../../../../../data/recipes.json';
+
+const RecipeSidebar = ({ isOpen, onHover, onLeave, inventory, onRecipeClick }) => {
+  const [searchQuery, setSearchQuery] = useState('');
+  const [isFocused, setIsFocused] = useState(false);
+  const [showCraftable, setShowCraftable] = useState(false); 
+  const [isFilterHovered, setIsFilterHovered] = useState(false); 
+  
+  const inputRef = useRef(null);
+  const { getEffectiveVolume } = useSoundSettings();
+
+  useEffect(() => {
+    if (isFilterHovered && onHover) {
+      onHover(showCraftable ? "Showing Craftable" : "Showing All");
+    }
+  }, [showCraftable, isFilterHovered, onHover]);
+
+  const playClickSound = () => {
+    try {
+      const audio = new Audio('/sounds/click.ogg');
+      audio.volume = getEffectiveVolume('ui'); 
+      audio.play().catch(() => {});
+    } catch (e) {
+      console.warn("Sound play failed", e);
+    }
+  };
+
+  const handleFilterClick = () => {
+    playClickSound();
+    setShowCraftable(!showCraftable);
+  };
+
+  // --- HELPER: Check if User has Ingredients ---
+  const checkCanCraft = (recipe) => {
+    if (!inventory) return false;
+    return recipe.ingredients.every(ing => {
+      // Check if user has item in any inventory slot (0-40)
+      return inventory.slice(0, 41).some(slot => slot && slot.id === ing.item);
+    });
+  };
+
+  // --- FILTERING LOGIC ---
+  const getVisibleRecipes = () => {
+    return recipesData.filter(recipe => {
+      // 1. Search Filter
+      const matchesSearch = recipe.result.name.toLowerCase().includes(searchQuery.toLowerCase());
+      if (!matchesSearch) return false;
+
+      // 2. Craftable Filter
+      if (showCraftable) {
+        return checkCanCraft(recipe);
+      }
+      return true;
+    });
+  };
+
+  const visibleRecipes = getVisibleRecipes();
+
+  // ... (Keep existing Helper Functions: getInputClass, getFilterIcon) ...
+  const getInputClass = () => {
+    if (isFocused) return styles.inputFocused; 
+    if (searchQuery.length > 0) return styles.inputFilled; 
+    return styles.inputEmpty; 
+  };
+
+  const getFilterIcon = () => {
+    if (showCraftable) {
+      return isFilterHovered 
+        ? "/icons/ui/filter_enabled_highlighted.png" 
+        : "/icons/ui/filter_enabled.png";
+    } else {
+      return isFilterHovered 
+        ? "/icons/ui/filter_disabled_highlighted.png" 
+        : "/icons/ui/filter_disabled.png";
+    }
+  };
+
+  return (
+    <div className={`${styles.sidebar} ${isOpen ? styles.open : ''}`}>
+      <div className={styles.innerContainer}>
+        
+        <div className={styles.header}>
+          <img 
+            src="/icons/ui/search.png" 
+            alt="Search" 
+            className={styles.searchIcon}
+            onMouseDown={(e) => {
+                e.preventDefault();
+                if (!isFocused) inputRef.current?.focus();
+            }}
+          />
+          
+          <MinecraftInput 
+            ref={inputRef}
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            placeholder="Search..."
+            className={`${styles.searchInputWrapper} ${getInputClass()}`}
+            onFocusChange={setIsFocused} 
+          />
+
+          <div 
+            className={styles.filterContainer}
+            onClick={handleFilterClick}
+            onMouseEnter={() => setIsFilterHovered(true)}
+            onMouseLeave={() => {
+              setIsFilterHovered(false);
+              if (onLeave) onLeave(); 
+            }}
+          >
+            <img src={getFilterIcon()} alt="Filter" className={styles.filterIcon} />
+          </div>
+        </div>
+
+        {/* --- GRID CONTENT AREA --- */}
+        <div className={styles.contentArea}>
+          <div className={styles.recipeGrid}>
+            {visibleRecipes.map((recipe) => {
+              // Calculate status for styling
+              const canCraft = checkCanCraft(recipe);
+              const statusClass = canCraft ? styles.craftableSlot : styles.uncraftableSlot;
+
+              return (
+                <div key={recipe.id} className={styles.recipeSlotWrapper}>
+                  <ItemSlot 
+                    item={recipe.result} 
+                    index={-1} 
+                    onSlotClick={() => onRecipeClick(recipe)} 
+                    onHover={() => onHover && onHover(recipe.result)}
+                    onLeave={() => onLeave && onLeave()}
+                    isRecipe={true}
+                    
+                    // PASS THE CUSTOM CLASS HERE
+                    className={statusClass}
+                  />
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default RecipeSidebar;

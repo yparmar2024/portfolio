@@ -11,6 +11,15 @@
   z-index: 50;
 }
 
+/* 1. CENTER WRAPPER: The Flex Parent */
+.centerWrapper {
+  display: flex;
+  align-items: flex-start; /* Align tops of Sidebar and Inventory */
+  justify-content: center; /* Keep the whole unit centered */
+  transition: transform 0.3s ease; /* Optional: Smooths the centering adjustment */
+}
+
+/* 2. CONTAINER: The Main Inventory */
 .container {
   width: 732px;
   height: 674px;
@@ -21,11 +30,7 @@
   padding: 24px;
   box-shadow: inset 5px 5px 0px #fff, inset -5px -5px 0px #555;
   image-rendering: pixelated;
-  transition: transform 0.2s ease-in-out;
-}
-
-.bookOpen {
-  transform: translateX(140px);
+  /* Removed 'transform' and 'transition' from here because flex handles it */
 }
 
 .topSection {
@@ -61,23 +66,19 @@
 /* --- Middle Group: Offhand & Recipe Book --- */
 .middleGroup {
   display: flex;
-  align-items: flex-end; /* Align both items to the bottom line */
+  align-items: flex-end; 
   margin-left: 4px; 
-  /* This gap creates the spacing between Offhand and Recipe Book */
   gap: 52px; 
 }
 
 .offhandWrapper {
-  /* Just a wrapper to ensure flex behavior doesn't squash the slot */
   width: 72px;
   height: 72px;
 }
 
 .recipeBookWrapper {
-  /* Enforce size to match Offhand Slot (72px) */
   width: 72px; 
   height: 72px;
-  /* Adjust margin if you need specific offset relative to crafting grid */
   margin-bottom: 0px; 
 }
 
@@ -86,7 +87,7 @@
   display: flex;
   flex-direction: column;
   margin-top: -20px;
-  margin-left: -114px; /* Pushes everything to the right edge */
+  margin-left: -114px; 
 }
 
 .craftingLabel {
@@ -100,7 +101,7 @@
 
 .craftingArea {
   display: flex;
-  align-items: center; /* Vertically centers the grid and output row */
+  align-items: center; 
   gap: 16px; 
 }
 
@@ -154,9 +155,9 @@
   left: 0;
   width: 64px;
   height: 64px;
-  pointer-events: none; /* Critical: Allows clicks to pass through to the slot below */
-  z-index: 9999; /* Ensure it floats above everything */
-  transform: translate(-50%, -50%); /* Centers item on cursor */
+  pointer-events: none; 
+  z-index: 9999; 
+  transform: translate(-50%, -50%); 
   image-rendering: pixelated;
 }
 
@@ -164,35 +165,35 @@
   width: 100%;
   height: 100%;
   object-fit: contain;
-  filter: drop-shadow(4px 4px 0px rgba(0,0,0,0.5)); /* Adds depth like in-game */
+  filter: drop-shadow(4px 4px 0px rgba(0,0,0,0.5)); 
 }
 
 .tooltip {
   position: fixed;
-  z-index: 10000; /* Above everything */
-  pointer-events: none; /* Mouse must pass through it */
-  background-color: rgba(16, 0, 16, 0.94); /* Authentic Minecraft BG color */
+  z-index: 10000; 
+  pointer-events: none; 
+  background-color: rgba(16, 0, 16, 0.94); 
   border: 2px solid;
   border-radius: 8px;
-  border-color: #5000ff #28007f #28007f #5000ff; /* Authentic 3D Border */
+  border-color: #5000ff #28007f #28007f #5000ff; 
   padding: 4px 6px;
   min-width: 100px;
   font-family: 'Mojangles', sans-serif;
   color: #fff;
   text-shadow: 2px 2px 0px #3f3f3f;
-  white-space: pre-wrap; /* Allows multi-line descriptions */
+  white-space: pre-wrap; 
   image-rendering: pixelated;
-  transform: translate(15px, -15px); /* Offset from cursor so it doesn't block it */
+  transform: translate(15px, -15px);
 }
 
 .tooltipTitle {
-  color: #ffff55; /* Yellow for item name */
+  color: #ffff55; 
   margin-bottom: 2px;
   display: block;
 }
 
 .tooltipDesc {
-  color: #aaaaaa; /* Gray for lore/description */
+  color: #aaaaaa; 
   font-size: 0.9em;
   display: block;
 }

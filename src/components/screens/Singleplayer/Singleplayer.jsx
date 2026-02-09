@@ -1,12 +1,14 @@
 import React, { useState, useEffect, useRef } from 'react';
 import ItemSlot from './components/ItemSlot/ItemSlot';
 import RecipeBook from './components/RecipeBook/RecipeBook';
+import RecipeSidebar from './components/RecipeBook/RecipeSidebar';
 import styles from './Singleplayer.module.css';
 import itemsData from '../../../data/items.json';
+import recipesData from '../../../data/recipes.json'; // Needed if we reference recipes directly
 import PlayerPreview from './components/PlayerPreview/PlayerPreview';
+import { useSoundSettings } from '../../../context/SoundContext';
 
 // --- PLACEHOLDER ASSETS ---
-// Ensure these files exist in public/icons/ui/
 const ARMOR_PLACEHOLDERS = {
   39: '/icons/ui/empty_armor_slot_helmet.png',
   38: '/icons/ui/empty_armor_slot_chestplate.png',
@@ -16,70 +18,81 @@ const ARMOR_PLACEHOLDERS = {
 
 const OFFHAND_PLACEHOLDER = '/icons/ui/empty_armor_slot_shield.png';
 
+// --- LOGIC: Can we place item X in slot Y? ---
 const canPlaceItem = (item, slotIndex) => {
   if (!item) return true;
-  if (slotIndex <= 35) return true; 
-  if (slotIndex >= 36 && slotIndex <= 39) return item.isArmor === true;
-  if (slotIndex === 40) return item.isShield === true || item.type === 'tool';
+  if (slotIndex <= 35) return true; // Inventory/Hotbar
+  if (slotIndex >= 36 && slotIndex <= 39) return item.isArmor === true; // Armor
+  if (slotIndex === 40) return item.isShield === true || item.type === 'tool'; // Offhand
   if (slotIndex >= 41 && slotIndex <= 44) {
-    const validCraftingTypes = ['language', 'framework', 'library', 'infrastructure', 'tool'];
+    // Crafting Grid: Allow ingredients
+    const validCraftingTypes = ['language', 'framework', 'library', 'infrastructure', 'tool', 'project_item'];
     return item.isBlock === true || validCraftingTypes.includes(item.type);
   }
-  if (slotIndex === 45) return false;
+  if (slotIndex === 45) return false; // Output slot is output-only
   return false;
 };
 
 const Singleplayer = ({ onClose }) => {
   const [isBookOpen, setIsBookOpen] = useState(false);
   const [heldItem, setHeldItem] = useState(null);
-  
-  // Tooltip & Mouse State
   const [hoveredItem, setHoveredItem] = useState(null);
+  
   const tooltipRef = useRef(null);
   const mousePos = useRef({ x: 0, y: 0 });
   const floatingItemRef = useRef(null);
 
+  // Sound Context
+  const { getEffectiveVolume } = useSoundSettings();
+
+  // --- INITIALIZE INVENTORY ---
   const [slots, setSlots] = useState(() => {
     const initial = Array(46).fill(null);
+    
+    // Helper to safely set item if it exists in JSON
+    const setItem = (index, id) => {
+      if (itemsData[id]) initial[index] = { ...itemsData[id] };
+    };
 
-    // --- HOTBAR (Slots 27-35) ---
-    if (itemsData.python)      initial[27] = itemsData.python;
-    if (itemsData.java)        initial[28] = itemsData.java;
-    if (itemsData.cpp)         initial[29] = itemsData.cpp;
-    if (itemsData.typescript)  initial[30] = itemsData.typescript;
-    if (itemsData.javascript)  initial[31] = itemsData.javascript;
-    if (itemsData.sql)         initial[32] = itemsData.sql;
-    if (itemsData.react)       initial[33] = itemsData.react;
-    if (itemsData.docker)      initial[34] = itemsData.docker;
+    // --- HOTBAR ---
+    setItem(27, 'python');
+    setItem(28, 'java');
+    setItem(29, 'cpp');
+    setItem(30, 'typescript');
+    setItem(31, 'javascript');
+    setItem(32, 'sql');
+    setItem(33, 'react');
+    setItem(34, 'docker');
 
-    // --- ROW 1 (Slots 0-8) ---
-    if (itemsData.tensorflow)  initial[0] = itemsData.tensorflow;
-    if (itemsData.pytorch)     initial[1] = itemsData.pytorch;
-    if (itemsData.keras)       initial[2] = itemsData.keras;
-    if (itemsData.scikit_learn) initial[3] = itemsData.scikit_learn;
-    if (itemsData.pandas)      initial[4] = itemsData.pandas;
-    if (itemsData.numpy)       initial[5] = itemsData.numpy;
-    if (itemsData.langchain)   initial[6] = itemsData.langchain;
+    // --- ROW 1 ---
+    setItem(0, 'tensorflow');
+    setItem(1, 'pytorch');
+    setItem(2, 'keras');
+    setItem(3, 'scikit_learn');
+    setItem(4, 'pandas');
+    setItem(5, 'numpy');
+    setItem(6, 'langchain');
 
-    // --- ROW 2 (Slots 9-17) ---
-    if (itemsData.fastapi)     initial[9] = itemsData.fastapi;
-    if (itemsData.nodejs)      initial[10] = itemsData.nodejs;
-    if (itemsData.flutter)     initial[11] = itemsData.flutter;
+    // --- ROW 2 ---
+    setItem(9, 'fastapi');
+    setItem(10, 'nodejs');
+    setItem(11, 'flutter');
 
-    // --- ROW 3 (Slots 18-26) ---
-    if (itemsData.aws_lambda)  initial[18] = itemsData.aws_lambda;
-    if (itemsData.dynamodb)    initial[19] = itemsData.dynamodb;
-    if (itemsData.s3)          initial[20] = itemsData.s3;
-    if (itemsData.aws_ec2)     initial[21] = itemsData.aws_ec2;
-    if (itemsData.firebase)    initial[22] = itemsData.firebase;
-    if (itemsData.supabase)    initial[23] = itemsData.supabase;
+    // --- ROW 3 ---
+    setItem(18, 'aws_lambda');
+    setItem(19, 'dynamodb');
+    setItem(20, 's3');
+    setItem(21, 'aws_ec2');
+    setItem(22, 'firebase');
+    setItem(23, 'supabase');
 
-    // --- OFFHAND (Slot 40) ---
-    if (itemsData.git)         initial[40] = itemsData.git;
-
+    // --- OFFHAND ---
+    setItem(40, 'git');
+    
     return initial;
   });
 
+  // --- MOUSE & KEY LISTENERS ---
   useEffect(() => {
     const handleKeyDown = (event) => {
       if (event.key === 'Escape') onClose();
@@ -87,16 +100,12 @@ const Singleplayer = ({ onClose }) => {
     
     const handleMouseMove = (e) => {
       mousePos.current = { x: e.clientX, y: e.clientY };
-      
-      // Move Held Item
       if (floatingItemRef.current) {
         floatingItemRef.current.style.left = `${e.clientX}px`;
         floatingItemRef.current.style.top = `${e.clientY}px`;
       }
-
-      // Move Tooltip
       if (tooltipRef.current) {
-        // Simple offset to prevent cursor from covering text
+        // Offset tooltip slightly from cursor
         tooltipRef.current.style.left = `${e.clientX + 15}px`;
         tooltipRef.current.style.top = `${e.clientY - 30}px`;
       }
@@ -110,39 +119,126 @@ const Singleplayer = ({ onClose }) => {
     };
   }, [onClose]);
 
+  // --- HELPER: Play Click Sound ---
+  const playUiClick = () => {
+    try {
+      const audio = new Audio('/sounds/click.ogg');
+      audio.volume = getEffectiveVolume('ui'); 
+      audio.play().catch(() => {});
+    } catch (err) {
+      console.warn("Audio error", err);
+    }
+  };
+
+  // --- HANDLE: Recipe Click (Auto-Fill) ---
+  const handleRecipeClick = (recipe) => {
+    playUiClick();
+    const newSlots = [...slots];
+
+    // 1. Clear Crafting Grid (41-44) and Result (45)
+    [41, 42, 43, 44, 45].forEach(i => newSlots[i] = null);
+
+    // 2. Map Ingredients to Grid
+    let missingIngredients = false;
+
+    recipe.ingredients.forEach(ing => {
+      // Determine Grid Slot (0=41, 1=42, 2=43, 3=44)
+      const offset = typeof ing.slot === 'number' ? ing.slot : 0;
+      const targetSlot = 41 + offset;
+
+      // Lookup Item Data
+      const itemData = itemsData[ing.item];
+
+      if (itemData) {
+        // Check if user has this item anywhere in main inventory (0-40)
+        const userHasItem = slots.slice(0, 41).some(s => s && s.id === ing.item);
+
+        if (!userHasItem) missingIngredients = true;
+
+        newSlots[targetSlot] = {
+          ...itemData,
+          count: 1,
+          isGhost: !userHasItem // Red Background if missing
+        };
+      }
+    });
+
+    // 3. Set Result (Only if NO ghosts)
+    if (!missingIngredients && recipe.result) {
+      // If result is an ID string, hydration might be needed, 
+      // but recipes.json usually has the full object or we map it here.
+      // Assuming recipe.result is the object from JSON:
+      newSlots[45] = { ...recipe.result, count: 1 };
+    }
+
+    setSlots(newSlots);
+  };
+
+  // --- HANDLE: Slot Click (Inventory Management) ---
   const handleSlotClick = (index) => {
-    // Output Slot Logic (Take Only)
+    // Output Slot Logic (Crafting Result)
     if (index === 45) {
       if (slots[45] && !heldItem) {
+         // Crafting Logic: Check for ghosts
+         const hasGhosts = [41, 42, 43, 44].some(i => slots[i] && slots[i].isGhost);
+         if (hasGhosts) return; // Cannot craft with ghosts
+
          const newSlots = [...slots];
          setHeldItem(slots[45]);
+         
+         // Consume Ingredients (This is "Creative" style, so we just clear grid)
+         // In survival we would decrement.
          newSlots[45] = null;
+         [41, 42, 43, 44].forEach(i => newSlots[i] = null);
+         
          setSlots(newSlots);
+         playUiClick();
       }
       return;
     }
 
     const clickedItem = slots[index];
 
-    // Pick Up
+    // Case 1: Picking up an item
     if (!heldItem && clickedItem) {
+      // Don't pick up ghosts
+      if (clickedItem.isGhost) {
+        // Optional: Clear ghost on click?
+        const newSlots = [...slots];
+        newSlots[index] = null;
+        setSlots(newSlots);
+        playUiClick();
+        return;
+      }
+
       setHeldItem(clickedItem);
       const newSlots = [...slots];
       newSlots[index] = null;
       setSlots(newSlots);
+      playUiClick();
       return;
     }
 
-    // Place or Swap
+    // Case 2: Placing/Swapping an item
     if (heldItem) {
       if (!canPlaceItem(heldItem, index)) return;
 
       const newSlots = [...slots];
-      const itemToPickup = newSlots[index]; 
+      const itemToPickup = newSlots[index]; // Could be null
 
       newSlots[index] = heldItem;
       setHeldItem(itemToPickup); 
       setSlots(newSlots);
+      playUiClick();
+    }
+  };
+
+  // --- HANDLE: Sidebar Hover (Tooltip proxy) ---
+  const handleSidebarHover = (content) => {
+    if (typeof content === 'string') {
+      setHoveredItem({ name: content, description: null });
+    } else {
+      setHoveredItem(content);
     }
   };
 
@@ -154,10 +250,7 @@ const Singleplayer = ({ onClose }) => {
         <div 
           ref={tooltipRef}
           className={styles.tooltip}
-          style={{
-            left: mousePos.current.x,
-            top: mousePos.current.y
-          }}
+          style={{ left: mousePos.current.x, top: mousePos.current.y }}
         >
           <span className={styles.tooltipTitle}>{hoveredItem.name}</span>
           {hoveredItem.description && (
@@ -166,66 +259,37 @@ const Singleplayer = ({ onClose }) => {
         </div>
       )}
 
-      {/* --- FLOATING ITEM --- */}
+      {/* --- FLOATING HELD ITEM --- */}
       {heldItem && (
         <div 
           ref={floatingItemRef} 
           className={styles.floatingItem}
-          style={{ 
-            left: `${mousePos.current.x}px`, 
-            top: `${mousePos.current.y}px` 
-          }}
+          style={{ left: `${mousePos.current.x}px`, top: `${mousePos.current.y}px` }}
         >
           <img src={heldItem.icon} alt="Held Item" />
         </div>
       )}
 
-      <div className={`${styles.container} ${isBookOpen ? styles.bookOpen : ''}`}>
-        <div className={styles.topSection}>
-          <div className={styles.leftGroup}>
-            
-            {/* ARMOR COLUMN (Helmet 39 -> Boots 36) */}
-            <div className={styles.armorColumn}>
-              {[39, 38, 37, 36].map((index) => (
-                <ItemSlot 
-                  key={index} 
-                  item={slots[index]} 
-                  index={index} 
-                  onSlotClick={handleSlotClick}
-                  onHover={setHoveredItem}
-                  onLeave={() => setHoveredItem(null)} 
-                  placeholder={ARMOR_PLACEHOLDERS[index]}
-                />
-              ))}
-            </div>
-            
-            <div className={styles.characterPreview}>
-              <PlayerPreview isBookOpen={isBookOpen}/>
-            </div>
-          </div>
+      {/* --- CENTER LAYOUT --- */}
+      <div className={styles.centerWrapper}>
+        
+        {/* LEFT: Recipe Sidebar */}
+        <RecipeSidebar 
+          isOpen={isBookOpen} 
+          inventory={slots}
+          onRecipeClick={handleRecipeClick}
+          onHover={handleSidebarHover} 
+          onLeave={() => setHoveredItem(null)}
+        />
 
-          <div className={styles.middleGroup}>
-            {/* OFFHAND SLOT */}
-            <div className={styles.offhandWrapper}>
-               <ItemSlot 
-                 item={slots[40]} 
-                 index={40} 
-                 onSlotClick={handleSlotClick}
-                 onHover={setHoveredItem}
-                 onLeave={() => setHoveredItem(null)}
-                 placeholder={OFFHAND_PLACEHOLDER}
-               />
-            </div>
-            <div className={styles.recipeBookWrapper}>
-               <RecipeBook isOpen={isBookOpen} onClick={() => setIsBookOpen(!isBookOpen)} />
-            </div>
-          </div>
-
-          <div className={styles.craftingGroup}>
-            <span className={styles.craftingLabel}>Crafting</span>
-            <div className={styles.craftingArea}>
-              <div className={styles.craftingGrid2x2}>
-                {[41, 42, 43, 44].map((index) => (
+        {/* RIGHT: Main Inventory Interface */}
+        <div className={styles.container}>
+          <div className={styles.topSection}>
+            
+            {/* Armor & Character */}
+            <div className={styles.leftGroup}>
+              <div className={styles.armorColumn}>
+                {[39, 38, 37, 36].map((index) => (
                   <ItemSlot 
                     key={index} 
                     item={slots[index]} 
@@ -233,49 +297,98 @@ const Singleplayer = ({ onClose }) => {
                     onSlotClick={handleSlotClick}
                     onHover={setHoveredItem}
                     onLeave={() => setHoveredItem(null)} 
+                    placeholder={ARMOR_PLACEHOLDERS[index]}
                   />
                 ))}
               </div>
-              <div className={styles.craftingOutputRow}>
-                <div className={styles.arrow} />
+              <div className={styles.characterPreview}>
+                <PlayerPreview isBookOpen={isBookOpen}/>
+              </div>
+            </div>
+
+            {/* Offhand & Recipe Book Toggle */}
+            <div className={styles.middleGroup}>
+              <div className={styles.offhandWrapper}>
                 <ItemSlot 
-                  item={slots[45]} 
-                  index={45} 
+                  item={slots[40]} 
+                  index={40} 
+                  onSlotClick={handleSlotClick}
+                  onHover={setHoveredItem}
+                  onLeave={() => setHoveredItem(null)}
+                  placeholder={OFFHAND_PLACEHOLDER}
+                />
+              </div>
+              <div className={styles.recipeBookWrapper}>
+                <RecipeBook 
+                  isOpen={isBookOpen} 
+                  onClick={() => {
+                    playUiClick();
+                    setIsBookOpen(!isBookOpen);
+                  }} 
+                />
+              </div>
+            </div>
+
+            {/* Crafting Grid */}
+            <div className={styles.craftingGroup}>
+              <span className={styles.craftingLabel}>Crafting</span>
+              <div className={styles.craftingArea}>
+                <div className={styles.craftingGrid2x2}>
+                  {[41, 42, 43, 44].map((index) => (
+                    <ItemSlot 
+                      key={index} 
+                      item={slots[index]} 
+                      index={index} 
+                      onSlotClick={handleSlotClick}
+                      onHover={setHoveredItem}
+                      onLeave={() => setHoveredItem(null)} 
+                      isGhost={slots[index]?.isGhost} // Pass Ghost Flag
+                    />
+                  ))}
+                </div>
+                <div className={styles.craftingOutputRow}>
+                  <div className={styles.arrow} />
+                  <ItemSlot 
+                    item={slots[45]} 
+                    index={45} 
+                    onSlotClick={handleSlotClick}
+                    onHover={setHoveredItem}
+                    onLeave={() => setHoveredItem(null)} 
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div style={{ flex: 1 }} />
+
+          {/* Main Inventory Grid */}
+          <div className={styles.inventorySection}>
+            <div className={styles.grid9x3}>
+              {slots.slice(0, 27).map((item, index) => (
+                <ItemSlot 
+                  key={index} 
+                  item={item} 
+                  index={index} 
                   onSlotClick={handleSlotClick}
                   onHover={setHoveredItem}
                   onLeave={() => setHoveredItem(null)} 
                 />
-              </div>
+              ))}
             </div>
-          </div>
-        </div>
-
-        <div style={{ flex: 1 }} />
-
-        <div className={styles.inventorySection}>
-          <div className={styles.grid9x3}>
-            {slots.slice(0, 27).map((item, index) => (
-              <ItemSlot 
-                key={index} 
-                item={item} 
-                index={index} 
-                onSlotClick={handleSlotClick}
-                onHover={setHoveredItem}
-                onLeave={() => setHoveredItem(null)} 
-              />
-            ))}
-          </div>
-          <div className={styles.hotbar9x1}>
-            {slots.slice(27, 36).map((item, index) => (
-              <ItemSlot 
-                key={index + 27} 
-                item={item} 
-                index={index + 27} 
-                onSlotClick={handleSlotClick}
-                onHover={setHoveredItem}
-                onLeave={() => setHoveredItem(null)} 
-              />
-            ))}
+            {/* Hotbar */}
+            <div className={styles.hotbar9x1}>
+              {slots.slice(27, 36).map((item, index) => (
+                <ItemSlot 
+                  key={index + 27} 
+                  item={item} 
+                  index={index + 27} 
+                  onSlotClick={handleSlotClick}
+                  onHover={setHoveredItem}
+                  onLeave={() => setHoveredItem(null)} 
+                />
+              ))}
+            </div>
           </div>
         </div>
       </div>
