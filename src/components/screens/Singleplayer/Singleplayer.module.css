@@ -179,3 +179,60 @@
   height: 48px;
   image-rendering: pixelated;
 }
+
+/* --- ACHIEVEMENT TOAST --- */
+.achievementContainer {
+  position: fixed;
+  top: 32px;
+  right: 0; /* Slides in from the right */
+  left: 0; 
+  margin: auto; /* Center it horizontally */
+  width: 320px;
+  background-color: #212121;
+  border: 2px solid #ffff00; /* Gold border for achievements */
+  padding: 8px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: #fff;
+  font-family: 'Mojangles', sans-serif;
+  z-index: 20000;
+  box-shadow: 0px 4px 0px rgba(0,0,0,0.5);
+  animation: slideDown 4s forwards; /* Slide in, wait, slide out */
+  cursor: pointer; /* Clickable to go to link */
+}
+
+.achievementIcon {
+  width: 48px;
+  height: 48px;
+  image-rendering: pixelated;
+}
+
+.achievementText {
+  display: flex;
+  flex-direction: column;
+}
+
+.achievementTitle {
+  color: #ffff00; /* Gold */
+  font-size: 16px;
+  margin-bottom: 4px;
+}
+
+.achievementName {
+  color: #ffffff;
+  font-size: 16px;
+}
+
+.achievementLink {
+  color: #55ffff; /* Diamond Blue */
+  font-size: 12px;
+  text-decoration: underline;
+}
+
+@keyframes slideDown {
+  0% { transform: translateY(-100px); opacity: 0; }
+  10% { transform: translateY(0); opacity: 1; }
+  90% { transform: translateY(0); opacity: 1; }
+  100% { transform: translateY(-100px); opacity: 0; }
+}

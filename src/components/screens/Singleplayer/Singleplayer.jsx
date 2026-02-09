@@ -8,6 +8,31 @@ import recipesData from '../../../data/recipes.json';
 import PlayerPreview from './components/PlayerPreview/PlayerPreview';
 import { useSoundSettings } from '../../../context/SoundContext';
 
+// 1. DEFINE YOUR ACHIEVEMENTS MAP
+// FIX: Keys updated to match items.json "id" fields exactly
+const PROJECT_ACHIEVEMENTS = {
+  'recrootly': {
+    title: 'Recrootly AI',
+    desc: 'Automated Recruitment Platform',
+    link: 'https://recrootly.vercel.app'
+  },
+  'nudge_ai': {
+    title: 'Nudge AI',
+    desc: 'Higher Manager Nudge Assistant',
+    link: 'https://qpulse.tech'
+  },
+  'blueprint_rag': {
+    title: 'Blueprint RAG',
+    desc: 'Internal Assistant for Documentation via RAG',
+    link: 'https://sitblueprint.com'
+  },
+  'twitter_nlp': {
+     title: 'Hate Speech Detector',
+     desc: 'NLP Sentiment Analysis',
+     link: 'https://github.com/yparmar2024/Data-Glacier'
+  }
+};
+
 const ARMOR_PLACEHOLDERS = {
   39: '/icons/ui/empty_armor_slot_helmet.png',
   38: '/icons/ui/empty_armor_slot_chestplate.png',
@@ -18,9 +43,9 @@ const ARMOR_PLACEHOLDERS = {
 const OFFHAND_PLACEHOLDER = '/icons/ui/empty_armor_slot_shield.png';
 
 const ACTIVE_EFFECTS = [
-  { id: 'grinding', name: 'Grinding', duration: '∞:∞:∞', icon: '/icons/items/netherite_pickaxe.png' },
-  { id: 'coffee', name: 'Caffeinated II', duration: 'Past hour', icon: '/icons/items/milk.png' },
-  { id: 'bugs', name: 'Merge Conflict', duration: 'Until Production', icon: '/icons/items/withered.png' }
+  { id: 'grinding', name: 'Grinding IV', duration: '∞:∞:∞', icon: '/icons/items/netherite_pickaxe.png' },
+  { id: 'coffee', name: 'Caffeinated II', duration: 'Past Hour', icon: '/icons/items/milk.png' },
+  { id: 'bugs', name: 'Merge Conflict I', duration: 'Until Production', icon: '/icons/items/withered.png' }
 ];
 
 const canPlaceItem = (item, slotIndex) => {
@@ -43,6 +68,10 @@ const Singleplayer = ({ onClose }) => {
   const [isBookOpen, setIsBookOpen] = useState(false);
   const [heldItem, setHeldItem] = useState(null);
   const [hoveredItem, setHoveredItem] = useState(null);
+
+  // Achievement State
+  const [activeAchievement, setActiveAchievement] = useState(null);
+  const [craftedHistory, setCraftedHistory] = useState(new Set());
   
   const tooltipRef = useRef(null);
   const mousePos = useRef({ x: 0, y: 0 });
@@ -205,6 +234,28 @@ const Singleplayer = ({ onClose }) => {
     if (index === 45) {
       if (slots[45] && !heldItem) {
          if (slots[45].isGhost) return; 
+
+         // --- ACHIEVEMENT LOGIC ---
+         const craftedItem = slots[45];
+         // DEBUG: Uncomment if still having issues
+         // console.log("Crafting Item ID:", craftedItem.id);
+
+         // Check if it's a project item AND we haven't crafted it before
+         if (PROJECT_ACHIEVEMENTS[craftedItem.id] && !craftedHistory.has(craftedItem.id)) {
+            // Trigger Achievement
+            const achData = PROJECT_ACHIEVEMENTS[craftedItem.id];
+            setActiveAchievement({ ...achData, icon: craftedItem.icon });
+            // Mark as crafted
+            setCraftedHistory(prev => {
+                const newSet = new Set(prev);
+                newSet.add(craftedItem.id);
+                return newSet;
+            });
+            // Auto-hide after 4 seconds
+            setTimeout(() => setActiveAchievement(null), 4000);
+         }
+         // -------------------------
+
          setHeldItem(slots[45]);
          const newSlots = [...slots];
          newSlots[45] = null;
@@ -250,9 +301,26 @@ const Singleplayer = ({ onClose }) => {
 
   return (
     <div className={styles.overlay}>
+      
+      {/* 1. ACHIEVEMENT TOAST */}
+      {activeAchievement && (
+        <div 
+          className={styles.achievementContainer}
+          onClick={() => window.open(activeAchievement.link, '_blank')}
+        >
+          <img src={activeAchievement.icon} className={styles.achievementIcon} alt="Icon" />
+          <div className={styles.achievementText}>
+            <span className={styles.achievementTitle}>New Achievement!</span>
+            <span className={styles.achievementName}>{activeAchievement.title}</span>
+            <span className={styles.achievementLink}>View Project</span>
+          </div>
+        </div>
+      )}
+
+      {/* 2. ESC HINT */}
       <div className={styles.escHint}>Press 'ESC' to Close</div>
 
-      {/* REUSED TOOLTIP FOR BOTH ITEMS AND EFFECTS */}
+      {/* 3. TOOLTIP */}
       {hoveredItem && !heldItem && (
         <div ref={tooltipRef} className={styles.tooltip}>
           <span className={styles.tooltipTitle}>{hoveredItem.name}</span>

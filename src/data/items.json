@@ -200,7 +200,7 @@
     "isShield": true
   },
   "item_recrootly": {
-    "id": "item_recrootly",
+    "id": "recrootly",
     "name": "Recrootly",
     "type": "armor",
     "description": "AI-Powered Resume Scorer",
@@ -209,7 +209,7 @@
     "isArmor": true
   },
   "item_nudge_ai": {
-    "id": "item_nudge_ai",
+    "id": "nudge_ai",
     "name": "Nudge AI",
     "type": "armor",
     "description": "Smart Task Manager",
@@ -218,7 +218,7 @@
     "isArmor": true
   },
   "item_blueprint_rag": {
-    "id": "item_blueprint_rag",
+    "id": "blueprint_rag",
     "name": "Blueprint RAG",
     "type": "armor",
     "description": "Enterprise Knowledge Search",
@@ -227,7 +227,7 @@
     "isArmor": true
   },
   "item_twitter_nlp": {
-    "id": "item_twitter_nlp",
+    "id": "twitter_nlp",
     "name": "Hate Speech Detector",
     "type": "armor",
     "description": "NLP Sentiment Analysis",
