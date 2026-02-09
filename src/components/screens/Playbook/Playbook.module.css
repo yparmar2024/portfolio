@@ -1,0 +1,106 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  /* FIX: Force container to take exactly the viewport height */
+  height: 100vh; 
+  width: 100%;
+  max-width: 800px;
+  /* Add padding to top/bottom so content doesn't touch screen edges */
+  padding: 40px 0; 
+  box-sizing: border-box;
+  margin: 0 auto; /* Center horizontally */
+}
+
+.header {
+  /* FIX: Prevent header from shrinking when content is long */
+  flex-shrink: 0; 
+  font-family: 'Mojangles', sans-serif;
+  color: #FFFFFF;
+  text-shadow: 2px 2px 0px #3f3f3f;
+  margin-bottom: 24px;
+  font-size: 24px;
+}
+
+.list {
+  /* FIX: Allow this section to grow/shrink and handle its own scrolling */
+  flex: 1;
+  width: 100%;
+  overflow-y: auto; /* Scroll ONLY this area */
+  padding: 0 20px;
+  margin-bottom: 20px;
+  
+  /* Visual Polish: Fade out text at the very top/bottom edges */
+  mask-image: linear-gradient(to bottom, transparent, black 5px, black calc(100% - 5px), transparent);
+}
+
+/* --- MINECRAFT SCROLLBAR STYLES --- */
+.list::-webkit-scrollbar {
+  width: 10px; /* Chunkier scrollbar */
+}
+
+.list::-webkit-scrollbar-track {
+  background: #000000; /* Dark track */
+  border-left: 1px solid #373737;
+}
+
+.list::-webkit-scrollbar-thumb {
+  background: #C6C6C6; /* Standard GUI Button Color */
+  border: 1px solid #FFFFFF; /* Highlighting */
+  border-right: 1px solid #555555; /* Shadow */
+  border-bottom: 1px solid #555555;
+}
+
+.list::-webkit-scrollbar-thumb:active {
+  background: #8B8B8B; /* Darker when clicking */
+}
+/* ---------------------------------- */
+
+.entry {
+  margin-bottom: 32px;
+  text-align: center;
+}
+
+.entryHeader {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  font-family: 'Mojangles', sans-serif;
+  font-size: 0.9rem;
+  margin-bottom: 4px;
+}
+
+.version { color: #FFFF55; }
+.date { color: #AAAAAA; }
+
+.entryTitle {
+  font-family: 'Mojangles', sans-serif;
+  color: #FFFFFF;
+  font-size: 1.1rem;
+  margin-bottom: 12px;
+  text-decoration: underline;
+}
+
+.changeList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  color: #DDDDDD;
+  font-family: 'Mojangles', sans-serif;
+  line-height: 1.6;
+}
+
+.changeList li {
+  margin-bottom: 4px;
+  position: relative;
+}
+
+.buttonWrapper {
+  /* FIX: Prevent button from shrinking or being pushed off */
+  flex-shrink: 0; 
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  /* Ensure it sits above the dirt background safely */
+  padding-bottom: 20px; 
+}

@@ -1,24 +1,8 @@
-/**
- * Main menu screen component
- * 
- * The portfolio's home screen styled after Minecraft Java Edition's main menu.
- * Features:
- * - Animated title logo with splash text
- * - Damage overlay effect when clicking "Quit Game"
- * - Responsive button layout
- * - Random splash text selection on mount
- * 
- * @component
- * @param {Object} props
- * @param {Function} props.onSingleplayer - Navigate to projects/inventory
- * @param {Function} props.onMultiplayer - Navigate to work experience
- * @param {Function} props.onRealms - Navigate to social links
- * @param {Function} props.onOptions - Navigate to settings/about
- */
-
 import { useState, useEffect } from 'react';
 import useSound from '../../../hooks/useSound';
 import MinecraftButton from '../../common/MinecraftButton/MinecraftButton';
+import Playbook from '../Playbook/Playbook'; 
+import patchNotes from '../../../data/patchNotes.json'; 
 import { TIMINGS } from '../../../constants/timings';
 
 const SPLASH_TEXTS = [
@@ -38,6 +22,13 @@ export default function Menu({ onSingleplayer, onMultiplayer, onRealms, onOption
   const [isHurt, setIsHurt] = useState(false);
   const [splash, setSplash] = useState('');
   
+  // Playbook State
+  const [showPlaybook, setShowPlaybook] = useState(false);
+  const [isVersionHovered, setIsVersionHovered] = useState(false);
+  
+  // Get Latest Version
+  const latestVersion = patchNotes.length > 0 ? patchNotes[0].version : "1.0.0";
+  
   const playHurt = useSound('/sounds/hurt.ogg');
 
   useEffect(() => {
@@ -53,14 +44,47 @@ export default function Menu({ onSingleplayer, onMultiplayer, onRealms, onOption
 
   return (
     <>
+      {/* 1. PLAYBOOK OVERLAY */}
+      {showPlaybook && <Playbook onClose={() => setShowPlaybook(false)} />}
+
       <div className={`damage-overlay ${isHurt ? 'active' : ''}`} />
 
-      <div style={{
-        position: 'absolute', bottom: '10px', left: '20px',
-        color: '#ffffff', fontFamily: 'Mojangles, sans-serif', fontSize: '20px',
-        textShadow: '2px 2px 0px #000000', zIndex: 20,
-      }}>
-        Portfolio 1.0.0
+      {/* 2. VERSION LINK (Improved Visibility) */}
+      <div 
+        onClick={() => setShowPlaybook(true)}
+        onMouseEnter={() => setIsVersionHovered(true)}
+        onMouseLeave={() => setIsVersionHovered(false)}
+        style={{
+          position: 'absolute', bottom: '15px', left: '20px',
+          display: 'flex', alignItems: 'center', gap: '8px', // Flex layout for Icon + Text
+          zIndex: 20, cursor: 'pointer',
+          transition: 'transform 0.1s ease-out'
+        }}
+        title="Click to view Patch Notes" // Browser native tooltip
+      >
+        {/* The Icon: Book & Quill (Signals "Read Me") */}
+        <img 
+          src="/icons/items/book_and_quill.png" 
+          alt="Patch Notes" 
+          style={{ 
+            width: '48px', height: '48px', 
+            imageRendering: 'pixelated',
+            filter: 'drop-shadow(2px 2px 0px #000000)' 
+          }} 
+        />
+        
+        {/* The Text */}
+        <span style={{
+          color: isVersionHovered ? '#ffff55' : '#ffffff', // White -> Gold
+          fontFamily: 'Mojangles, sans-serif', fontSize: '20px',
+          textShadow: '2px 2px 0px #000000',
+          textDecoration: isVersionHovered ? 'underline' : 'none', // Underline on hover
+          transition: 'color 0.1s',
+          marginLeft: '8px',
+          marginBottom: '-8px'
+        }}>
+          Portfolio {latestVersion}
+        </span>
       </div>
 
       <div style={{

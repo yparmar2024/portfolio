@@ -6,7 +6,7 @@
       "id": "item_recrootly",
       "name": "Recrootly",
       "description": "AI-Powered Resume Scorer",
-      "icon": "/icons/items/iron_helmet.png",
+      "icon": "/icons/items/quartz_helmet.png",
       "isProject": true
     },
     "ingredients": [
@@ -22,7 +22,7 @@
       "id": "item_nudge_ai",
       "name": "Nudge AI",
       "description": "Smart Task Manager",
-      "icon": "/icons/items/iron_chestplate.png",
+      "icon": "/icons/items/quartz_chestplate.png",
       "isProject": true
     },
     "ingredients": [
@@ -39,7 +39,7 @@
       "id": "item_blueprint_rag",
       "name": "Blueprint RAG",
       "description": "Enterprise Knowledge Search",
-      "icon": "/icons/items/iron_leggings.png",
+      "icon": "/icons/items/quartz_leggings.png",
       "isProject": true
     },
     "ingredients": [
@@ -56,7 +56,7 @@
       "id": "item_twitter_nlp",
       "name": "Hate Speech Detector",
       "description": "NLP Sentiment Analysis",
-      "icon": "/icons/items/iron_boots.png",
+      "icon": "/icons/items/quartz_boots.png",
       "isProject": true
     },
     "ingredients": [

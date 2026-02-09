@@ -1,0 +1,47 @@
+[
+  {
+    "version": "1.0.0",
+    "title": "The Official Release",
+    "date": "February 9, 2026",
+    "changes": [
+      "Portfolio Playbook (Patch Notes) system integrated.",
+      "Added 'Achievement Get!' popups for project crafting.",
+      "Added 'Grinding', 'Caffeinated', and 'Merge Conflict' status effects.",
+      "Finalized Main Menu with dynamic versioning.",
+      "Production ready!"
+    ]
+  },
+  {
+    "version": "0.3.0",
+    "title": "Beta - Visuals Update",
+    "date": "February 8, 2026",
+    "changes": [
+      "Added 3D Player Preview with dynamic 'Spine Twist' logic.",
+      "Implemented Armor Slot validation.",
+      "Added hover tooltips for inventory items.",
+      "Fixed 'Ghost Item' logic and drag-and-drop visuals."
+    ]
+  },
+  {
+    "version": "0.2.0",
+    "title": "Alpha - Mechanics Update",
+    "date": "February 5, 2026",
+    "changes": [
+      "Implemented functional 2x2 Crafting Grid.",
+      "Added Recipe Book Sidebar with search filtering.",
+      "Integrated Global Sound Context (Music/SFX).",
+      "Added auto-fill functionality for recipes."
+    ]
+  },
+  {
+    "version": "0.1.0",
+    "title": "Pre-Alpha - Foundations",
+    "date": "January 28, 2026",
+    "changes": [
+      "Project structure setup (Singleplayer/Multiplayer routing).",
+      "Created Main Menu with Splash Text system.",
+      "Implemented 'DeviceGuard' for mobile restriction.",
+      "Basic inventory slot layout."
+    ]
+  }
+]

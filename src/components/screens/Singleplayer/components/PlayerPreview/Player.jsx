@@ -8,9 +8,9 @@ import { SLIM_ARMOR_CONFIG as CFG } from '../../../../../constants/armorConfig';
 const Player = ({ isBookOpen, slots }) => {
   // 1. LOAD MODELS
   const { nodes: playerNodes } = useGLTF('/models/players/player.glb');
-  const { nodes: armorNodes, materials: armorMaterials } = useGLTF('/models/armors/iron/helmet_chestplate_boots.glb');
-  const { nodes: legNodes, materials: legMaterials } = useGLTF('/models/armors/iron/leggings.glb');
-  const { nodes: shieldNodes, materials: shieldMaterials } = useGLTF('/models/items/shield.glb');
+  const { nodes: armorNodes, materials: armorMaterials } = useGLTF('/models/armors/quartz/helmet_chestplate_boots.glb');
+  const { nodes: legNodes, materials: legMaterials } = useGLTF('/models/armors/quartz/leggings.glb');
+  const { nodes: shieldNodes, materials: shieldMaterials } = useGLTF('/models/items/git_shield.glb');
 
   const mainGroup = useRef(); 
   const { gl } = useThree();
@@ -187,8 +187,8 @@ const Player = ({ isBookOpen, slots }) => {
 };
 
 useGLTF.preload('/models/players/player.glb');
-useGLTF.preload('/models/armors/iron/helmet_chestplate_boots.glb');
-useGLTF.preload('/models/armors/iron/leggings.glb');
-useGLTF.preload('/models/items/shield.glb'); 
+useGLTF.preload('/models/armors/quartz/helmet_chestplate_boots.glb');
+useGLTF.preload('/models/armors/quartz/leggings.glb');
+useGLTF.preload('/models/items/git_shield.glb'); 
 
 export default Player;

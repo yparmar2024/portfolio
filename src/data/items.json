@@ -204,7 +204,7 @@
     "name": "Recrootly",
     "type": "armor",
     "description": "AI-Powered Resume Scorer",
-    "icon": "/icons/items/iron_helmet.png",
+    "icon": "/icons/items/quartz_helmet.png",
     "armorType": "helmet",
     "isArmor": true
   },
@@ -213,7 +213,7 @@
     "name": "Nudge AI",
     "type": "armor",
     "description": "Smart Task Manager",
-    "icon": "/icons/items/iron_chestplate.png",
+    "icon": "/icons/items/quartz_chestplate.png",
     "armorType": "chestplate",
     "isArmor": true
   },
@@ -222,7 +222,7 @@
     "name": "Blueprint RAG",
     "type": "armor",
     "description": "Enterprise Knowledge Search",
-    "icon": "/icons/items/iron_leggings.png",
+    "icon": "/icons/items/quartz_leggings.png",
     "armorType": "leggings",
     "isArmor": true
   },
@@ -231,7 +231,7 @@
     "name": "Hate Speech Detector",
     "type": "armor",
     "description": "NLP Sentiment Analysis",
-    "icon": "/icons/items/iron_boots.png",
+    "icon": "/icons/items/quartz_boots.png",
     "armorType": "boots",
     "isArmor": true
   }
