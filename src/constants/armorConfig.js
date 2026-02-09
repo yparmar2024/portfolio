@@ -40,5 +40,12 @@ export const SLIM_ARMOR_CONFIG = {
   leftBoot: {
     position: [0.06, -0.8, 0],
     scale: 0.85
+  },
+
+  // SHIELD
+  shield: {
+    position: [-0.25, -0.4, -1.75],
+    rotation: [0, Math.PI / 2, Math.PI / 2],
+    scale: 1.0
   }
 };

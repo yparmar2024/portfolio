@@ -1,30 +1,37 @@
-import React, { useRef, useEffect, useState } from 'react';
+import React, { useRef, useEffect, useState, useMemo } from 'react';
 import { useFrame, useThree, createPortal } from '@react-three/fiber';
 import { useGLTF } from '@react-three/drei';
 import * as THREE from 'three';
-// 1. Import the config
+// Make sure this path is correct for your file structure
 import { SLIM_ARMOR_CONFIG as CFG } from '../../../../../constants/armorConfig'; 
 
 const Player = ({ isBookOpen, slots }) => {
-  // ... Load Models & Refs (Same as before) ...
+  // 1. LOAD MODELS
   const { nodes: playerNodes } = useGLTF('/models/players/player.glb');
   const { nodes: armorNodes, materials: armorMaterials } = useGLTF('/models/armors/iron/helmet_chestplate_boots.glb');
   const { nodes: legNodes, materials: legMaterials } = useGLTF('/models/armors/iron/leggings.glb');
-  
+  const { nodes: shieldNodes, materials: shieldMaterials } = useGLTF('/models/items/shield.glb');
+
   const mainGroup = useRef(); 
   const { gl } = useThree();
   const [containerCenter, setContainerCenter] = useState({ x: 0, y: 0 });
   const mouse = useRef({ x: 0, y: 0 });
 
-  // ... Armor Checks & Geometry logic (Same as before) ...
+  // --- 2. CHECKS ---
   const hasHelmet = slots && slots[39];
   const hasChest = slots && slots[38];
   const hasLegs = slots && slots[37];
   const hasBoots = slots && slots[36];
+  const hasShield = slots && slots[40]; 
 
+  // --- 3. MATERIALS ---
   const armorMat = Object.values(armorMaterials)[0] || new THREE.MeshStandardMaterial({ color: '#cccccc' });
   const legsMat = Object.values(legMaterials)[0] || armorMat;
+  
+  // Use the shield's own material, or fallback to wood color
+  const shieldMat = Object.values(shieldMaterials)[0] || new THREE.MeshStandardMaterial({ color: '#886633' });
 
+  // --- 4. GEOMETRIES ---
   const helmGeo = armorNodes.Helmet?.geometry;
   const chestBodyGeo = armorNodes.Chestplate?.geometry;
   const chestRArmGeo = armorNodes.Right_Arm_Armor?.geometry;
@@ -35,9 +42,37 @@ const Player = ({ isBookOpen, slots }) => {
   const bootRGeo = armorNodes.Right_Boot?.geometry;
   const bootLGeo = armorNodes.Left_Boot?.geometry;
 
-  // ... Mouse & Animation Logic (Same as before) ...
+  // --- 5. HELPER: SHIELD RENDERER ---
+  // Since your shield has multiple parts (shield_1, shield_2), we render them all.
+  const ShieldModel = () => {
+    if (!shieldNodes) return null;
+    return (
+      <group 
+        scale={CFG.shield ? CFG.shield.scale : 1} 
+        position={CFG.shield ? CFG.shield.position : [0,0,0]} 
+        rotation={CFG.shield ? CFG.shield.rotation : [0,0,0]}
+      >
+        {Object.keys(shieldNodes).map((key) => {
+          const node = shieldNodes[key];
+          // Only render if it's a mesh with geometry
+          if (node.isMesh && node.geometry) {
+            return (
+              <mesh 
+                key={key}
+                geometry={node.geometry} 
+                material={shieldMat} 
+              />
+            );
+          }
+          return null;
+        })}
+      </group>
+    );
+  };
+
+  // --- MOUSE & ANIMATION ---
   const measurePosition = () => {
-     if (gl.domElement) {
+    if (gl.domElement) {
       const rect = gl.domElement.getBoundingClientRect();
       setContainerCenter({ x: rect.left + rect.width / 2, y: rect.top + rect.height / 2 });
     }
@@ -61,17 +96,32 @@ const Player = ({ isBookOpen, slots }) => {
 
   useFrame(() => {
     if (!playerNodes.Head || !playerNodes.Waist || !mainGroup.current) return;
+    
+    // 1. Get Mouse positions
     const lookX = THREE.MathUtils.clamp(mouse.current.x, -1.2, 1.2);
     const lookY = THREE.MathUtils.clamp(mouse.current.y, -1, 1);
-    const smooth = 0.75;
-    playerNodes.Head.rotation.y = THREE.MathUtils.lerp(playerNodes.Head.rotation.y, lookX * 0.5, smooth);
-    playerNodes.Head.rotation.x = THREE.MathUtils.lerp(playerNodes.Head.rotation.x, -lookY * 0.4, smooth);
+    const smooth = 0.75; 
+
+    // 2. THE SPINE TWIST LOGIC
+    
+    // A. WHOLE BODY (Feet/Base) 
+    // FIX: Add Math.PI so he stays facing the camera (180 degrees) + the small twist
+    const targetBodyY = Math.PI + (lookX * 0.2);
+    mainGroup.current.rotation.y = THREE.MathUtils.lerp(mainGroup.current.rotation.y, targetBodyY, smooth);
+    
+    // Body tilt (forward/back)
+    mainGroup.current.rotation.x = THREE.MathUtils.lerp(mainGroup.current.rotation.x, lookY * 0.1, smooth);
+
+    // B. WAIST - Turns a bit more (30%) relative to the body
     playerNodes.Waist.rotation.y = THREE.MathUtils.lerp(playerNodes.Waist.rotation.y, lookX * 0.3, smooth);
-    if (mainGroup.current) mainGroup.current.rotation.x = THREE.MathUtils.lerp(mainGroup.current.rotation.x, lookY * 0.2, smooth);
+
+    // C. HEAD - Turns the most
+    playerNodes.Head.rotation.y = THREE.MathUtils.lerp(playerNodes.Head.rotation.y, lookX * 0.6, smooth);
+    playerNodes.Head.rotation.x = THREE.MathUtils.lerp(playerNodes.Head.rotation.x, -lookY * 0.5, smooth);
   });
 
   return (
-    <group ref={mainGroup} position={[0, -2, 0]} scale={2} rotation={[0, Math.PI, 0]}>
+    <group ref={mainGroup} position={[0, -2, 0]} scale={2} rotation={[0, 0, 0]}>
       
       <primitive object={playerNodes.Waist} />
       <primitive object={playerNodes.Right_Leg} />
@@ -79,12 +129,7 @@ const Player = ({ isBookOpen, slots }) => {
 
       {/* HELMET */}
       {hasHelmet && playerNodes.Head && helmGeo && createPortal(
-        <mesh 
-          geometry={helmGeo} 
-          material={armorMat} 
-          scale={CFG.helmet.scale} 
-          position={CFG.helmet.position} 
-        />,
+        <mesh geometry={helmGeo} material={armorMat} scale={CFG.helmet.scale} position={CFG.helmet.position} />,
         playerNodes.Head
       )}
 
@@ -92,31 +137,13 @@ const Player = ({ isBookOpen, slots }) => {
       {hasChest && (
         <>
           {playerNodes.Body && chestBodyGeo && createPortal(
-            <mesh 
-              geometry={chestBodyGeo} 
-              material={armorMat} 
-              scale={CFG.chest.scale} 
-              position={CFG.chest.position} 
-            />,
-            playerNodes.Body
+            <mesh geometry={chestBodyGeo} material={armorMat} scale={CFG.chest.scale} position={CFG.chest.position} />, playerNodes.Body
           )}
           {playerNodes.Right_Arm && chestRArmGeo && createPortal(
-            <mesh 
-              geometry={chestRArmGeo} 
-              material={armorMat} 
-              scale={CFG.rightArm.scale} 
-              position={CFG.rightArm.position} 
-            />,
-            playerNodes.Right_Arm
+            <mesh geometry={chestRArmGeo} material={armorMat} scale={CFG.rightArm.scale} position={CFG.rightArm.position} />, playerNodes.Right_Arm
           )}
           {playerNodes.Left_Arm && chestLArmGeo && createPortal(
-            <mesh 
-              geometry={chestLArmGeo} 
-              material={armorMat} 
-              scale={CFG.leftArm.scale} 
-              position={CFG.leftArm.position} 
-            />,
-            playerNodes.Left_Arm
+            <mesh geometry={chestLArmGeo} material={armorMat} scale={CFG.leftArm.scale} position={CFG.leftArm.position} />, playerNodes.Left_Arm
           )}
         </>
       )}
@@ -125,31 +152,13 @@ const Player = ({ isBookOpen, slots }) => {
       {hasLegs && (
         <>
           {playerNodes.Body && leggingWaistGeo && createPortal(
-            <mesh 
-              geometry={leggingWaistGeo} 
-              material={legsMat} 
-              scale={CFG.belt.scale} 
-              position={CFG.belt.position} 
-            />,
-            playerNodes.Body
+             <mesh geometry={leggingWaistGeo} material={legsMat} scale={CFG.belt.scale} position={CFG.belt.position} />, playerNodes.Body
           )}
           {playerNodes.Right_Leg && leggingRGeo && createPortal(
-            <mesh 
-              geometry={leggingRGeo} 
-              material={legsMat} 
-              scale={CFG.rightLeg.scale} 
-              position={CFG.rightLeg.position} 
-            />,
-            playerNodes.Right_Leg
+             <mesh geometry={leggingRGeo} material={legsMat} scale={CFG.rightLeg.scale} position={CFG.rightLeg.position} />, playerNodes.Right_Leg
           )}
           {playerNodes.Left_Leg && leggingLGeo && createPortal(
-            <mesh 
-              geometry={leggingLGeo} 
-              material={legsMat} 
-              scale={CFG.leftLeg.scale} 
-              position={CFG.leftLeg.position} 
-            />,
-            playerNodes.Left_Leg
+             <mesh geometry={leggingLGeo} material={legsMat} scale={CFG.leftLeg.scale} position={CFG.leftLeg.position} />, playerNodes.Left_Leg
           )}
         </>
       )}
@@ -158,25 +167,21 @@ const Player = ({ isBookOpen, slots }) => {
       {hasBoots && (
         <>
           {playerNodes.Right_Leg && bootRGeo && createPortal(
-            <mesh 
-              geometry={bootRGeo} 
-              material={armorMat} 
-              scale={CFG.rightBoot.scale} 
-              position={CFG.rightBoot.position} 
-            />,
-            playerNodes.Right_Leg
+             <mesh geometry={bootRGeo} material={armorMat} scale={CFG.rightBoot.scale} position={CFG.rightBoot.position} />, playerNodes.Right_Leg
           )}
           {playerNodes.Left_Leg && bootLGeo && createPortal(
-            <mesh 
-              geometry={bootLGeo} 
-              material={armorMat} 
-              scale={CFG.leftBoot.scale} 
-              position={CFG.leftBoot.position} 
-            />,
-            playerNodes.Left_Leg
+             <mesh geometry={bootLGeo} material={armorMat} scale={CFG.leftBoot.scale} position={CFG.leftBoot.position} />, playerNodes.Left_Leg
           )}
         </>
       )}
+
+      {/* SHIELD (Attached to Left Arm) */}
+      {/* We use the ShieldModel component to render all parts */}
+      {hasShield && playerNodes.Left_Arm && createPortal(
+        <ShieldModel />,
+        playerNodes.Left_Arm
+      )}
+
     </group>
   );
 };
@@ -184,5 +189,6 @@ const Player = ({ isBookOpen, slots }) => {
 useGLTF.preload('/models/players/player.glb');
 useGLTF.preload('/models/armors/iron/helmet_chestplate_boots.glb');
 useGLTF.preload('/models/armors/iron/leggings.glb');
+useGLTF.preload('/models/items/shield.glb'); 
 
 export default Player;
