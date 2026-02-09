@@ -5,7 +5,8 @@ import { useSoundSettings } from '../../../../../context/SoundContext';
 import ItemSlot from '../ItemSlot/ItemSlot';
 import recipesData from '../../../../../data/recipes.json';
 
-const RecipeSidebar = ({ isOpen, onHover, onLeave, inventory, onRecipeClick }) => {
+// FIX: Added heldItem to props
+const RecipeSidebar = ({ isOpen, onHover, onLeave, inventory, heldItem, onRecipeClick }) => {
   const [searchQuery, setSearchQuery] = useState('');
   const [isFocused, setIsFocused] = useState(false);
   const [showCraftable, setShowCraftable] = useState(false); 
@@ -38,9 +39,20 @@ const RecipeSidebar = ({ isOpen, onHover, onLeave, inventory, onRecipeClick }) =
   // --- HELPER: Check if User has Ingredients ---
   const checkCanCraft = (recipe) => {
     if (!inventory) return false;
+
     return recipe.ingredients.every(ing => {
-      // Check if user has item in any inventory slot (0-40)
-      return inventory.slice(0, 41).some(slot => slot && slot.id === ing.item);
+      // 1. Check Inventory & Grid (0-44)
+      // We perform a thorough search:
+      const inInventory = inventory.slice(0, 45).some(slot => 
+        slot && 
+        slot.id === ing.item && 
+        !slot.isGhost // CRITICAL: Ignore Ghosts in the grid
+      );
+      
+      // 2. Check Held Item
+      const isHeld = heldItem && heldItem.id === ing.item;
+
+      return inInventory || isHeld;
     });
   };
 
@@ -61,7 +73,6 @@ const RecipeSidebar = ({ isOpen, onHover, onLeave, inventory, onRecipeClick }) =
 
   const visibleRecipes = getVisibleRecipes();
 
-  // ... (Keep existing Helper Functions: getInputClass, getFilterIcon) ...
   const getInputClass = () => {
     if (isFocused) return styles.inputFocused; 
     if (searchQuery.length > 0) return styles.inputFilled; 
@@ -117,7 +128,6 @@ const RecipeSidebar = ({ isOpen, onHover, onLeave, inventory, onRecipeClick }) =
           </div>
         </div>
 
-        {/* --- GRID CONTENT AREA --- */}
         <div className={styles.contentArea}>
           <div className={styles.recipeGrid}>
             {visibleRecipes.map((recipe) => {
@@ -134,8 +144,6 @@ const RecipeSidebar = ({ isOpen, onHover, onLeave, inventory, onRecipeClick }) =
                     onHover={() => onHover && onHover(recipe.result)}
                     onLeave={() => onLeave && onLeave()}
                     isRecipe={true}
-                    
-                    // PASS THE CUSTOM CLASS HERE
                     className={statusClass}
                   />
                 </div>
