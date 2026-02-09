@@ -8,7 +8,6 @@ import recipesData from '../../../data/recipes.json';
 import PlayerPreview from './components/PlayerPreview/PlayerPreview';
 import { useSoundSettings } from '../../../context/SoundContext';
 
-// --- PLACEHOLDER ASSETS ---
 const ARMOR_PLACEHOLDERS = {
   39: '/icons/ui/empty_armor_slot_helmet.png',
   38: '/icons/ui/empty_armor_slot_chestplate.png',
@@ -18,7 +17,12 @@ const ARMOR_PLACEHOLDERS = {
 
 const OFFHAND_PLACEHOLDER = '/icons/ui/empty_armor_slot_shield.png';
 
-// --- PLACEMENT LOGIC ---
+const ACTIVE_EFFECTS = [
+  { id: 'grinding', name: 'Grinding', duration: '∞:∞:∞', icon: '/icons/items/netherite_pickaxe.png' },
+  { id: 'coffee', name: 'Caffeinated II', duration: 'Past hour', icon: '/icons/items/milk.png' },
+  { id: 'bugs', name: 'Merge Conflict', duration: 'Until Production', icon: '/icons/items/withered.png' }
+];
+
 const canPlaceItem = (item, slotIndex) => {
   if (!item) return true;
   if (slotIndex <= 35) return true; 
@@ -32,7 +36,6 @@ const canPlaceItem = (item, slotIndex) => {
   }
   if (slotIndex === 40) return item.isShield === true;
   if (slotIndex >= 41 && slotIndex <= 44) return item.isBlock || item.isArmor || item.isShield;
-  if (slotIndex === 45) return false;
   return false;
 };
 
@@ -125,11 +128,8 @@ const Singleplayer = ({ onClose }) => {
     setHoveredItem(null);
   }, []);
 
-  // --- HELPER: Refund Grid Items to Inventory ---
   const returnGridToInventory = (currentSlots) => {
     const newSlots = [...currentSlots];
-    
-    // Priority: Hotbar (27-35) -> Row 3 (18-26) -> Row 2 (9-17) -> Row 1 (0-8)
     const searchOrder = [
       ...Array.from({ length: 9 }, (_, i) => 27 + i),
       ...Array.from({ length: 9 }, (_, i) => 18 + i),
@@ -137,49 +137,30 @@ const Singleplayer = ({ onClose }) => {
       ...Array.from({ length: 9 }, (_, i) => 0 + i)
     ];
 
-    // Check slots 41-44
     for (let i = 41; i <= 44; i++) {
         const item = newSlots[i];
-        // Only return REAL items, delete ghosts
         if (item && !item.isGhost) {
             const emptyIndex = searchOrder.find(idx => newSlots[idx] === null);
-            if (emptyIndex !== undefined) {
-                newSlots[emptyIndex] = item;
-            } else {
-                console.warn("Inventory full, item lost:", item.name);
-            }
+            if (emptyIndex !== undefined) newSlots[emptyIndex] = item;
         }
-        // Always clear grid slot
         newSlots[i] = null;
     }
-    // Clear output
     newSlots[45] = null;
     return newSlots;
   };
 
   const handleBookToggle = () => {
     playUiClick();
-    if (isBookOpen) {
-        // Closing: refund items
-        setSlots(currentSlots => returnGridToInventory(currentSlots));
-    }
+    if (isBookOpen) setSlots(currentSlots => returnGridToInventory(currentSlots));
     setIsBookOpen(!isBookOpen);
   };
 
-  // --- HELPER: Update Result based on Grid ---
   const updateCraftingResult = (currentSlots) => {
-    const grid = {
-        0: currentSlots[41],
-        1: currentSlots[42],
-        2: currentSlots[43],
-        3: currentSlots[44]
-    };
-
+    const grid = { 0: currentSlots[41], 1: currentSlots[42], 2: currentSlots[43], 3: currentSlots[44] };
     const match = recipesData.find(recipe => {
         for (let i = 0; i < 4; i++) {
             const ingredient = recipe.ingredients.find(ing => (ing.slot ?? 0) === i);
             const slotItem = grid[i];
-
             if (ingredient) {
                 if (!slotItem || slotItem.id !== ingredient.item) return false;
             } else {
@@ -191,78 +172,48 @@ const Singleplayer = ({ onClose }) => {
 
     if (match) {
         const fullItem = itemsData[match.result.id] || match.result;
-        // Result is ghost if ANY ingredient is ghost
         const hasGhostIngredients = [41, 42, 43, 44].some(i => currentSlots[i] && currentSlots[i].isGhost);
         currentSlots[45] = { ...fullItem, count: 1, isGhost: hasGhostIngredients };
     } else {
         currentSlots[45] = null;
     }
-
     return currentSlots;
   };
 
-  // --- HANDLER: Recipe Click ---
   const handleRecipeClick = useCallback((recipe) => {
     playUiClick();
     setSlots(currentSlots => {
-      // 1. Refund existing grid items
       let newSlots = returnGridToInventory(currentSlots);
-      
-      // 2. Place new ingredients
       recipe.ingredients.forEach(ing => {
         const offset = typeof ing.slot === 'number' ? ing.slot : 0;
         const targetSlot = 41 + offset;
         const requiredId = ing.item;
-
         const sourceIndex = newSlots.findIndex((s, idx) => idx <= 40 && s && s.id === requiredId);
-
         if (sourceIndex !== -1) {
             newSlots[targetSlot] = { ...newSlots[sourceIndex] };
             newSlots[sourceIndex] = null;
         } else {
             const itemData = itemsData[requiredId];
-            if (itemData) {
-                newSlots[targetSlot] = { ...itemData, isGhost: true };
-            }
+            if (itemData) newSlots[targetSlot] = { ...itemData, isGhost: true };
         }
       });
-
-      // 3. Update Result
-      newSlots = updateCraftingResult(newSlots);
-
-      return newSlots;
+      return updateCraftingResult(newSlots);
     });
   }, []);
 
-  // --- HANDLER: Slot Click ---
   const handleSlotClick = (index) => {
-    // 1. HANDLE CRAFTING (OUTPUT SLOT 45)
     if (index === 45) {
       if (slots[45] && !heldItem) {
          if (slots[45].isGhost) return; 
-
-         // A. Pick up the Result
          setHeldItem(slots[45]);
-         
-         // B. Clear the Output Slot
          const newSlots = [...slots];
          newSlots[45] = null;
-
-         // C. REFUND INGREDIENTS (Don't delete them!)
-         // We run the helper to move 41-44 back to 0-40
-         const slotsAfterRefund = returnGridToInventory(newSlots);
-         
-         // D. Update State
-         // We don't need to updateCraftingResult because the grid is now empty
-         setSlots(slotsAfterRefund);
+         setSlots(returnGridToInventory(newSlots));
          playUiClick();
       }
       return;
     }
-
     const clickedItem = slots[index];
-
-    // Pick Up
     if (!heldItem && clickedItem) {
       if (clickedItem.isGhost) {
         let newSlots = [...slots];
@@ -272,7 +223,6 @@ const Singleplayer = ({ onClose }) => {
         playUiClick();
         return;
       }
-
       setHeldItem(clickedItem);
       let newSlots = [...slots];
       newSlots[index] = null;
@@ -281,14 +231,10 @@ const Singleplayer = ({ onClose }) => {
       playUiClick();
       return;
     }
-
-    // Place
     if (heldItem) {
       if (!canPlaceItem(heldItem, index)) return;
-
       let newSlots = [...slots];
       const itemToPickup = newSlots[index]; 
-      
       if (itemToPickup && itemToPickup.isGhost) {
          newSlots[index] = heldItem;
          setHeldItem(null);
@@ -296,7 +242,6 @@ const Singleplayer = ({ onClose }) => {
          newSlots[index] = heldItem;
          setHeldItem(itemToPickup); 
       }
-      
       if (index >= 41 && index <= 44) newSlots = updateCraftingResult(newSlots);
       setSlots(newSlots);
       playUiClick();
@@ -305,25 +250,18 @@ const Singleplayer = ({ onClose }) => {
 
   return (
     <div className={styles.overlay}>
+      <div className={styles.escHint}>Press 'ESC' to Close</div>
+
+      {/* REUSED TOOLTIP FOR BOTH ITEMS AND EFFECTS */}
       {hoveredItem && !heldItem && (
-        <div 
-          ref={tooltipRef}
-          className={styles.tooltip}
-          style={{ left: mousePos.current.x, top: mousePos.current.y }}
-        >
+        <div ref={tooltipRef} className={styles.tooltip}>
           <span className={styles.tooltipTitle}>{hoveredItem.name}</span>
-          {hoveredItem.description && (
-            <span className={styles.tooltipDesc}>{hoveredItem.description}</span>
-          )}
+          {hoveredItem.description && <span className={styles.tooltipDesc}>{hoveredItem.description}</span>}
         </div>
       )}
 
       {heldItem && (
-        <div 
-          ref={floatingItemRef} 
-          className={styles.floatingItem}
-          style={{ left: `${mousePos.current.x}px`, top: `${mousePos.current.y}px` }}
-        >
+        <div ref={floatingItemRef} className={styles.floatingItem}>
           <img src={heldItem.icon} alt="Held Item" />
         </div>
       )}
@@ -344,13 +282,9 @@ const Singleplayer = ({ onClose }) => {
               <div className={styles.armorColumn}>
                 {[39, 38, 37, 36].map((index) => (
                   <ItemSlot 
-                    key={index} 
-                    item={slots[index]} 
-                    index={index} 
-                    onSlotClick={handleSlotClick}
-                    onHover={setHoveredItem}
-                    onLeave={() => setHoveredItem(null)} 
-                    placeholder={ARMOR_PLACEHOLDERS[index]}
+                    key={index} item={slots[index]} index={index} 
+                    onSlotClick={handleSlotClick} onHover={setHoveredItem}
+                    onLeave={() => setHoveredItem(null)} placeholder={ARMOR_PLACEHOLDERS[index]}
                   />
                 ))}
               </div>
@@ -362,19 +296,13 @@ const Singleplayer = ({ onClose }) => {
             <div className={styles.middleGroup}>
               <div className={styles.offhandWrapper}>
                 <ItemSlot 
-                  item={slots[40]} 
-                  index={40} 
-                  onSlotClick={handleSlotClick}
-                  onHover={setHoveredItem}
-                  onLeave={() => setHoveredItem(null)}
+                  item={slots[40]} index={40} onSlotClick={handleSlotClick}
+                  onHover={setHoveredItem} onLeave={() => setHoveredItem(null)}
                   placeholder={OFFHAND_PLACEHOLDER}
                 />
               </div>
               <div className={styles.recipeBookWrapper}>
-                <RecipeBook 
-                  isOpen={isBookOpen} 
-                  onClick={handleBookToggle} 
-                />
+                <RecipeBook isOpen={isBookOpen} onClick={handleBookToggle} />
               </div>
             </div>
 
@@ -384,24 +312,17 @@ const Singleplayer = ({ onClose }) => {
                 <div className={styles.craftingGrid2x2}>
                   {[41, 42, 43, 44].map((index) => (
                     <ItemSlot 
-                      key={index} 
-                      item={slots[index]} 
-                      index={index} 
-                      onSlotClick={handleSlotClick}
-                      onHover={setHoveredItem}
-                      onLeave={() => setHoveredItem(null)} 
-                      isGhost={slots[index]?.isGhost} 
+                      key={index} item={slots[index]} index={index} 
+                      onSlotClick={handleSlotClick} onHover={setHoveredItem}
+                      onLeave={() => setHoveredItem(null)} isGhost={slots[index]?.isGhost} 
                     />
                   ))}
                 </div>
                 <div className={styles.craftingOutputRow}>
                   <div className={styles.arrow} />
                   <ItemSlot 
-                    item={slots[45]} 
-                    index={45} 
-                    onSlotClick={handleSlotClick}
-                    onHover={setHoveredItem}
-                    onLeave={() => setHoveredItem(null)} 
+                    item={slots[45]} index={45} onSlotClick={handleSlotClick}
+                    onHover={setHoveredItem} onLeave={() => setHoveredItem(null)} 
                     isGhost={slots[45]?.isGhost}
                   />
                 </div>
@@ -414,30 +335,31 @@ const Singleplayer = ({ onClose }) => {
           <div className={styles.inventorySection}>
             <div className={styles.grid9x3}>
               {slots.slice(0, 27).map((item, index) => (
-                <ItemSlot 
-                  key={index} 
-                  item={item} 
-                  index={index} 
-                  onSlotClick={handleSlotClick}
-                  onHover={setHoveredItem}
-                  onLeave={() => setHoveredItem(null)} 
-                />
+                <ItemSlot key={index} item={item} index={index} onSlotClick={handleSlotClick} onHover={setHoveredItem} onLeave={() => setHoveredItem(null)} />
               ))}
             </div>
             <div className={styles.hotbar9x1}>
               {slots.slice(27, 36).map((item, index) => (
-                <ItemSlot 
-                  key={index + 27} 
-                  item={item} 
-                  index={index + 27} 
-                  onSlotClick={handleSlotClick}
-                  onHover={setHoveredItem}
-                  onLeave={() => setHoveredItem(null)} 
-                />
+                <ItemSlot key={index + 27} item={item} index={index + 27} onSlotClick={handleSlotClick} onHover={setHoveredItem} onLeave={() => setHoveredItem(null)} />
               ))}
             </div>
           </div>
         </div>
+
+        {/* --- STATUS EFFECTS --- */}
+        <div className={styles.effectsContainer}>
+          {ACTIVE_EFFECTS.map((effect) => (
+            <div 
+              key={effect.id}
+              className={styles.effectIconSquare}
+              onMouseEnter={() => setHoveredItem({ name: effect.name, description: effect.duration })}
+              onMouseLeave={() => setHoveredItem(null)}
+            >
+              <img src={effect.icon} alt={effect.name} />
+            </div>
+          ))}
+        </div>
+
       </div>
     </div>
   );

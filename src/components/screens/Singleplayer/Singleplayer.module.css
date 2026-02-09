@@ -11,15 +11,12 @@
   z-index: 50;
 }
 
-/* 1. CENTER WRAPPER: The Flex Parent */
 .centerWrapper {
   display: flex;
-  align-items: flex-start; /* Align tops of Sidebar and Inventory */
-  justify-content: center; /* Keep the whole unit centered */
-  transition: transform 0.3s ease; /* Optional: Smooths the centering adjustment */
+  align-items: flex-start;
+  justify-content: center;
 }
 
-/* 2. CONTAINER: The Main Inventory */
 .container {
   width: 732px;
   height: 674px;
@@ -30,7 +27,6 @@
   padding: 24px;
   box-shadow: inset 5px 5px 0px #fff, inset -5px -5px 0px #555;
   image-rendering: pixelated;
-  /* Removed 'transform' and 'transition' from here because flex handles it */
 }
 
 .topSection {
@@ -40,17 +36,8 @@
   margin-bottom: auto;
 }
 
-/* --- Left Group: Armor + Player --- */
-.leftGroup {
-  display: flex;
-  gap: 0px;
-}
-
-.armorColumn {
-  display: flex;
-  flex-direction: column;
-  gap: 0px;
-}
+.leftGroup { display: flex; gap: 0px; }
+.armorColumn { display: flex; flex-direction: column; gap: 0px; }
 
 .characterPreview {
   width: 220px;
@@ -63,7 +50,6 @@
   box-sizing: border-box;
 }
 
-/* --- Middle Group: Offhand & Recipe Book --- */
 .middleGroup {
   display: flex;
   align-items: flex-end; 
@@ -71,18 +57,9 @@
   gap: 52px; 
 }
 
-.offhandWrapper {
-  width: 72px;
-  height: 72px;
-}
+.offhandWrapper { width: 72px; height: 72px; }
+.recipeBookWrapper { width: 72px; height: 72px; }
 
-.recipeBookWrapper {
-  width: 72px; 
-  height: 72px;
-  margin-bottom: 0px; 
-}
-
-/* --- Right Group: Crafting Complex --- */
 .craftingGroup {
   display: flex;
   flex-direction: column;
@@ -99,23 +76,9 @@
   margin-left: 2px;
 }
 
-.craftingArea {
-  display: flex;
-  align-items: center; 
-  gap: 16px; 
-}
-
-.craftingGrid2x2 {
-  display: grid;
-  grid-template-columns: repeat(2, 72px);
-  gap: 4px;
-}
-
-.craftingOutputRow {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-}
+.craftingArea { display: flex; align-items: center; gap: 16px; }
+.craftingGrid2x2 { display: grid; grid-template-columns: repeat(2, 72px); gap: 4px; }
+.craftingOutputRow { display: flex; align-items: center; gap: 16px; }
 
 .arrow {
   width: 48px;
@@ -125,7 +88,6 @@
   background-repeat: no-repeat;
 }
 
-/* --- Bottom Inventory --- */
 .inventorySection {
   display: flex;
   flex-direction: column;
@@ -151,8 +113,6 @@
 
 .floatingItem {
   position: fixed;
-  top: 0;
-  left: 0;
   width: 64px;
   height: 64px;
   pointer-events: none; 
@@ -161,12 +121,7 @@
   image-rendering: pixelated;
 }
 
-.floatingItem img {
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-  filter: drop-shadow(4px 4px 0px rgba(0,0,0,0.5)); 
-}
+.floatingItem img { width: 100%; height: 100%; filter: drop-shadow(4px 4px 0px rgba(0,0,0,0.5)); }
 
 .tooltip {
   position: fixed;
@@ -181,19 +136,46 @@
   font-family: 'Mojangles', sans-serif;
   color: #fff;
   text-shadow: 2px 2px 0px #3f3f3f;
-  white-space: pre-wrap; 
   image-rendering: pixelated;
-  transform: translate(15px, -15px);
 }
 
-.tooltipTitle {
-  color: #ffff55; 
-  margin-bottom: 2px;
-  display: block;
+.tooltipTitle { color: #ffff55; display: block; }
+.tooltipDesc { color: #aaaaaa; font-size: 0.9em; display: block; }
+
+.escHint {
+  position: absolute;
+  top: 24px;
+  right: 24px;
+  color: #ffffff;
+  font-family: 'Mojangles', sans-serif;
+  font-size: 20px;
+  text-shadow: 2px 2px 0px #000000;
+  opacity: 0.8;
 }
 
-.tooltipDesc {
-  color: #aaaaaa; 
-  font-size: 0.9em;
-  display: block;
+/* --- STATUS EFFECTS --- */
+.effectsContainer {
+  margin-left: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.effectIconSquare {
+  width: 72px;
+  height: 72px;
+  background-color: rgba(33, 33, 33, 0.8);
+  border: 2px solid #555;
+  border-radius: 4px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 2px 2px 0px rgba(0,0,0,0.5);
+  cursor: help;
+}
+
+.effectIconSquare img {
+  width: 48px;
+  height: 48px;
+  image-rendering: pixelated;
 }
