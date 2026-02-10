@@ -1,51 +1,39 @@
-# Minecraft Portfolio ⛏️
+# Yash Parmar | Java Edition ⛏️
 
-A personal developer portfolio website built with **React** and **Vite**, styled to replicate the Minecraft user interface. This project serves as an interactive resume, allowing users to explore my projects ("Inventory"), social links ("Multiplayer"), and work experience ("Realms") in an immersive 3D environment.
+> **Current Version:** v1.0.0 (Gold Release)
+> **Status:** Online & Open to Work
+> **Live Demo:** [https://www.yparmar.vercel.app]
 
-## 🌟 Features
+Welcome to **Career Mode**. This is an immersive, interactive developer portfolio styled after the **Minecraft Java Edition** interface.
 
-* **Immersive 3D Background:** Uses `react-three-fiber` to render a 360° panoramic world that changes based on the user's local time (Day/Night cycle).
-* **Authentic UI:** Custom CSS and components designed to mimic the Minecraft Java Edition menu system, including sound effects, pixelated fonts, and hover states.
-* **Interactive Navigation:**
-    * **Singleplayer:** Opens the Inventory (Projects).
-    * **Multiplayer:** Displays Social Links (GitHub, LinkedIn, etc.).
-    * **Minecraft Realms:** showcases Work Experience & Resume timeline.
-* **Responsive Design:** Fully playable on desktop and mobile devices.
+Unlike traditional portfolios, this application is a fully functional **React State Engine** that simulates inventory management, crafting logic, and 3D environment rendering directly in the browser.
 
-## 🛠️ Tech Stack
+## 🎮 Features & Mechanics
 
-* **Framework:** [React](https://react.dev/)
-* **Build Tool:** [Vite](https://vitejs.dev/)
-* **3D Rendering:** [React Three Fiber](https://docs.pmnd.rs/react-three-fiber) & [Drei](https://github.com/pmndrs/drei)
-* **Styling:** CSS Modules & Standard CSS
+### 1. The Crafting Engine
+I built a custom recipe validation system that treats my technical skills as "Ingredients."
+* **Logic:** The app checks the 2x2 grid state against a `recipes.json` lookup table in real-time.
+* **Validation:** It enforces strict type-checking (e.g., you can't put a skill in a armor slot).
+* **Reward:** Successfully crafting a project unlocks it in the output slot, triggering a custom "New Achievement!" toast notification.
 
-## 🚀 Getting Started
+### 2. 3D Rendering & Performance
+* **Tech:** Built with **React Three Fiber (R3F)**.
+* **Optimization:** The 3D player model uses a custom `useSpineTwist` hook to track mouse movement efficiently without causing re-renders on the main UI thread.
+* **Assets:** All textures are optimized for web performance, ensuring fast load times even on mobile networks.
 
-1.  **Clone the repository**
-    ```bash
-    git clone [https://github.com/yourusername/minecraft-portfolio.git](https://github.com/yourusername/minecraft-portfolio.git)
-    ```
-
-2.  **Install dependencies**
-    ```bash
-    npm install
-    ```
-
-3.  **Run the development server**
-    ```bash
-    npm run dev
-    ```
-
-## 📜 Credits & Attribution
-
-This project is a fan creation and is not affiliated with Mojang Studios or Microsoft.
-
-* **Inspiration:** [Minecraft](https://www.minecraft.net/) by Mojang Studios.
-* **Assets:**
-    * **Cursor:** Custom cursor asset sourced from [Minecraft Cursor Mod](https://www.curseforge.com/minecraft/mc-mods/minecraft-cursor) (CurseForge).
-    * **Fonts:** Uses the "Mojangles" font for UI authenticity.
-    * **Sounds:** UI sound effects (`click.ogg`, `hurt.ogg`) used under fair use for educational/portfolio purposes.
+### 3. Dynamic Audio System
+* **SoundContext:** A global audio manager that handles concurrent sound effects (UI clicks) and background music (`otherside.mp3`, etc.) with volume normalization and mute toggles.
 
 ---
 
-*Minecraft is a trademark of Mojang Synergies AB.*
+## 🛠️ Tech Stack
+
+* **Frontend Library:** React 18
+* **Build Tool:** Vite (for O(1) HMR and optimized bundling)
+* **State Management:** React Context API + Custom Hooks
+* **3D Engine:** Three.js / React Three Fiber / Drei
+* **Styling:** CSS Modules (Scoped styles for component isolation)
+
+---
+
+> *"You can not sleep now, there are bugs nearby."* — **Yash Parmar**
