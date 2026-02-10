@@ -1,0 +1,117 @@
+/**
+ * Shared CSS Utilities and Variables
+ * Minecraft-themed design tokens and reusable patterns for consistent UI styling
+ */
+
+/* ============================================
+   CSS VARIABLES (Design Tokens)
+   ============================================ */
+:root {
+  /* Colors - Gray Scale */
+  --mc-gray-darkest: #1a1a1a;
+  --mc-gray-darker: #2e2e2e;
+  --mc-gray-dark: #373737;
+  --mc-gray-shadow: #3f3f3f;
+  --mc-gray-medium: #555;
+  --mc-gray: #8b8b8b;
+  --mc-gray-light: #c6c6c6;
+  --mc-gray-lighter: #e0e0e0;
+
+  /* Colors - UI Accents */
+  --mc-gold: #ffff55;
+  --mc-white: #ffffff;
+  --mc-black: #000;
+  --mc-red: #ff5555;
+  --mc-green: #55ff55;
+  --mc-blue: #55ffff;
+  --mc-dirt-brown: #2e2117;
+
+  /* Typography */
+  --mc-font: 'Mojangles', sans-serif;
+  --mc-text-shadow: 2px 2px 0px var(--mc-gray-shadow);
+  --mc-text-shadow-black: 2px 2px 0px var(--mc-black);
+
+  /* Spacing */
+  --mc-slot-size: 72px;
+  --mc-slot-gap: 4px;
+  --mc-icon-size: 60px;
+}
+
+/* ============================================
+   UTILITY CLASSES
+   ============================================ */
+
+/* Pixelated rendering for all Minecraft assets */
+.mc-pixelated {
+  image-rendering: pixelated;
+  image-rendering: -moz-crisp-edges;
+  image-rendering: crisp-edges;
+}
+
+/* Inset box-shadow patterns (recessed slots) */
+.mc-slot-inset {
+  box-shadow: inset 4px 4px 0px var(--mc-gray-dark),
+              inset -4px -4px 0px var(--mc-white);
+}
+
+.mc-slot-inset-deep {
+  box-shadow: inset 5px 5px 0px var(--mc-white),
+              inset -5px -5px 0px var(--mc-gray-medium);
+}
+
+.mc-slot-inset-subtle {
+  box-shadow: inset 4px 4px 2px var(--mc-gray-dark),
+              inset -3px -3px 2px var(--mc-white);
+}
+
+/* Button-style 3D bevel (raised effect) */
+.mc-button-bevel {
+  box-shadow: inset 2px 2px 0px var(--mc-gray-light),
+              inset -2px -2px 0px #535353;
+}
+
+.mc-button-bevel-large {
+  box-shadow: inset 5px 5px 0px var(--mc-white),
+              inset -5px -5px 0px var(--mc-gray-medium);
+}
+
+/* Text shadow variations */
+.mc-text-shadow {
+  text-shadow: var(--mc-text-shadow);
+}
+
+.mc-text-shadow-black {
+  text-shadow: var(--mc-text-shadow-black);
+}
+
+.mc-text-gold {
+  color: var(--mc-gold);
+  text-shadow: var(--mc-text-shadow);
+}
+
+/* Scrollbar styling (Minecraft theme) */
+.mc-scrollbar::-webkit-scrollbar {
+  width: 10px;
+}
+
+.mc-scrollbar::-webkit-scrollbar-track {
+  background: var(--mc-black);
+  border-left: 1px solid var(--mc-gray-dark);
+}
+
+.mc-scrollbar::-webkit-scrollbar-thumb {
+  background: var(--mc-gray-light);
+  border: 1px solid var(--mc-white);
+  border-right: 1px solid var(--mc-gray-medium);
+  border-bottom: 1px solid var(--mc-gray-medium);
+}
+
+.mc-scrollbar::-webkit-scrollbar-thumb:active {
+  background: var(--mc-gray);
+}
+
+/* Firefox scrollbar styling */
+.mc-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: var(--mc-gray-light) var(--mc-black);
+}

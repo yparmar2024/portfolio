@@ -1,9 +1,21 @@
+/**
+ * 3D Player Model component
+ *
+ * Renders an interactive Minecraft-style player model with dynamic armor rendering.
+ * Features mouse-tracking animation with spine twist mechanics and armor attachment system.
+ * Uses React Three Fiber portals to attach armor meshes to player bone nodes.
+ *
+ * @component
+ * @param {Object} props
+ * @param {boolean} props.isBookOpen - Controls player animation state
+ * @param {Array} props.slots - Inventory slots containing armor items (indices 36-40)
+ * @returns {JSX.Element} 3D player model with conditional armor pieces
+ */
 import React, { useRef, useEffect, useState, useMemo } from 'react';
 import { useFrame, useThree, createPortal } from '@react-three/fiber';
 import { useGLTF } from '@react-three/drei';
 import * as THREE from 'three';
-// Make sure this path is correct for your file structure
-import { SLIM_ARMOR_CONFIG as CFG } from '../../../../../constants/armorConfig'; 
+import { SLIM_ARMOR_CONFIG as CFG } from '../../../../../constants/armorConfig';
 
 const Player = ({ isBookOpen, slots }) => {
   // 1. LOAD MODELS
@@ -103,9 +115,9 @@ const Player = ({ isBookOpen, slots }) => {
     const smooth = 0.75; 
 
     // 2. THE SPINE TWIST LOGIC
-    
-    // A. WHOLE BODY (Feet/Base) 
-    // FIX: Add Math.PI so he stays facing the camera (180 degrees) + the small twist
+
+    // A. WHOLE BODY (Feet/Base)
+    // Rotate 180 degrees to face camera plus small mouse-following twist
     const targetBodyY = Math.PI + (lookX * 0.2);
     mainGroup.current.rotation.y = THREE.MathUtils.lerp(mainGroup.current.rotation.y, targetBodyY, smooth);
     

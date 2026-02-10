@@ -1,15 +1,17 @@
 .slot {
   width: 72px;
   height: 72px;
-  background-color: #8b8b8b;
+  background-color: var(--mc-gray);
   /* Authentic Minecraft Recessed Slot Look */
   /* Top-Left: Dark Shadow | Bottom-Right: White Highlight */
   /* Blur is set to 0px to keep it pixelated */
-  box-shadow: inset 4px 4px 0px #373737, inset -4px -4px 0px #ffffff;
+  box-shadow: inset 4px 4px 0px var(--mc-gray-dark), inset -4px -4px 0px var(--mc-white);
   display: flex;
   justify-content: center;
   align-items: center;
   image-rendering: pixelated;
+  image-rendering: -moz-crisp-edges;
+  image-rendering: crisp-edges;
   box-sizing: border-box;
 }
 
@@ -27,6 +29,8 @@
   width: 60px;
   height: 60px;
   image-rendering: pixelated;
+  image-rendering: -moz-crisp-edges;
+  image-rendering: crisp-edges;
   pointer-events: none; /* Prevents image from blocking the div's onClick */
 }
 
@@ -34,6 +38,8 @@
   width: 90%; /* Or 16px scaled up, usually fills the slot */
   height: 90%;
   image-rendering: pixelated;
+  image-rendering: -moz-crisp-edges;
+  image-rendering: crisp-edges;
   opacity: 1; /* Minecraft placeholders are actually fully opaque, just dark gray */
   pointer-events: none;
 }
@@ -41,7 +47,7 @@
 /* Add this class for the "Red Ghost" effect */
 .ghostItem {
   background-color: rgba(255, 0, 0, 0.4); /* Light Red Background */
-  border: 1px solid #ff5555;
+  border: 1px solid var(--mc-red);
 }
 
 /* Ensure the image inside doesn't block the background tint */

@@ -1,10 +1,20 @@
-// src/components/screens/Singleplayer/components/PlayerPreview/PlayerPreview.jsx
+/**
+ * Player Preview Canvas component
+ *
+ * Renders a Three.js canvas containing the 3D player model with armor visualization.
+ * Configures camera position, lighting, and passes inventory data to the Player component.
+ *
+ * @component
+ * @param {Object} props
+ * @param {boolean} props.isBookOpen - Whether the recipe book is open (affects player animation)
+ * @param {Array} props.slots - Inventory slots array containing armor items
+ * @returns {JSX.Element} Canvas with 3D player preview
+ */
 import React from 'react';
 import { Canvas } from '@react-three/fiber';
 import Player from './Player';
 import styles from './PlayerPreview.module.css';
 
-// FIX: Added 'slots' to props
 const PlayerPreview = ({ isBookOpen, slots }) => {
   return (
     <div className={styles.container}>
@@ -12,8 +22,7 @@ const PlayerPreview = ({ isBookOpen, slots }) => {
         <ambientLight intensity={0.75} />
         <directionalLight position={[5, 10, 5]} intensity={0.8} />
         <directionalLight position={[-5, 5, 5]} intensity={0.5} />
-        
-        {/* FIX: Pass slots to Player */}
+
         <Player isBookOpen={isBookOpen} slots={slots} />
       </Canvas>
     </div>

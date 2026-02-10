@@ -1,35 +1,40 @@
+/**
+ * Recipe Book Sidebar component
+ *
+ * Displays a filterable list of crafting recipes with search and craftable filter.
+ * Shows visual status (craftable/uncraftable) based on inventory contents.
+ *
+ * @component
+ * @param {Object} props
+ * @param {boolean} props.isOpen - Whether the sidebar is visible
+ * @param {Function} props.onHover - Handler for item hover events
+ * @param {Function} props.onLeave - Handler for item hover leave events
+ * @param {Array} props.inventory - Current inventory slots array
+ * @param {Object|null} props.heldItem - Currently held item (for crafting validation)
+ * @param {Function} props.onRecipeClick - Handler when a recipe is clicked
+ * @returns {JSX.Element} Recipe sidebar with search and filter controls
+ */
 import React, { useState, useEffect, useRef } from 'react';
 import styles from './RecipeSidebar.module.css';
-import MinecraftInput from '../../../../common/MinecraftInput/MinecraftInput'; 
-import { useSoundSettings } from '../../../../../context/SoundContext'; 
+import MinecraftInput from '../../../../common/MinecraftInput/MinecraftInput';
+import useSound from '../../../../../hooks/useSound';
 import ItemSlot from '../ItemSlot/ItemSlot';
 import recipesData from '../../../../../data/recipes.json';
 
-// FIX: Added heldItem to props
 const RecipeSidebar = ({ isOpen, onHover, onLeave, inventory, heldItem, onRecipeClick }) => {
   const [searchQuery, setSearchQuery] = useState('');
   const [isFocused, setIsFocused] = useState(false);
-  const [showCraftable, setShowCraftable] = useState(false); 
-  const [isFilterHovered, setIsFilterHovered] = useState(false); 
-  
+  const [showCraftable, setShowCraftable] = useState(false);
+  const [isFilterHovered, setIsFilterHovered] = useState(false);
+
   const inputRef = useRef(null);
-  const { getEffectiveVolume } = useSoundSettings();
+  const playClickSound = useSound('/sounds/click.ogg', 'ui');
 
   useEffect(() => {
     if (isFilterHovered && onHover) {
       onHover(showCraftable ? "Showing Craftable" : "Showing All");
     }
   }, [showCraftable, isFilterHovered, onHover]);
-
-  const playClickSound = () => {
-    try {
-      const audio = new Audio('/sounds/click.ogg');
-      audio.volume = getEffectiveVolume('ui'); 
-      audio.play().catch(() => {});
-    } catch (e) {
-      console.warn("Sound play failed", e);
-    }
-  };
 
   const handleFilterClick = () => {
     playClickSound();

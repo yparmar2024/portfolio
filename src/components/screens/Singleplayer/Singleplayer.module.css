@@ -20,13 +20,15 @@
 .container {
   width: 732px;
   height: 674px;
-  background: #c6c6c6;
-  border: 2px solid #000;
+  background: var(--mc-gray-light);
+  border: 2px solid var(--mc-black);
   display: flex;
   flex-direction: column;
   padding: 24px;
-  box-shadow: inset 5px 5px 0px #fff, inset -5px -5px 0px #555;
+  box-shadow: inset 5px 5px 0px var(--mc-white), inset -5px -5px 0px var(--mc-gray-medium);
   image-rendering: pixelated;
+  image-rendering: -moz-crisp-edges;
+  image-rendering: crisp-edges;
 }
 
 .topSection {
@@ -43,7 +45,7 @@
   width: 220px;
   height: 290px;
   background: rgba(0, 0, 0, 0.99);
-  box-shadow: inset 4px 4px 2px #373737, inset -3px -3px 2px #ffffff;
+  box-shadow: inset 4px 4px 2px var(--mc-gray-dark), inset -3px -3px 2px var(--mc-white);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -68,9 +70,9 @@
 }
 
 .craftingLabel {
-  font-family: 'Mojangles', sans-serif;
+  font-family: var(--mc-font);
   font-size: 32px;
-  color: #3f3f3f;
+  color: var(--mc-gray-shadow);
   margin-top: 20px;
   margin-bottom: -20px;
   margin-left: 2px;
@@ -115,41 +117,45 @@
   position: fixed;
   width: 64px;
   height: 64px;
-  pointer-events: none; 
-  z-index: 9999; 
-  transform: translate(-50%, -50%); 
+  pointer-events: none;
+  z-index: 9999;
+  transform: translate(-50%, -50%);
   image-rendering: pixelated;
+  image-rendering: -moz-crisp-edges;
+  image-rendering: crisp-edges;
 }
 
 .floatingItem img { width: 100%; height: 100%; filter: drop-shadow(4px 4px 0px rgba(0,0,0,0.5)); }
 
 .tooltip {
   position: fixed;
-  z-index: 10000; 
-  pointer-events: none; 
-  background-color: rgba(16, 0, 16, 0.94); 
+  z-index: 10000;
+  pointer-events: none;
+  background-color: rgba(16, 0, 16, 0.94);
   border: 2px solid;
   border-radius: 8px;
-  border-color: #5000ff #28007f #28007f #5000ff; 
+  border-color: #5000ff #28007f #28007f #5000ff;
   padding: 4px 6px;
   min-width: 100px;
-  font-family: 'Mojangles', sans-serif;
-  color: #fff;
-  text-shadow: 2px 2px 0px #3f3f3f;
+  font-family: var(--mc-font);
+  color: var(--mc-white);
+  text-shadow: var(--mc-text-shadow);
   image-rendering: pixelated;
+  image-rendering: -moz-crisp-edges;
+  image-rendering: crisp-edges;
 }
 
-.tooltipTitle { color: #ffff55; display: block; }
+.tooltipTitle { color: var(--mc-gold); display: block; }
 .tooltipDesc { color: #aaaaaa; font-size: 0.9em; display: block; }
 
 .escHint {
   position: absolute;
   top: 24px;
   right: 24px;
-  color: #ffffff;
-  font-family: 'Mojangles', sans-serif;
+  color: var(--mc-white);
+  font-family: var(--mc-font);
   font-size: 20px;
-  text-shadow: 2px 2px 0px #000000;
+  text-shadow: var(--mc-text-shadow-black);
   opacity: 0.8;
 }
 
@@ -165,7 +171,7 @@
   width: 72px;
   height: 72px;
   background-color: rgba(33, 33, 33, 0.8);
-  border: 2px solid #555;
+  border: 2px solid var(--mc-gray-medium);
   border-radius: 4px;
   display: flex;
   justify-content: center;
@@ -178,6 +184,8 @@
   width: 48px;
   height: 48px;
   image-rendering: pixelated;
+  image-rendering: -moz-crisp-edges;
+  image-rendering: crisp-edges;
 }
 
 /* --- ACHIEVEMENT TOAST --- */
@@ -185,7 +193,7 @@
   position: fixed;
   top: 32px;
   right: 0; /* Slides in from the right */
-  left: 0; 
+  left: 0;
   margin: auto; /* Center it horizontally */
   width: 320px;
   background-color: #212121;
@@ -194,8 +202,8 @@
   display: flex;
   align-items: center;
   gap: 12px;
-  color: #fff;
-  font-family: 'Mojangles', sans-serif;
+  color: var(--mc-white);
+  font-family: var(--mc-font);
   z-index: 20000;
   box-shadow: 0px 4px 0px rgba(0,0,0,0.5);
   animation: slideDown 4s forwards; /* Slide in, wait, slide out */
@@ -206,6 +214,8 @@
   width: 48px;
   height: 48px;
   image-rendering: pixelated;
+  image-rendering: -moz-crisp-edges;
+  image-rendering: crisp-edges;
 }
 
 .achievementText {
@@ -220,12 +230,12 @@
 }
 
 .achievementName {
-  color: #ffffff;
+  color: var(--mc-white);
   font-size: 16px;
 }
 
 .achievementLink {
-  color: #55ffff; /* Diamond Blue */
+  color: var(--mc-blue); /* Diamond Blue */
   font-size: 12px;
   text-decoration: underline;
 }

@@ -26,11 +26,11 @@
 }
 
 .title {
-  font-family: 'Mojangles', sans-serif;
+  font-family: var(--mc-font);
   font-size: 24px;
-  color: #ffffff;
+  color: var(--mc-white);
   margin-bottom: 10px;
-  text-shadow: 2px 2px 0px #3f3f3f;
+  text-shadow: var(--mc-text-shadow);
   flex-shrink: 0;
 }
 
@@ -43,7 +43,7 @@
   padding: 10px;
   margin-bottom: 20px;
   scrollbar-width: thin;
-  scrollbar-color: #c6c6c6 #2e2e2e;
+  scrollbar-color: var(--mc-gray-light) var(--mc-gray-darker);
 }
 
 .scrollArea::-webkit-scrollbar {
@@ -51,13 +51,17 @@
 }
 
 .scrollArea::-webkit-scrollbar-track {
-  background: #2e2e2e;
-  border: 1px solid #000;
+  background: var(--mc-gray-darker);
+  border: 1px solid var(--mc-black);
 }
 
 .scrollArea::-webkit-scrollbar-thumb {
-  background: #c6c6c6;
-  border: 1px solid #fff;
+  background: var(--mc-gray-light);
+  border: 1px solid var(--mc-white);
+}
+
+.scrollArea::-webkit-scrollbar-thumb:active {
+  background: var(--mc-gray);
 }
 
 .controls {

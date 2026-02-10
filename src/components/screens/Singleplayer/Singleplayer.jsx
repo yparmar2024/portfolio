@@ -4,12 +4,11 @@ import RecipeBook from './components/RecipeBook/RecipeBook';
 import RecipeSidebar from './components/RecipeBook/RecipeSidebar';
 import styles from './Singleplayer.module.css';
 import itemsData from '../../../data/items.json';
-import recipesData from '../../../data/recipes.json'; 
+import recipesData from '../../../data/recipes.json';
 import PlayerPreview from './components/PlayerPreview/PlayerPreview';
-import { useSoundSettings } from '../../../context/SoundContext';
+import useSound from '../../../hooks/useSound';
 
 // 1. DEFINE YOUR ACHIEVEMENTS MAP
-// FIX: Keys updated to match items.json "id" fields exactly
 const PROJECT_ACHIEVEMENTS = {
   'recrootly': {
     title: 'Recrootly AI',
@@ -76,7 +75,7 @@ const Singleplayer = ({ onClose }) => {
   const tooltipRef = useRef(null);
   const mousePos = useRef({ x: 0, y: 0 });
   const floatingItemRef = useRef(null);
-  const { getEffectiveVolume } = useSoundSettings();
+  const playUiClick = useSound('/sounds/click.ogg', 'ui');
 
   const [slots, setSlots] = useState(() => {
     const initial = Array(46).fill(null);
@@ -134,16 +133,6 @@ const Singleplayer = ({ onClose }) => {
       window.removeEventListener('mousemove', handleMouseMove);
     };
   }, [onClose]);
-
-  const playUiClick = () => {
-    try {
-      const audio = new Audio('/sounds/click.ogg');
-      audio.volume = getEffectiveVolume('ui'); 
-      audio.play().catch(() => {});
-    } catch (err) {
-      console.warn("Audio error", err);
-    }
-  };
 
   const handleSidebarHover = useCallback((content) => {
     if (typeof content === 'string') {
@@ -237,8 +226,6 @@ const Singleplayer = ({ onClose }) => {
 
          // --- ACHIEVEMENT LOGIC ---
          const craftedItem = slots[45];
-         // DEBUG: Uncomment if still having issues
-         // console.log("Crafting Item ID:", craftedItem.id);
 
          // Check if it's a project item AND we haven't crafted it before
          if (PROJECT_ACHIEVEMENTS[craftedItem.id] && !craftedHistory.has(craftedItem.id)) {
