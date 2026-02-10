@@ -1,8 +1,8 @@
-# Yash Parmar | Java Edition ⛏️
+# Yash Parmar | Career Edition ⛏️
 
 > **Current Version:** v1.0.0 (Gold Release)
 > **Status:** Online & Open to Work
-> **Live Demo:** [https://www.yparmar.vercel.app]
+> **Live Demo:** [https://yparmar.vercel.app]
 
 Welcome to **Career Mode**. This is an immersive, interactive developer portfolio styled after the **Minecraft Java Edition** interface.
 
