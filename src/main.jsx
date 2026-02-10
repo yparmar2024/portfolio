@@ -4,6 +4,7 @@ import App from './App.jsx'
 import './index.css'
 import './styles/utilities.css'
 import { Analytics } from '@vercel/analytics/react';
+import { SpeedInsights } from '@vercel/speed-insights/react';
 import { SoundProvider } from './context/SoundContext';
 
 ReactDOM.createRoot(document.getElementById('root')).render(
@@ -11,6 +12,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(
     <SoundProvider>
       <App />
       <Analytics />
+      <SpeedInsights />
     </SoundProvider>
   </React.StrictMode>,
 )
