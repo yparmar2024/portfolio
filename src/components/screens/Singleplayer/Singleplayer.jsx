@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef, useCallback } from 'react';
 import ItemSlot from './components/ItemSlot/ItemSlot';
 import RecipeBook from './components/RecipeBook/RecipeBook';
 import RecipeSidebar from './components/RecipeBook/RecipeSidebar';
+import TerminalScreen from '../../common/TerminalScreen/TerminalScreen'; // Import Terminal
 import styles from './Singleplayer.module.css';
 import itemsData from '../../../data/items.json';
 import recipesData from '../../../data/recipes.json';
@@ -67,6 +68,7 @@ const Singleplayer = ({ onClose }) => {
   const [isBookOpen, setIsBookOpen] = useState(false);
   const [heldItem, setHeldItem] = useState(null);
   const [hoveredItem, setHoveredItem] = useState(null);
+  const [isTerminalOpen, setIsTerminalOpen] = useState(false); // New State
 
   // Achievement State
   const [activeAchievement, setActiveAchievement] = useState(null);
@@ -113,8 +115,23 @@ const Singleplayer = ({ onClose }) => {
 
   useEffect(() => {
     const handleKeyDown = (event) => {
-      if (event.key === 'Escape') onClose();
+      // If terminal is open, ignore global keys here (Terminal handles its own Escape)
+      if (isTerminalOpen) return;
+
+      // Don't trigger if user is typing in an input (e.g. search)
+      if (event.target.tagName === 'INPUT' || event.target.tagName === 'TEXTAREA') return;
+
+      if (event.key === 'Escape') {
+        onClose();
+      }
+
+      // Open Terminal on 'T'
+      if ((event.key === 't' || event.key === 'T') && !heldItem) {
+        setIsTerminalOpen(true);
+        event.preventDefault();
+      }
     };
+
     const handleMouseMove = (e) => {
       mousePos.current = { x: e.clientX, y: e.clientY };
       if (floatingItemRef.current) {
@@ -126,13 +143,14 @@ const Singleplayer = ({ onClose }) => {
         tooltipRef.current.style.top = `${e.clientY - 30}px`;
       }
     };
+
     window.addEventListener('keydown', handleKeyDown);
     window.addEventListener('mousemove', handleMouseMove);
     return () => {
       window.removeEventListener('keydown', handleKeyDown);
       window.removeEventListener('mousemove', handleMouseMove);
     };
-  }, [onClose]);
+  }, [onClose, isTerminalOpen, heldItem]);
 
   const handleSidebarHover = useCallback((content) => {
     if (typeof content === 'string') {
@@ -289,7 +307,10 @@ const Singleplayer = ({ onClose }) => {
   return (
     <div className={styles.overlay}>
       
-      {/* 1. ACHIEVEMENT TOAST */}
+      {/* 1. TERMINAL OVERLAY */}
+      {isTerminalOpen && <TerminalScreen onClose={() => setIsTerminalOpen(false)} />}
+
+      {/* 2. ACHIEVEMENT TOAST */}
       {activeAchievement && (
         <div 
           className={styles.achievementContainer}
@@ -304,10 +325,10 @@ const Singleplayer = ({ onClose }) => {
         </div>
       )}
 
-      {/* 2. ESC HINT */}
-      <div className={styles.escHint}>Press 'ESC' to Close</div>
+      {/* 3. ESC HINT */}
+      <div className={styles.escHint}>Press 'ESC' to Close | 'T' for Terminal</div>
 
-      {/* 3. TOOLTIP */}
+      {/* 4. TOOLTIP */}
       {hoveredItem && !heldItem && (
         <div ref={tooltipRef} className={styles.tooltip}>
           <span className={styles.tooltipTitle}>{hoveredItem.name}</span>

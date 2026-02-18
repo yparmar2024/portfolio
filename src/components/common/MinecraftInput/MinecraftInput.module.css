@@ -9,7 +9,7 @@
   cursor: text;
   display: flex;
   align-items: center;
-  overflow: hidden; /* Prevents overflow if text is too long */
+  overflow: hidden; 
 }
 
 .hiddenInput {
@@ -18,8 +18,8 @@
   left: 0;
   width: 100%;
   height: 100%;
-  opacity: 0; /* Completely invisible */
-  z-index: 2; /* Sits on top to catch clicks */
+  opacity: 0; 
+  z-index: 2; 
   cursor: text;
 }
 
@@ -28,8 +28,8 @@
   height: 100%;
   display: flex;
   align-items: center;
-  white-space: pre; /* Preserves spaces */
-  pointer-events: none; /* Let clicks pass through to input */
+  white-space: pre; 
+  pointer-events: none; 
   z-index: 1;
   font-family: 'Mojangles', sans-serif;
   font-size: 32px;
@@ -40,22 +40,48 @@
 .placeholder {
   font-style: italic;
   color: #aaaaaa;
-  position: absolute; /* Sits behind cursor */
+  position: absolute; 
 }
 
 .textContent {
-  color: #ffffff; /* Default text color */
+  color: #ffffff; 
 }
 
-/* THE BLINKING UNDERSCORE */
 .cursor {
   display: inline-block;
   color: #ffffff;
   animation: blink 0.75s step-end infinite;
-  vertical-align: bottom; /* Ensures it sits on the baseline */
+  vertical-align: bottom; 
 }
 
 @keyframes blink {
   0%, 100% { opacity: 1; }
   50% { opacity: 0; }
+}
+
+/* --- CHAT VARIANT OVERRIDES --- */
+.chat {
+  background-color: transparent; 
+  width: 100%;
+  padding: 8px 0px; 
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.chat .visualText {
+  font-size: 20px;  
+  padding-top: 0;   
+  text-shadow: 2px 2px 0px #3f3f3f; 
+  line-height: 1.5;
+  align-items: center; 
+  
+  /* ADD THIS PROPERTY */
+  letter-spacing: 2px; /* Adjust this number to make it wider or narrower */
+}
+
+/* This targets ONLY the placeholder in chat mode */
+.chat .placeholder {
+  position: static; 
+  font-size: 16px;   /* <--- SMALLER PLACEHOLDER */
+  opacity: 0.5;      /* More subtle */
+  transform: translateY(1px); /* Optical alignment */
 }

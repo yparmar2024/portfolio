@@ -1,0 +1,77 @@
+.overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 4000; 
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end; 
+  background-color: rgba(0, 0, 0, 0.4); 
+  font-family: 'Mojangles', monospace;
+  padding-bottom: 10px;
+}
+
+.historyContainer {
+  width: 100%;
+  max-height: 50vh; 
+  overflow-y: auto; /* Enable scrolling */
+  padding: 10px 14px;
+  display: flex;
+  flex-direction: column;
+  /* REMOVE justify-content: flex-end; <-- This was causing the bug */
+  
+  /* Custom Scrollbar Styling (Minecraft-y) */
+  scrollbar-width: thin;
+  scrollbar-color: #555 transparent;
+}
+
+/* This pushes content to the bottom, but allows scrolling up when full */
+.historyContainer > :first-child {
+  margin-top: auto;
+}
+
+/* Webkit Scrollbar (Chrome/Safari) */
+.historyContainer::-webkit-scrollbar {
+  width: 8px;
+  display: block; /* Make sure it's visible */
+}
+
+.historyContainer::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.historyContainer::-webkit-scrollbar-thumb {
+  background-color: rgba(255, 255, 255, 0.2);
+  border-radius: 4px;
+}
+
+.historyContainer::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(255, 255, 255, 0.4);
+}
+
+/* ... keep .line and everything else the same ... */
+.line {
+  color: #fff;
+  text-shadow: 2px 2px 0px #3f3f3f; 
+  font-size: 18px;
+  line-height: 1.5;
+  margin-bottom: 2px;
+  word-wrap: break-word;
+  white-space: pre-wrap; 
+  tab-size: 4; 
+}
+
+/* Different colors for different message types */
+.command { color: #fff; } 
+.response { color: #aaa; } 
+.error { color: #ff5555; } 
+.system { color: #ffff55; } 
+.path { color: #55ffff; } 
+
+.inputWrapper {
+  width: 100%;
+  padding: 0 12px;
+  background-color: rgba(0, 0, 0, 0.6); 
+}

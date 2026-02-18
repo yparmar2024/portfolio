@@ -4,9 +4,12 @@ import styles from './MinecraftInput.module.css';
 const MinecraftInput = forwardRef(({ 
   value, 
   onChange, 
+  onKeyDown,         // Added: Needed for Terminal Enter/Escape
+  variant = 'default', // Added: 'default' | 'chat'
   placeholder = "", 
   className = "",
-  onFocusChange 
+  onFocusChange,
+  ...props           // Added: Pass through other props
 }, ref) => {
   const [selection, setSelection] = useState({ start: 0, end: 0 });
   const [isFocused, setIsFocused] = useState(false);
@@ -15,7 +18,7 @@ const MinecraftInput = forwardRef(({
   // Allow Parent to call .focus() on this component
   useImperativeHandle(ref, () => ({
     focus: () => {
-      inputRef.current.focus();
+      inputRef.current?.focus();
     }
   }));
 
@@ -48,10 +51,13 @@ const MinecraftInput = forwardRef(({
   const selectedText = value.slice(selection.start, selection.end);
   const textAfter = value.slice(selection.end);
 
+  // Apply .chat class if variant is 'chat'
+  const variantClass = variant === 'chat' ? styles.chat : '';
+
   return (
     <div 
-      className={`${styles.container} ${className}`} 
-      onClick={() => inputRef.current.focus()}
+      className={`${styles.container} ${variantClass} ${className}`} 
+      onClick={() => inputRef.current?.focus()}
     >
       <input
         ref={inputRef}
@@ -59,10 +65,13 @@ const MinecraftInput = forwardRef(({
         className={styles.hiddenInput}
         value={value}
         onChange={handleChange}
+        onKeyDown={onKeyDown} // Pass the key handler down
         onSelect={updateSelection} 
         onFocus={handleFocus}
         onBlur={handleBlur}
         spellCheck="false"
+        autoComplete="off"
+        {...props}
       />
 
       <div className={styles.visualText}>

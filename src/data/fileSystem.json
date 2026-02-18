@@ -1,0 +1,46 @@
+{
+  "root": {
+    "type": "dir",
+    "children": {
+      "README.txt": {
+        "type": "file",
+        "content": "YashOS [LATEST_VERSION] (tty1)\n\nThis terminal provides direct access to the system kernel.\nUse 'ls' to explore system status and current research focus."
+      },
+      "todo.txt": {
+        "type": "file",
+        "content": "[x] Build Portfolio Platform\n[ ] Integrate AI/ML Models\n[ ] Optimize System Architecture\n[ ] Sleep (Optional)"
+      },
+      "library": {
+        "type": "dir",
+        "children": {
+          "current_focus.txt": { 
+            "type": "file", 
+            "content": "PRIMARY OBJECTIVE:\nBridging the gap between scalable Software Solutions and AI/ML Theory.\n\nACTIVE RESEARCH:\n- Engineering robust pipelines for LLM integration.\n- Analyzing Deep Learning theoretical frameworks.\n- Designing high-availability systems for AI agents." 
+          }
+        }
+      },
+      "logs": {
+        "type": "dir",
+        "children": {
+          "kernel.log": { 
+            "type": "file", 
+            "content": "[0.000] Kernel: YashOS v[LATEST_VERSION] initialized\n[0.042] CPU: Neural Engine active (Learning Mode)\n[0.105] Memory: 100% committed to memory (literally)\n[0.420] Mount: /projects mounted read-only\n[0.880] Network: Connected to Stevens Institute of Technology" 
+          },
+          "error.log": { 
+            "type": "file", 
+            "content": "[CRITICAL] Sleep_Process: High latency detected\n[WARN] Caffeine_Module: Deprecated dependency" 
+          }
+        }
+      },
+      "trash": {
+        "type": "dir",
+        "children": {
+          "bad_ideas.txt": { 
+            "type": "file", 
+            "content": "1. Blockchain-based To-Do List\n2. AI that generates more meetings\n3. 'Uber for Cats'" 
+          }
+        }
+      }
+    }
+  }
+}
