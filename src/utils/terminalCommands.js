@@ -41,7 +41,7 @@ export const getDirectory = (fileSystem, path) => {
 export const COMMANDS = {
   help: () => ({
     type: 'response',
-    content: 'Available commands:\n  ls\t\tList directory contents\n  cd [dir]\tChange directory\n  cat [file]\tRead file content\n  clear\t\tClear terminal\n  whoami\tCurrent user info'
+    content: 'Available commands:\n  ls\t\tList directory contents\n  cd [dir]\tChange directory\n  pwd\t\tPrint working directory\n  cat [file]\tRead file content\n  clear\t\tClear terminal\n  whoami\tCurrent user info'
   }),
 
   whoami: () => ({
