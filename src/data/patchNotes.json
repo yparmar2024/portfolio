@@ -1,5 +1,16 @@
 [
   {
+    "version": "1.0.1",
+    "title": "The Terminal Update",
+    "date": "February 17, 2026",
+    "changes": [
+      "Initialized CareerOS Kernel (v1.0.1).",
+      "Added Command Line Interface (CLI) for system-level navigation.",
+      "Implemented 'ls', 'cd', 'cat', and 'pwd' for file system exploration.",
+      "Setup CI/CD pipeline with GitHub Actions for automated build validation."
+    ]
+  },
+  {
     "version": "1.0.0",
     "title": "The Official Release",
     "date": "February 9, 2026",
