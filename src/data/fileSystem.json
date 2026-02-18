@@ -4,7 +4,7 @@
     "children": {
       "README.txt": {
         "type": "file",
-        "content": "YashOS [LATEST_VERSION] (tty1)\n\nThis terminal provides direct access to the system kernel.\nUse 'ls' to explore system status and current research focus."
+        "content": "CareerOS [LATEST_VERSION] (tty1)\n\nThis terminal provides direct access to the system kernel.\nUse 'ls' to explore system status and current research focus."
       },
       "todo.txt": {
         "type": "file",
