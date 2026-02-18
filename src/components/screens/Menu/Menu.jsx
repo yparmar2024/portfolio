@@ -1,8 +1,25 @@
+/**
+ * Main menu screen component.
+ *
+ * Replicates the Minecraft Java Edition title screen with:
+ * - Title image with a rotating splash text overlay
+ * - Primary navigation buttons (Singleplayer, Multiplayer, Realms, Options)
+ * - A "Quit Game" button that plays a hurt sound and fires a screen-shake animation
+ * - A version badge (bottom-left) that opens the Playbook (patch notes) overlay
+ *
+ * @component
+ * @param {Object}   props
+ * @param {Function} props.onSingleplayer - Navigate to inventory / crafting screen
+ * @param {Function} props.onMultiplayer  - Navigate to work-experience screen
+ * @param {Function} props.onRealms       - Navigate to social-links screen
+ * @param {Function} props.onOptions      - Navigate to settings screen
+ */
+
 import { useState, useEffect } from 'react';
 import useSound from '../../../hooks/useSound';
 import MinecraftButton from '../../common/MinecraftButton/MinecraftButton';
-import Playbook from '../Playbook/Playbook'; 
-import patchNotes from '../../../data/patchNotes.json'; 
+import Playbook from '../Playbook/Playbook';
+import patchNotes from '../../../data/patchNotes.json';
 import { TIMINGS } from '../../../constants/timings';
 
 const SPLASH_TEXTS = [
@@ -21,14 +38,11 @@ const SPLASH_TEXTS = [
 export default function Menu({ onSingleplayer, onMultiplayer, onRealms, onOptions }) {
   const [isHurt, setIsHurt] = useState(false);
   const [splash, setSplash] = useState('');
-  
-  // Playbook State
   const [showPlaybook, setShowPlaybook] = useState(false);
   const [isVersionHovered, setIsVersionHovered] = useState(false);
-  
-  // Get Latest Version
+
   const latestVersion = patchNotes.length > 0 ? patchNotes[0].version : "1.0.0";
-  
+
   const playHurt = useSound('/sounds/hurt.ogg');
 
   useEffect(() => {
@@ -44,41 +58,36 @@ export default function Menu({ onSingleplayer, onMultiplayer, onRealms, onOption
 
   return (
     <>
-      {/* 1. PLAYBOOK OVERLAY */}
       {showPlaybook && <Playbook onClose={() => setShowPlaybook(false)} />}
 
       <div className={`damage-overlay ${isHurt ? 'active' : ''}`} />
 
-      {/* 2. VERSION LINK (Improved Visibility) */}
-      <div 
+      <div
         onClick={() => setShowPlaybook(true)}
         onMouseEnter={() => setIsVersionHovered(true)}
         onMouseLeave={() => setIsVersionHovered(false)}
         style={{
           position: 'absolute', bottom: '15px', left: '20px',
-          display: 'flex', alignItems: 'center', gap: '8px', // Flex layout for Icon + Text
+          display: 'flex', alignItems: 'center', gap: '8px',
           zIndex: 20, cursor: 'pointer',
           transition: 'transform 0.1s ease-out'
         }}
-        title="Click to view Patch Notes" // Browser native tooltip
+        title="Click to view Patch Notes"
       >
-        {/* The Icon: Book & Quill (Signals "Read Me") */}
-        <img 
-          src="/icons/items/book_and_quill.png" 
-          alt="Patch Notes" 
-          style={{ 
-            width: '48px', height: '48px', 
+        <img
+          src="/icons/items/book_and_quill.png"
+          alt="Patch Notes"
+          style={{
+            width: '48px', height: '48px',
             imageRendering: 'pixelated',
-            filter: 'drop-shadow(2px 2px 0px #000000)' 
-          }} 
+            filter: 'drop-shadow(2px 2px 0px #000000)'
+          }}
         />
-        
-        {/* The Text */}
         <span style={{
-          color: isVersionHovered ? '#ffff55' : '#ffffff', // White -> Gold
+          color: isVersionHovered ? '#ffff55' : '#ffffff',
           fontFamily: 'Mojangles, sans-serif', fontSize: '20px',
           textShadow: '2px 2px 0px #000000',
-          textDecoration: isVersionHovered ? 'underline' : 'none', // Underline on hover
+          textDecoration: isVersionHovered ? 'underline' : 'none',
           transition: 'color 0.1s',
           marginLeft: '8px',
           marginBottom: '-8px'
@@ -99,45 +108,43 @@ export default function Menu({ onSingleplayer, onMultiplayer, onRealms, onOption
         display: 'flex', flexDirection: 'column', alignItems: 'center',
         justifyContent: 'center', height: '100%', width: '100%', zIndex: 10
       }}>
-        
         <div style={{ position: 'relative', marginBottom: '40px', marginTop: '-10vh' }}>
-            <div style={{
-              position: 'absolute', top: '100px', right: '-75px',
-              color: '#ffff55', fontFamily: 'Mojangles, sans-serif', fontSize: '24px',
-              fontWeight: 'bold', textShadow: '2px 2px 0px #3f3f3f',
-              width: 'max-content', zIndex: 100, transform: 'rotate(-20deg)',
-              animation: 'splash-bounce 0.5s infinite alternate',
-            }}>
-              {splash}
-            </div>
+          <div style={{
+            position: 'absolute', top: '100px', right: '-75px',
+            color: '#ffff55', fontFamily: 'Mojangles, sans-serif', fontSize: '24px',
+            fontWeight: 'bold', textShadow: '2px 2px 0px #3f3f3f',
+            width: 'max-content', zIndex: 100, transform: 'rotate(-20deg)',
+            animation: 'splash-bounce 0.5s infinite alternate',
+          }}>
+            {splash}
+          </div>
 
-            <img 
-              src="/textures/title.png" 
-              alt="Portfolio" 
-              style={{ 
-                width: '800px', maxWidth: '90vw', imageRendering: 'pixelated',
-                display: 'block', filter: 'drop-shadow(0px 10px 0px rgba(0,0,0,0.4))'
-              }} 
-            />
+          <img
+            src="/textures/title.png"
+            alt="Portfolio"
+            style={{
+              width: '800px', maxWidth: '90vw', imageRendering: 'pixelated',
+              display: 'block', filter: 'drop-shadow(0px 10px 0px rgba(0,0,0,0.4))'
+            }}
+          />
         </div>
 
         <div style={{
-          display: 'flex', 
-          flexDirection: 'column', 
-          gap: '14px', 
-          width: '100%', 
-          maxWidth: '450px', 
+          display: 'flex',
+          flexDirection: 'column',
+          gap: '14px',
+          width: '100%',
+          maxWidth: '450px',
           padding: '0 20px',
         }}>
-          
           <MinecraftButton style={{ width: '100%' }} onClick={onSingleplayer}>
             Singleplayer
           </MinecraftButton>
-          
+
           <MinecraftButton style={{ width: '100%' }} onClick={onMultiplayer}>
             Multiplayer
           </MinecraftButton>
-          
+
           <MinecraftButton style={{ width: '100%' }} onClick={onRealms}>
             Minecraft Realms
           </MinecraftButton>

@@ -56,3 +56,14 @@
 .rangeInput:hover::-webkit-slider-thumb {
   background-color: #d9d9d9;
 }
+
+/* Draggable music disc icon — hover scale handled via CSS to avoid
+   imperative e.currentTarget.style mutations inside React event handlers. */
+.disc {
+  cursor: grab;
+  transition: transform 0.1s ease;
+}
+
+.disc:hover {
+  transform: scale(1.1);
+}

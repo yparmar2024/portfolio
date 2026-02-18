@@ -1,19 +1,27 @@
 /**
- * Main application component for the Minecraft-themed portfolio.
- * * This version implements:
- * 1. Orientation Lock: Forces landscape mode via DeviceGuard.
- * 2. Singleplayer Transition: Menu -> Loading (DirtScreen) -> Singleplayer GUI.
- * 3. Terminal Context: Wraps the app to provide persistent terminal state.
- * * @component
+ * Root application component for the Minecraft-themed portfolio.
+ *
+ * Manages top-level game state and orchestrates screen transitions:
+ * - MENU → main title screen
+ * - LOADING → dirt-screen transition (TIMINGS.SERVER_REFRESH_DELAY ms)
+ * - SINGLEPLAYER → inventory / crafting / terminal experience
+ * - MULTIPLAYER → work-experience server list
+ * - REALMS → social-links screen
+ * - OPTIONS → settings (audio, video, resumes, credits)
+ *
+ * The Three.js canvas runs continuously as a background layer; the active
+ * UI screen is composited on top via an absolutely-positioned overlay.
+ *
+ * @component
  */
 
-import { useState, Suspense, useEffect } from 'react';
+import { useState, Suspense } from 'react';
 import { Canvas } from '@react-three/fiber';
 import Panorama from './components/3d/Panorama';
 import { useSoundSettings } from './context/SoundContext';
-import { TerminalProvider } from './context/TerminalContext'; //
+import { TerminalProvider } from './context/TerminalContext';
 import Menu from './components/screens/Menu/Menu';
-import Singleplayer from './components/screens/Singleplayer/Singleplayer'; 
+import Singleplayer from './components/screens/Singleplayer/Singleplayer';
 import Multiplayer from './components/screens/Multiplayer/Multiplayer';
 import MinecraftRealms from './components/screens/Realms/Realms';
 import Options from './components/screens/Options/Options';

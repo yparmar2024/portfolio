@@ -24,7 +24,6 @@ const ItemSlot = ({ item, index, onSlotClick, onHover, onLeave, placeholder, isG
 
   return (
     <div 
-      // Merge default styles with your custom class
       className={`${styles.slot} ${isHovered ? styles.slotHovered : ''} ${isGhost ? styles.ghostItem : ''} ${className || ''}`}
       onMouseEnter={() => {
         setIsHovered(true);

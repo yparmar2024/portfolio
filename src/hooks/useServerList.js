@@ -1,13 +1,27 @@
+/**
+ * Custom hook for managing a server/realm list with selection and ping simulation.
+ *
+ * Initialises list items with randomised ping values and exposes handlers for
+ * selecting an item and refreshing all pings with a realistic delay, matching
+ * the UX behaviour of the Minecraft Java Edition server list.
+ *
+ * @module useServerList
+ */
+
 import { useState } from 'react';
 import { enrichWithPing, generateRandomPing } from '../utils/serverUtils';
 import { TIMINGS } from '../constants/timings';
 
 /**
- * Custom hook for managing server/realm list state
- * Handles selection, refresh, and ping simulation
- * 
- * @param {Array<Object>} initialData - Initial server/realm data
- * @returns {Object} Server list state and handlers
+ * @param {Array<Object>} initialData - Raw server or realm data from JSON
+ * @returns {{
+ *   items: Array<Object>,
+ *   selectedId: string|null,
+ *   selectedItem: Object|undefined,
+ *   isRefreshing: boolean,
+ *   handleRefresh: Function,
+ *   handleSelect: Function
+ * }}
  */
 const useServerList = (initialData) => {
   const [items, setItems] = useState(() => enrichWithPing(initialData));
@@ -17,7 +31,8 @@ const useServerList = (initialData) => {
   const selectedItem = items.find(item => item.id === selectedId);
 
   /**
-   * Simulates server ping refresh with realistic delay
+   * Re-randomises ping for every item after a brief delay, simulating a
+   * network round-trip. The 800ms delay mirrors TIMINGS.SERVER_REFRESH_DELAY.
    */
   const handleRefresh = () => {
     setIsRefreshing(true);
@@ -31,8 +46,7 @@ const useServerList = (initialData) => {
   };
 
   /**
-   * Updates the selected server/realm ID
-   * @param {string|null} id - ID of the item to select
+   * @param {string|null} id - ID of the item to select, or null to deselect
    */
   const handleSelect = (id) => {
     setSelectedId(id);
