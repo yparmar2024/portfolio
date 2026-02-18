@@ -1,6 +1,6 @@
 # Yash Parmar | Career Edition ⛏️
 
-> **Current Version:** v1.0.0 (Gold Release)
+> **Current Version:** v1.0.1
 > **Status:** Online & Open to Work
 > **Live Demo:** [https://yparmar.vercel.app]
 
@@ -13,27 +13,32 @@ Unlike traditional portfolios, this application is a fully functional **React St
 ### 1. The Crafting Engine
 I built a custom recipe validation system that treats my technical skills as "Ingredients."
 * **Logic:** The app checks the 2x2 grid state against a `recipes.json` lookup table in real-time.
-* **Validation:** It enforces strict type-checking (e.g., you can't put a skill in a armor slot).
-* **Reward:** Successfully crafting a project unlocks it in the output slot, triggering a custom "New Achievement!" toast notification.
+* **Validation:** Enforces strict type-checking (e.g., preventing skills in armor slots).
+* **Reward:** Successfully crafting a project triggers a custom "Achievement Get!" toast notification and unlocks project metadata.
 
-### 2. 3D Rendering & Performance
-* **Tech:** Built with **React Three Fiber (R3F)**.
+### 2. CareerOS Terminal (CLI)
+A custom-built Command Line Interface providing a "developer-first" navigation experience.
+* **Shell Logic:** Built a tree-traversal engine to support standard commands (`ls`, `cd`, `pwd`, `cat`).
+* **Immersion:** Includes a simulated boot sequence and system logs to showcase backend/infrastructure interests.
+
+### 3. 3D Rendering & Performance
+* **Tech:** Built with **React Three Fiber (R3F)** and **Three.js**.
 * **Optimization:** The 3D player model uses a custom `useSpineTwist` hook to track mouse movement efficiently without causing re-renders on the main UI thread.
-* **Assets:** All textures are optimized for web performance, ensuring fast load times even on mobile networks.
+* **Assets:** Optimized textures and geometries ensure fast load times and smooth FPS across devices.
 
-### 3. Dynamic Audio System
-* **SoundContext:** A global audio manager that handles concurrent sound effects (UI clicks) and background music (`otherside.mp3`, etc.) with volume normalization and mute toggles.
+### 4. Dynamic Audio System
+* **SoundContext:** A global audio manager handling concurrent SFX (UI clicks) and background music (`otherside.mp3`) with volume normalization and mute toggles.
 
 ---
 
 ## 🛠️ Tech Stack
 
-* **Frontend Library:** React 18
-* **Build Tool:** Vite (for O(1) HMR and optimized bundling)
-* **State Management:** React Context API + Custom Hooks
+* **Frontend:** React 18, Vite
 * **3D Engine:** Three.js / React Three Fiber / Drei
-* **Styling:** CSS Modules (Scoped styles for component isolation)
+* **State Management:** React Context API + Custom Hooks
+* **Styling:** CSS Modules (Scoped isolation)
+* **DevOps:** GitHub Actions (Build Automation) & Vercel (Edge Deployment)
 
 ---
 
-> *"You can not sleep now, there are bugs nearby."* — **Yash Parmar**
+> *"You cannot sleep now, there are bugs nearby."* — **Yash Parmar**
