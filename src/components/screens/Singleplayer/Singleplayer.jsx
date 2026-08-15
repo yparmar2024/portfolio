@@ -39,25 +39,25 @@ import { canPlaceItemInSlot } from '../../../utils/inventoryRules';
  * The achievement toast becomes clickable, opening the live project URL.
  */
 const PROJECT_ACHIEVEMENTS = {
-  'recrootly': {
-    title: 'Recrootly AI',
-    desc: 'Automated Recruitment Platform',
-    link: 'https://recrootly.vercel.app'
+  'morf': {
+    title: 'Morf',
+    desc: '3D Mesh Merge Driver',
+    link: 'https://github.com/yparmar2024/morf'
   },
-  'nudge_ai': {
-    title: 'Nudge AI',
-    desc: 'Higher Manager Nudge Assistant',
-    link: 'https://qpulse.tech'
+  'graphos': {
+    title: 'Graphos',
+    desc: 'Agentic Pentesting',
+    link: 'https://github.com/yparmar2024/graphos'
   },
-  'blueprint_rag': {
-    title: 'Blueprint RAG',
-    desc: 'Internal Assistant for Documentation via RAG',
-    link: 'https://sitblueprint.com'
+  'sleepyu': {
+    title: 'SleepyU',
+    desc: '8-Bit CPU',
+    link: 'https://github.com/yparmar2024/sleepyu'
   },
-  'twitter_nlp': {
-    title: 'Hate Speech Detector',
-    desc: 'NLP Sentiment Analysis',
-    link: 'https://github.com/yparmar2024/Data-Glacier'
+  'stevens_rmp': {
+    title: 'Stevens RMP',
+    desc: 'RateMyProfessor Chrome Extension',
+    link: 'https://github.com/yparmar2024/stevensrmp'
   }
 };
 

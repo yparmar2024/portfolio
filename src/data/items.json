@@ -199,38 +199,38 @@
     "icon": "/icons/items/git.png",
     "isShield": true
   },
-  "item_recrootly": {
-    "id": "recrootly",
-    "name": "Recrootly",
+  "item_morf": {
+    "id": "morf",
+    "name": "Morf",
     "type": "armor",
-    "description": "AI-Powered Resume Scorer",
+    "description": "3D Mesh Merge Driver",
     "icon": "/icons/items/quartz_helmet.png",
     "armorType": "helmet",
     "isArmor": true
   },
-  "item_nudge_ai": {
-    "id": "nudge_ai",
-    "name": "Nudge AI",
+  "item_graphos": {
+    "id": "graphos",
+    "name": "Graphos",
     "type": "armor",
-    "description": "Smart Task Manager",
+    "description": "Agentic Pentesting",
     "icon": "/icons/items/quartz_chestplate.png",
     "armorType": "chestplate",
     "isArmor": true
   },
-  "item_blueprint_rag": {
-    "id": "blueprint_rag",
-    "name": "Blueprint RAG",
+  "item_sleepyu": {
+    "id": "sleepyu",
+    "name": "SleepyU",
     "type": "armor",
-    "description": "Enterprise Knowledge Search",
+    "description": "8-Bit CPU",
     "icon": "/icons/items/quartz_leggings.png",
     "armorType": "leggings",
     "isArmor": true
   },
-  "item_twitter_nlp": {
-    "id": "twitter_nlp",
-    "name": "Hate Speech Detector",
+  "item_stevens_rmp": {
+    "id": "stevens_rmp",
+    "name": "Stevens RMP",
     "type": "armor",
-    "description": "NLP Sentiment Analysis",
+    "description": "RateMyProfessor Chrome Extension",
     "icon": "/icons/items/quartz_boots.png",
     "armorType": "boots",
     "isArmor": true

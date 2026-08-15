@@ -4,7 +4,7 @@
  * Displays a Minecraft-styled settings panel with four sub-views:
  * - MAIN:           Profile card, jukebox drag-and-drop, video toggle, and navigation
  * - MUSIC:          Master / Music / UI volume sliders
- * - RESOURCE_PACKS: Resume download links (SWE and ML flavors)
+ * - RESOURCE_PACKS: Resume download link
  * - CREDITS:        Attribution list rendered from credits.json
  *
  * Jukebox drag-and-drop follows the standard HTML5 DataTransfer API:
@@ -57,11 +57,8 @@ const Options = ({ onBack, videoSetting, setVideoSetting, difficulty }) => {
 
   const handleDifficulty = () => showError(ERROR_MESSAGES.DIFFICULTY_LOCKED);
 
-  const handleViewPdf = (type) => {
-    const fileName = type === 'SWE'
-      ? 'Yash_Parmar_Resume_SWE.pdf'
-      : 'Yash_Parmar_Resume_ML.pdf';
-    setViewingPdf(`/resumes/${fileName}`);
+  const handleViewPdf = () => {
+    setViewingPdf('/resumes/Yash_Parmar_Resume.pdf');
   };
 
   const handleVolumeChange = (type, value) => {
@@ -100,7 +97,7 @@ const Options = ({ onBack, videoSetting, setVideoSetting, difficulty }) => {
         }}>
           <div><span style={{ color: '#ffff55' }}>Location:</span> Hoboken, NJ</div>
           <div><span style={{ color: '#ffff55' }}>Server:</span> Stevens Institute of Technology</div>
-          <div><span style={{ color: '#ffff55' }}>Current Quest:</span> Summer 2026 Internship</div>
+          <div><span style={{ color: '#ffff55' }}>Current Quest:</span> Summer 2027 Internship</div>
         </div>
       </div>
 
@@ -185,22 +182,14 @@ const Options = ({ onBack, videoSetting, setVideoSetting, difficulty }) => {
   const renderResourcePacks = () => (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', alignItems: 'center', width: '100%' }}>
       <div style={{ color: '#aaaaaa', marginBottom: '5px' }}>Select Resource Pack (Resume)</div>
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', border: '2px solid #555', padding: '10px', backgroundColor: 'rgba(0,0,0,0.3)', width: '100%', maxWidth: '320px' }}>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', border: '2px solid #555', padding: '10px', backgroundColor: 'rgba(0,0,0,0.3)', width: '100%' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-          <img src="/icons/items/command_block.png" alt="SWE" style={{ width: '32px', height: '32px', imageRendering: 'pixelated' }} />
+          <img src="/icons/items/command_block.png" alt="Resume" style={{ width: '32px', height: '32px', imageRendering: 'pixelated' }} />
           <div style={{ flex: 1, textAlign: 'left' }}>
-            <div style={{ color: '#fff' }}>Software Engineer</div>
-            <div style={{ color: '#aaa', fontSize: '12px' }}>Engineering & Architecture</div>
+            <div style={{ color: '#fff' }}>Yash Parmar Resume</div>
+            <div style={{ color: '#aaa', fontSize: '12px' }}>Software Engineering</div>
           </div>
-          <MinecraftButton style={{ width: '40px', paddingTop: '0px' }} onClick={() => handleViewPdf('SWE')}><span style={{ position: 'relative', top: '-5px' }}>⬇</span></MinecraftButton>
-        </div>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-          <img src="/icons/items/redstone_dust.png" alt="ML" style={{ width: '32px', height: '32px', imageRendering: 'pixelated' }} />
-          <div style={{ flex: 1, textAlign: 'left' }}>
-            <div style={{ color: '#fff' }}>Machine Learning</div>
-            <div style={{ color: '#aaa', fontSize: '12px' }}>Research & Analytics</div>
-          </div>
-          <MinecraftButton style={{ width: '40px', paddingTop: '0px' }} onClick={() => handleViewPdf('ML')}><span style={{ position: 'relative', top: '-5px' }}>⬇</span></MinecraftButton>
+          <MinecraftButton style={{ width: '40px', paddingTop: '0px' }} onClick={() => handleViewPdf()}><span style={{ position: 'relative', top: '-5px' }}>⬇</span></MinecraftButton>
         </div>
       </div>
       <MinecraftButton style={{ width: '200px', marginTop: '15px' }} onClick={() => setCurrentView('MAIN')}>Done</MinecraftButton>

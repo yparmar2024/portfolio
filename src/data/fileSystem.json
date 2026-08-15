@@ -24,7 +24,7 @@
         "children": {
           "kernel.log": { 
             "type": "file", 
-            "content": "[0.000] Kernel: CareerOS v[LATEST_VERSION] initialized\n[0.042] CPU: Neural Engine active (Learning Mode)\n[0.105] Memory: 100% committed to memory (literally)\n[0.420] Mount: /projects mounted read-only\n[0.880] Network: Connected to Stevens Institute of Technology" 
+            "content": "[0.000] Kernel: CareerOS [LATEST_VERSION] initialized\n[0.042] CPU: Neural Engine active (Learning Mode)\n[0.105] Memory: 100% committed to memory (literally)\n[0.420] Mount: /projects mounted read-only\n[0.880] Network: Connected to Stevens Institute of Technology" 
           },
           "error.log": { 
             "type": "file", 
