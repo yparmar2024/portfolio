@@ -1,69 +1,63 @@
 [
   {
-    "id": "recrootly",
+    "id": "morf",
     "category": "swe", 
     "result": {
-      "id": "item_recrootly",
-      "name": "Recrootly",
-      "description": "AI-Powered Resume Scorer",
+      "id": "item_morf",
+      "name": "Morf",
+      "description": "3D Mesh Merge Driver",
       "icon": "/icons/items/quartz_helmet.png",
       "isProject": true
     },
     "ingredients": [
-      { "item": "react", "slot": 0 },
-      { "item": "python", "slot": 1 },
-      { "item": "supabase", "slot": 2 }
+      { "item": "cpp", "slot": 0 },
+      { "item": "git", "slot": 1 }
     ]
   },
   {
-    "id": "nudge_ai",
+    "id": "graphos",
     "category": "swe",
     "result": {
-      "id": "item_nudge_ai",
-      "name": "Nudge AI",
-      "description": "Smart Task Manager",
+      "id": "item_graphos",
+      "name": "Graphos",
+      "description": "Agentic Pentesting",
       "icon": "/icons/items/quartz_chestplate.png",
       "isProject": true
     },
     "ingredients": [
-      { "item": "flutter", "slot": 0 },
-      { "item": "fastapi", "slot": 1 },
-      { "item": "firebase", "slot": 2 },
-      { "item": "python", "slot": 3 }
+      { "item": "python", "slot": 0 },
+      { "item": "langchain", "slot": 1 },
+      { "item": "docker", "slot": 2 }
     ]
   },
   {
-    "id": "blueprint_rag",
+    "id": "sleepyu",
     "category": "ai",
     "result": {
-      "id": "item_blueprint_rag",
-      "name": "Blueprint RAG",
-      "description": "Enterprise Knowledge Search",
+      "id": "item_sleepyu",
+      "name": "SleepyU",
+      "description": "8-Bit CPU",
       "icon": "/icons/items/quartz_leggings.png",
       "isProject": true
     },
     "ingredients": [
-      { "item": "langchain", "slot": 0 },
-      { "item": "aws_lambda", "slot": 1 },
-      { "item": "s3", "slot": 2 },
-      { "item": "dynamodb", "slot": 3 }
+      { "item": "python", "slot": 0 },
+      { "item": "git", "slot": 1 }
     ]
   },
   {
-    "id": "twitter_nlp",
+    "id": "stevens_rmp",
     "category": "ai",
     "result": {
-      "id": "item_twitter_nlp",
-      "name": "Hate Speech Detector",
-      "description": "NLP Sentiment Analysis",
+      "id": "item_stevens_rmp",
+      "name": "Stevens RMP",
+      "description": "RateMyProfessor Chrome Extension",
       "icon": "/icons/items/quartz_boots.png",
       "isProject": true
     },
     "ingredients": [
-      { "item": "tensorflow", "slot": 0 },
-      { "item": "keras", "slot": 1 },
-      { "item": "pandas", "slot": 2 },
-      { "item": "python", "slot": 3 }
+      { "item": "javascript", "slot": 0 },
+      { "item": "git", "slot": 1 }
     ]
   }
 ]

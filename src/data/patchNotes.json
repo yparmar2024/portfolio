@@ -1,5 +1,15 @@
 [
   {
+    "version": "1.0.2",
+    "title": "Data Update",
+    "date": "August 15th, 2026",
+    "changes": [
+      "Updated resumes to be a singular updated resume.",
+      "Updated 4 armors to be 4 new separate projects with new recipes.",
+      "Added new experiences to experience section."
+    ]
+  },
+  {
     "version": "1.0.1",
     "title": "The Terminal Update",
     "date": "February 17, 2026",

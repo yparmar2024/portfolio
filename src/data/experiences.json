@@ -1,38 +1,47 @@
 [
-  { 
-    "id": 1, 
-    "name": "Blueprint", 
-    "role": "Software Engineer", 
-    "dates": "Jan 2026 -- Present", 
-    "link": "https://sitblueprint.com", 
-    "icon": "/icons/logos/blueprint.png",
-    "description": "• Built a internal LLM search tool that reads thousands of internal documents so members can find answers instantly.\n• Designed a backend system that handles heavy traffic and many users at once without crashing and proper scaling.\n• Organized how data is stored to keep chat history and search results fast and secure with a vector-database."
+  {
+    "id": 1,
+    "name": "Dematic",
+    "role": "Software Engineering Intern",
+    "dates": "July 2026 -- Present",
+    "link": "https://www.dematic.com/en-us/",
+    "icon": "/icons/logos/dematic.png",
+    "description": "• Engineered parser via Draw.io API to automate Mermaid diagrams, cutting architectural design time by 83\n• Architected a DITA data pipeline, eliminating manual data entry and optimizing retrieval for 9,000+ users\n• Developed a RAG backend application to automate complex ISO compliance workflows, versioning 3,000+ drafts"
   },
-  { 
-    "id": 2, 
-    "name": "Stevens Institute of Technology", 
-    "role": "Course Assistant", 
-    "dates": "Sep 2025 -- Present", 
-    "link": "https://stevens.edu", 
+  {
+    "id": 2,
+    "name": "Stevens Institute of Technology",
+    "role": "Research Assistant",
+    "dates": "June 2026 -- Present",
+    "link": "https://stevens.edu",
     "icon": "/icons/logos/stevens.png",
-    "description": "• Taught programming fundamentals to students during weekly lab sessions to help them practice what they learned.\n• Helped students master complex topics like data structures and sorting algorithms.\n• Graded projects and showed students how to debug their code and improve their design."
+    "description": "• Orchestrated AI pen-testing middleware using Nmap and SQLmap, reducing session token consumption by 27%\n• Designed a dynamic knowledge graph to track vulnerabilities, maintaining persistent AI context across scans\n• Implemented HITL ticketing and execution guardrails for safe AI-assisted attack/defense deployment"
   },
   { 
     "id": 3, 
+    "name": "Blueprint", 
+    "role": "Software Engineering Intern", 
+    "dates": "Jan 2026 -- May 2026", 
+    "link": "https://sitblueprint.com", 
+    "icon": "/icons/logos/blueprint.png",
+    "description": "• Engineered an AWS Bedrock RAG system ingesting 1,000+ internal documents for 50+ concurrent team queries\n• Architected a scalable serverless AWS backend (Lambda, SQS) to process concurrent event-driven user traffic\n• Optimized backend retrieval via DynamoDB/S3 hybrid storage alongside strict IAM role-based access controls"
+  },
+  { 
+    "id": 4, 
     "name": "Quantum Pulse Consulting", 
     "role": "Software Engineering Intern", 
     "dates": "July 2025 -- Oct 2025", 
     "link": "https://qpulse.tech", 
     "icon": "/icons/logos/quantum_pulse_consulting.png",
-    "description": "• Built web applications that allow users to log in securely and see live updates on KRs in sprints.\n• Created tools that let different parts of the app talk to each other instantly through APIs.\n• Set up automatic updates so the team could release new features faster and with fewer errors."
+    "description": "• Developed cross-platform React/Flutter apps with PostgreSQL schemas for dynamic data and task scheduling\n• Constructed a FastAPI/Firebase backend using OpenAI, accelerating Agile development workflows for 50+ users\n• Automated AWS CI/CD pipelines and deployed RESTful APIs, securing state synchronization and release uptime"
   },
-  {
-    "id": 4,
-    "name": "Data Glacier",
-    "role": "Data Science Intern",
-    "dates": "Mar 2025 -- July 2025",
-    "link": "https://www.dataglacier.org/",
-    "icon": "/icons/logos/data_glacier.png",
-    "description": "• Cleaned and organized thousands of text documents to help AI models understand language better and learn faster.\n• Built a classification tool and set up an automated system to publish updates instantly without manual work.\n• Tuned machine learning models to improve their accuracy and ensure they performed reliably in real-world tests."
+  { 
+    "id": 5,
+    "name": "Stevens Institute of Technology", 
+    "role": "Course Assistant", 
+    "dates": "Sep 2025 -- July 2026", 
+    "link": "https://stevens.edu", 
+    "icon": "/icons/logos/stevens.png",
+    "description": "• Mentored 50+ students in Python coding fundamentals to establish modern software development workflows\n• Directed Java Data Structures instruction, guiding students through code performance and bug troubleshooting\n• Evaluated student project architectures utilizing UML design patterns, accelerating overall technical growth"
   }
 ]
