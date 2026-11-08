@@ -1,0 +1,12 @@
+{
+  "valid": true,
+  "bytes": 7463852,
+  "nodes": 131,
+  "meshes": 99,
+  "primitives": 99,
+  "triangles": 142864,
+  "materials": 26,
+  "images": 24,
+  "interactiveMetadata": true,
+  "externalFiles": false
+}

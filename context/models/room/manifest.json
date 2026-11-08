@@ -1,0 +1,18 @@
+{
+  "source": "room-draft.blend",
+  "export": "public/models/room-draft.glb",
+  "meters": {
+    "width": 4.8,
+    "depth": 6.2,
+    "height": 3.1
+  },
+  "objects": 1095,
+  "meshes": 806,
+  "interactive": [
+    "About_Whiteboard",
+    "Project_Notebook",
+    "Experience_Board",
+    "Record_Player"
+  ],
+  "reference_notes": "Original reconstruction from supplied wide room references; images and third-party models are not embedded. Area light rig is for Blender review, not baked into GLB."
+}

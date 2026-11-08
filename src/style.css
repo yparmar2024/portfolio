@@ -1,0 +1,304 @@
+:root {
+  font-family: Arial, Helvetica, sans-serif;
+  color: #f2e8d5;
+  background: #10182a;
+  font-synthesis: none;
+}
+* {
+  box-sizing: border-box;
+}
+body {
+  margin: 0;
+}
+button {
+  font: inherit;
+  cursor: pointer;
+  color: inherit;
+  -webkit-tap-highlight-color: transparent;
+}
+button:focus-visible {
+  outline: 2px solid #9fffd6;
+  outline-offset: 5px;
+}
+button:disabled {
+  cursor: default;
+}
+[hidden] {
+  display: none !important;
+}
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+main {
+  position: relative;
+  width: 100%;
+  height: 100svh;
+  min-height: 280px;
+  overflow: hidden;
+}
+#world {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  touch-action: none;
+}
+#loading {
+  position: absolute;
+  left: calc(50% - 15px);
+  top: calc(50% - 15px);
+  width: 30px;
+  height: 30px;
+  border: 2px solid #def4ec44;
+  border-top-color: #a3edce;
+  border-radius: 50%;
+  animation: loading-spin 1s linear infinite;
+}
+@keyframes loading-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+#inspect-controls {
+  position: absolute;
+  bottom: max(20px, env(safe-area-inset-bottom));
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 12px;
+}
+#inspect-controls button {
+  width: 48px;
+  height: 48px;
+  border: 1px solid #b2d6cf88;
+  border-radius: 50%;
+  background: #122335d9;
+  font-size: 25px;
+}
+#inspect-controls svg {
+  width: 24px;
+  height: 24px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.5;
+  vertical-align: middle;
+}
+.frame {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  box-shadow: inset 0 0 100px #090e2540;
+}
+.game-prompt {
+  position: absolute;
+  width: 74px;
+  height: 74px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: radial-gradient(circle, #101628bd 35%, #10162800 68%);
+  transform: translate(-50%, -50%);
+  touch-action: manipulation;
+}
+.game-prompt:focus-visible {
+  outline: 1px dashed #e5f1eb;
+  outline-offset: 4px;
+}
+.game-prompt svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  fill: none;
+}
+.ring-track {
+  stroke: #a8d9f0;
+  stroke-width: 2;
+  filter: drop-shadow(0 0 3px #7acbff);
+  opacity: 0.8;
+}
+.ring-fill {
+  stroke: #ed6eb3;
+  stroke-width: 5;
+  stroke-dasharray: 100;
+  stroke-dashoffset: calc(100 - var(--progress, 0) * 100);
+  transform: rotate(-90deg);
+  transform-origin: center;
+  transition:
+    stroke-dashoffset 0.12s linear,
+    stroke 0.15s;
+  filter: drop-shadow(0 0 4px #ec70b3);
+}
+.inner-ring {
+  stroke: #b5dce4;
+  stroke-width: 1.5;
+}
+.square {
+  stroke: #b78fdf;
+  stroke-width: 2;
+}
+.triangle {
+  stroke: #78efc7;
+  stroke-width: 2.5;
+  stroke-linejoin: round;
+  filter: drop-shadow(0 0 2px #56b997);
+}
+#action .triangle {
+  display: none;
+}
+#action[data-single='true'] .triangle {
+  display: block;
+}
+#action[data-single='true'] .square,
+#action[data-single='true'] .inner-ring {
+  display: none;
+}
+#action[data-single='true'] .ring-track {
+  stroke: #e5f1eb;
+  stroke-dasharray: 41 6;
+}
+#action[data-complete='true'] .ring-fill {
+  stroke: #73ff9b;
+  filter: drop-shadow(0 0 7px #4dff89);
+}
+#action[data-complete='true'] .square {
+  fill: #73ff9b;
+  stroke: #73ff9b;
+}
+.single-ring {
+  stroke: #e5f1eb;
+  stroke-width: 2;
+  stroke-dasharray: 41 6;
+}
+.hotspot {
+  width: 58px;
+  height: 58px;
+}
+.hotspot:hover {
+  filter: drop-shadow(0 0 6px #b8ffeb);
+}
+#menu-toggle {
+  position: absolute;
+  bottom: max(18px, env(safe-area-inset-bottom));
+  right: max(18px, env(safe-area-inset-right));
+  width: 44px;
+  height: 44px;
+  padding: 3px;
+  border: 0;
+  border-radius: 50%;
+  background: #121a2d80;
+  opacity: 0.6;
+}
+#menu-toggle:hover,
+#menu-toggle:focus-visible {
+  opacity: 1;
+}
+#menu-toggle svg {
+  fill: none;
+  stroke: #d7e6e4;
+  stroke-width: 1.3;
+}
+dialog {
+  background: #e9dfc8;
+  color: #1e2940;
+  border: 0;
+  max-width: 480px;
+  width: calc(100% - 40px);
+  max-height: calc(100svh - 40px);
+  overflow: auto;
+  padding: 45px;
+  box-shadow: 10px 10px 0 #a24a6270;
+}
+dialog::backdrop {
+  background: #0c122ccc;
+  backdrop-filter: blur(6px);
+}
+dialog h2 {
+  font: italic 34px/1.1 Georgia;
+  margin: 20px 0;
+}
+dialog p {
+  line-height: 1.8;
+  font-size: 14px;
+}
+dialog .eyebrow {
+  color: #a84b61;
+  font: 9px monospace;
+  letter-spacing: 2px;
+}
+.dialog-close {
+  position: absolute;
+  right: 15px;
+  top: 12px;
+  background: none;
+  border: 0;
+  font-size: 20px;
+  padding: 8px;
+}
+.menu-actions,
+#room-nav {
+  display: grid;
+  gap: 8px;
+}
+#room-nav {
+  border-top: 1px solid #1e294030;
+  margin-top: 15px;
+  padding-top: 15px;
+}
+.menu-actions button,
+#room-nav button {
+  text-align: left;
+  background: #ffffff30;
+  padding: 12px;
+  border: 1px solid #1e294030;
+}
+#fallback {
+  position: absolute;
+  inset: 15% 5%;
+  background: #172136;
+  padding: 30px;
+  max-width: 600px;
+  margin: auto;
+  height: fit-content;
+}
+#fallback p {
+  line-height: 1.6;
+}
+#fallback button {
+  background: #e9d6b2;
+  color: #142139;
+  border: 0;
+  padding: 12px;
+  margin: 5px;
+}
+@media (max-width: 600px) {
+  .game-prompt {
+    width: 64px;
+    height: 64px;
+  }
+  .hotspot {
+    width: 48px;
+    height: 48px;
+  }
+  dialog {
+    padding: 30px;
+  }
+  dialog h2 {
+    font-size: 30px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    animation: none !important;
+    transition: none !important;
+  }
+}
