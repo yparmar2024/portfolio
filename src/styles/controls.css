@@ -1,0 +1,165 @@
+:root {
+  --ink: #101322;
+  --paper: #f7eedc;
+  --red: #ed344e;
+  --cyan: #79e4eb;
+  --pink: #f49bd8;
+}
+#utility-dock {
+  position: absolute;
+  right: max(18px, env(safe-area-inset-right));
+  bottom: max(18px, env(safe-area-inset-bottom));
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  z-index: 5;
+}
+.dock-button {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 46px;
+  height: 46px;
+  padding: 9px;
+  border: 2px solid var(--paper);
+  border-radius: 50%;
+  color: var(--paper);
+  background: var(--ink);
+  box-shadow: 2px 3px 0 #0009;
+  touch-action: manipulation;
+  transition:
+    transform 140ms,
+    background 140ms;
+}
+.dock-button svg,
+#menu svg,
+.dialog-close svg {
+  width: 100%;
+  height: 100%;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.dock-button:hover,
+.dock-button:focus-visible {
+  transform: translateY(-3px);
+  background: #29354a;
+}
+.dock-button:disabled {
+  opacity: 0.35;
+}
+#menu-toggle {
+  width: 54px;
+  height: 54px;
+  padding: 12px;
+  background: var(--red);
+  box-shadow:
+    3px 3px 0 var(--ink),
+    5px 5px 0 var(--cyan);
+}
+#menu-toggle[aria-expanded='true'] {
+  background: var(--paper);
+  color: var(--ink);
+}
+.control-tip {
+  position: absolute;
+  bottom: calc(100% + 14px);
+  right: 0;
+  padding: 7px 10px;
+  background: var(--paper);
+  color: var(--ink);
+  font:
+    700 11px/1.3 Arial,
+    sans-serif;
+  white-space: nowrap;
+  pointer-events: none;
+  visibility: hidden;
+  border: 2px solid var(--ink);
+  box-shadow: 3px 3px 0 var(--red);
+}
+@media (hover: hover) {
+  .dock-button:hover .control-tip {
+    visibility: visible;
+  }
+}
+.dock-button:focus-visible .control-tip {
+  visibility: visible;
+}
+#menu-toggle[aria-expanded='true'] .control-tip {
+  visibility: hidden;
+}
+#inspect-controls {
+  position: absolute;
+  left: max(14px, env(safe-area-inset-left));
+  bottom: max(18px, env(safe-area-inset-bottom));
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  z-index: 2;
+}
+#back-room {
+  position: relative;
+  transform: none;
+  width: 54px;
+  height: 54px;
+}
+.back-ring {
+  stroke: #ff696b;
+  stroke-width: 3;
+  filter: drop-shadow(0 0 2px #f2515e);
+}
+#page-tools {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  background: var(--ink);
+  border: 2px solid var(--paper);
+  padding: 0 4px;
+  white-space: nowrap;
+}
+@media (max-width: 410px) {
+  #app[data-focus='Projects'] #inspect-controls {
+    bottom: max(82px, calc(env(safe-area-inset-bottom) + 64px));
+  }
+}
+#page-tools button {
+  display: grid;
+  place-items: center;
+  min-width: 44px;
+  min-height: 44px;
+  background: transparent;
+  border: 0;
+  color: var(--paper);
+}
+#page-tools button {
+  font-size: 24px;
+}
+#page-tools button:disabled {
+  opacity: 0.35;
+}
+/* Canvas links have ordinary keyboard equivalents, revealed on focus. */
+.surface-link {
+  position: absolute;
+  left: 18px;
+  bottom: 132px;
+  clip-path: inset(50%);
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 4px;
+  background: var(--ink);
+  border: 2px solid var(--paper);
+  z-index: 2;
+}
+.surface-link img {
+  width: 21px;
+  height: 21px;
+}
+.surface-link:focus {
+  clip-path: none;
+  outline: 2px solid var(--cyan);
+  outline-offset: 2px;
+}

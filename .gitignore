@@ -30,3 +30,11 @@ dist/
 
 # Environment variables
 .env
+# Browser test artifacts
+test-results/
+playwright-report/
+
+# Generated Python cache and Blender backups (keep the editable .blend source)
+__pycache__/
+*.blend1
+*.blend2

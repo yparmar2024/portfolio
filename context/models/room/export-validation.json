@@ -1,0 +1,15 @@
+{
+  "valid": true,
+  "bytes": 12902320,
+  "nodes": 143,
+  "meshes": 111,
+  "primitives": 111,
+  "triangles": 260458,
+  "materials": 34,
+  "images": 30,
+  "vertexContactShading": true,
+  "compressedViews": 424,
+  "interactiveMetadata": true,
+  "physicalReadingSurfaces": 4,
+  "externalFiles": false
+}

@@ -1,0 +1,7 @@
+node_modules/
+dist/
+package-lock.json
+context/assets/
+context/models/
+test-results/
+playwright-report/

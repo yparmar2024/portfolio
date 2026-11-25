@@ -1,0 +1,10 @@
+{
+  "anchorsUnchanged": true,
+  "entryClearanceRays": 9,
+  "quiltBedMaxPenetrationMeters": {
+    "Settled quilt 0": 0,
+    "Settled quilt 1": 0
+  },
+  "bedCollisionObjects": 20,
+  "scope": "Evaluated quilt contact against mattresses, platforms, posts and safety rails; window camera corridor. Other decorative contacts are reviewed visually."
+}

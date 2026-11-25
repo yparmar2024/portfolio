@@ -1,0 +1,119 @@
+#details[data-kind='Help'] {
+  max-width: 560px;
+  padding: 26px 32px;
+}
+#details[data-kind='Help'] h2 {
+  margin: 10px 0 20px;
+  font-size: 30px;
+}
+#details[data-kind='Help'] .dialog-close {
+  position: sticky;
+  top: 0;
+  right: auto;
+  display: block;
+  margin: -18px -24px -26px auto;
+  z-index: 1;
+  background: var(--paper);
+  border-radius: 50%;
+}
+.control-guide {
+  margin: 0;
+}
+.control-row {
+  position: relative;
+  min-height: 54px;
+  padding: 12px 0 12px 67px;
+  border-top: 1px solid #10132224;
+}
+.control-row dt {
+  font:
+    italic 900 14px/1.3 Arial,
+    sans-serif;
+  text-transform: uppercase;
+}
+.control-row dd {
+  margin: 4px 0 0;
+  font:
+    13px/1.45 Arial,
+    sans-serif;
+}
+.guide-icon {
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 48px;
+  height: 48px;
+  display: grid;
+  place-items: center;
+  background: var(--ink);
+  border: 2px solid var(--ink);
+  border-radius: 50%;
+  box-shadow: 2px 2px 0 #10132222;
+  color: var(--paper);
+}
+.guide-icon svg {
+  width: 31px;
+  height: 31px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.guide-triangle {
+  color: #78efc7;
+}
+.guide-square {
+  color: #b78fdf;
+  border-color: #b78fdf;
+}
+.guide-square::after {
+  content: '';
+  position: absolute;
+  inset: -5px;
+  border: 2px solid transparent;
+  border-top-color: #73ff9b;
+  border-right-color: #73ff9b;
+  border-radius: 50%;
+  transform: rotate(30deg);
+}
+.guide-circle {
+  color: #ff696b;
+}
+.guide-notes {
+  margin-top: 15px;
+  padding-top: 10px;
+  border-top: 2px solid var(--ink);
+}
+#details .guide-notes p {
+  font-size: 11px;
+  line-height: 1.7;
+  margin: 7px 0 0;
+}
+kbd {
+  font: 700 10px monospace;
+  border: 1px solid #10132255;
+  border-bottom-width: 2px;
+  padding: 2px 4px;
+  border-radius: 3px;
+  background: #ffffff55;
+}
+@media (max-width: 400px) {
+  #details[data-kind='Help'] {
+    padding: 23px 20px;
+  }
+  #details[data-kind='Help'] h2 {
+    font-size: 26px;
+  }
+  #details[data-kind='Help'] .dialog-close {
+    margin: -15px -12px -29px auto;
+  }
+  .control-row {
+    padding-left: 57px;
+  }
+  .guide-icon {
+    width: 42px;
+    height: 42px;
+  }
+}
