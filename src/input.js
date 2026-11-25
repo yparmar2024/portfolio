@@ -6,6 +6,22 @@ export function bindCanvas(
 ) {
   let drag = null,
     dragged = false;
+  const stage = canvas.closest('main');
+  function suppressPinch(event) {
+    if (event.touches && event.touches.length < 2) return;
+    drag = null;
+    dragged = true;
+    if (event.cancelable) event.preventDefault();
+  }
+  // Safari can deliver native gesture events in addition to pointer events.
+  for (const type of [
+    'touchstart',
+    'touchmove',
+    'gesturestart',
+    'gesturechange',
+  ]) {
+    stage.addEventListener(type, suppressPinch, { passive: false });
+  }
   canvas.onclick = (event) => {
     if (dragged) {
       dragged = false;
@@ -25,22 +41,28 @@ export function bindCanvas(
       press();
   };
   canvas.onpointerdown = (event) => {
+    if (!event.isPrimary) {
+      drag = null;
+      dragged = true;
+      return;
+    }
+    dragged = false;
     if (getState() === 'room' && event.button === 0) {
       drag = {
+        pointerId: event.pointerId,
         x: event.clientX,
         y: event.clientY,
         startX: event.clientX,
         startY: event.clientY,
       };
-      dragged = false;
       canvas.setPointerCapture(event.pointerId);
     }
   };
-  canvas.onpointerup = canvas.onpointercancel = () => {
-    drag = null;
+  canvas.onpointerup = canvas.onpointercancel = (event) => {
+    if (drag?.pointerId === event.pointerId) drag = null;
   };
   canvas.onpointermove = (event) => {
-    if (drag) {
+    if (drag?.pointerId === event.pointerId) {
       if (
         Math.hypot(event.clientX - drag.startX, event.clientY - drag.startY) > 5
       )

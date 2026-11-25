@@ -44,7 +44,7 @@ test('radial navigation, keyboard dismissal, and mobile reading', async ({
     await expect(page.locator('#scene-reading')).toBeFocused();
     if (name !== 'Experience')
       await expect(page.locator('#scene-body')).toContainText(copy[name][2]);
-    await expect(page.locator('#back-room svg circle')).toHaveCount(1);
+    await expect(page.locator('#back-room svg .back-ring')).toHaveCount(1);
     await expect(page.locator('#back-room svg rect')).toHaveCount(0);
     await expect(page.locator('#details')).toBeHidden();
     await page.waitForTimeout(250);

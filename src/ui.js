@@ -12,8 +12,8 @@ export const pageTemplate = `
     <div id="hotspots" hidden></div>
     <div id="loading" hidden role="status" aria-label="Loading the room"><span class="sr-only">Loading the room…</span></div>
     <nav id="inspect-controls" aria-label="Object inspection" hidden>
+      <button id="back-room" class="game-prompt" aria-label="Return to room" aria-keyshortcuts="Escape"><svg viewBox="0 0 80 80" aria-hidden="true"><circle class="single-ring" cx="40" cy="40" r="29"/><circle class="back-ring" cx="40" cy="40" r="14"/></svg></button>
       <div id="page-tools" hidden><button id="prev-page" aria-label="Previous entry">↑</button><span id="page-count"></span><button id="next-page" aria-label="Next entry">↓</button></div>
-      <button id="back-room" aria-label="Return to room" aria-keyshortcuts="Escape">${icons.circle}</button>
     </nav>
     <article id="scene-reading" class="sr-only" aria-labelledby="scene-title" tabindex="-1" hidden>
       <h1 id="scene-title"></h1><p id="scene-body"></p>
