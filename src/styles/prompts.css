@@ -1,0 +1,98 @@
+.game-prompt {
+  position: absolute;
+  width: 74px;
+  height: 74px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: radial-gradient(circle, #101628bd 35%, #10162800 68%);
+  transform: translate(-50%, -50%);
+  touch-action: manipulation;
+}
+.game-prompt:focus-visible {
+  outline: 1px dashed #e5f1eb;
+  outline-offset: 4px;
+}
+.game-prompt svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  fill: none;
+}
+.ring-track {
+  stroke: #a8d9f0;
+  stroke-width: 2;
+  filter: drop-shadow(0 0 3px #7acbff);
+  opacity: 0.8;
+}
+.ring-fill {
+  stroke: #ed6eb3;
+  stroke-width: 5;
+  stroke-dasharray: 100;
+  stroke-dashoffset: calc(100 - var(--progress, 0) * 100);
+  transform: rotate(-90deg);
+  transform-origin: center;
+  transition:
+    stroke-dashoffset 0.12s linear,
+    stroke 0.15s;
+  filter: drop-shadow(0 0 4px #ec70b3);
+}
+.inner-ring {
+  stroke: #b5dce4;
+  stroke-width: 1.5;
+}
+.square {
+  stroke: #b78fdf;
+  stroke-width: 2;
+}
+.triangle {
+  stroke: #78efc7;
+  stroke-width: 2.5;
+  stroke-linejoin: round;
+  filter: drop-shadow(0 0 2px #56b997);
+}
+#action .triangle {
+  display: none;
+}
+#action[data-single='true'] .triangle {
+  display: block;
+}
+#action[data-single='true'] .square,
+#action[data-single='true'] .inner-ring {
+  display: none;
+}
+#action[data-single='true'] .ring-track {
+  stroke: #e5f1eb;
+  stroke-dasharray: 41 6;
+}
+#action[data-complete='true'] .ring-fill {
+  stroke: #73ff9b;
+  filter: drop-shadow(0 0 7px #4dff89);
+}
+#action[data-complete='true'] .square {
+  fill: #73ff9b;
+  stroke: #73ff9b;
+}
+.single-ring {
+  stroke: #e5f1eb;
+  stroke-width: 2;
+  stroke-dasharray: 41 6;
+}
+.hotspot {
+  width: 58px;
+  height: 58px;
+}
+.hotspot:hover {
+  filter: drop-shadow(0 0 6px #b8ffeb);
+}
+@media (max-width: 600px) {
+  .game-prompt {
+    width: 64px;
+    height: 64px;
+  }
+  .hotspot {
+    width: 48px;
+    height: 48px;
+  }
+}

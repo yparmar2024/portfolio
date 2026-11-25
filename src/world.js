@@ -66,6 +66,12 @@ export function createWorld(canvas, reducedMotion) {
     renderer.setSize(w, h, false);
     composer.setSize(w, h);
     camera.aspect = w / h;
+    room?.surfaces.update(camera.aspect);
+    if (focused)
+      focused = {
+        ...focused,
+        ...room.surfaces.frame(focused.name, camera.aspect),
+      };
     camera.updateProjectionMatrix();
     print.uniforms.resolution.value.set(
       w * renderer.getPixelRatio(),
@@ -77,11 +83,12 @@ export function createWorld(canvas, reducedMotion) {
   const outside = new THREE.Vector3(),
     insideCam = new THREE.Vector3(0, 2.5, -2.1);
   const roomAim = new THREE.Vector3(-0.84, 1.9, -8.7);
-  const ready = loadRoom(scene).then((result) => {
+  const ready = loadRoom(scene, renderer).then((result) => {
     room = result;
     targets.push(...room.targets);
     insideCam.copy(room.overview);
     roomAim.copy(room.lookAt);
+    room.surfaces.update(camera.aspect);
     moon.shadow.needsUpdate = true;
   });
   function render(time) {
@@ -131,7 +138,7 @@ export function createWorld(canvas, reducedMotion) {
           .sub(focused.view)
           .applyEuler(new THREE.Euler(pitch, yaw, 0, 'YXZ'))
           .add(focused.view);
-        fov = camera.aspect < 0.8 ? 70 : 55;
+        fov = focused.fov;
       }
       if (transition) {
         const t = Math.min(
@@ -216,19 +223,30 @@ export function createWorld(canvas, reducedMotion) {
     camera.updateMatrixWorld(true);
     raycaster.setFromCamera(pointer, camera);
     const hit = raycaster.intersectObject(room.root, true)[0];
+    const link = room.surfaces.linkAt(hit);
+    if (link) return link;
     for (let object = hit?.object; object; object = object.parent) {
       if (object.userData.interaction)
         return targets.find(
-          (t) => t.name.toLowerCase() === object.userData.interaction,
+          (t) =>
+            t.name !== focused?.name &&
+            t.name.toLowerCase() === object.userData.interaction,
         )?.name;
     }
     return null;
   }
   return {
     ready,
+    setPage(name, index) {
+      room.surfaces.setPage(name, index);
+    },
     focus(name) {
       const target = targets.find((t) => t.name === name);
-      if (target) startView(target);
+      if (target)
+        startView({
+          ...target,
+          ...room.surfaces.frame(name, camera.aspect),
+        });
     },
     clearFocus() {
       startView(null);

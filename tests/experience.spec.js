@@ -2,7 +2,7 @@ import { test, expect } from '@playwright/test';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 
-test('3D opening, momentum, camera entry, details and replay', async ({
+test('3D opening, momentum, camera entry, in-scene reading and replay', async ({
   page,
 }) => {
   const errors = [];
@@ -33,29 +33,51 @@ test('3D opening, momentum, camera entry, details and replay', async ({
   await page.locator('[data-item="About"]').click();
   await expect(page.locator('#app')).toHaveAttribute('data-focus', 'About');
   await expect(page.locator('#details')).not.toBeVisible();
-  await page.locator('#read-object').click();
-  await expect(page.getByRole('dialog')).toBeVisible();
-  await page.keyboard.press('Escape');
+  await expect(page.locator('#scene-title')).toHaveText('Hey, I’m Yash.');
+  await expect(page.locator('#scene-reading')).toBeFocused();
+  await expect(page.locator('#read-object')).toHaveCount(0);
   await page.locator('#back-room').click();
   await page.reload();
-  await expect(page.locator('#app')).toHaveAttribute('data-state', 'room');
+  await expect(page.locator('#app')).toHaveAttribute('data-state', 'paper');
   await page.locator('#menu-toggle').click();
   await page.locator('#replay').click();
   await expect(page.locator('#app')).toHaveAttribute('data-state', 'paper');
   expect(errors).toEqual([]);
 });
 
-test('mobile reduced motion and skip during transition', async ({ page }) => {
+test('mobile intro works before the room loads and ignores older visit flags', async ({
+  page,
+}) => {
   await page.setViewportSize({ width: 390, height: 844 });
   await page.emulateMedia({ reducedMotion: 'reduce' });
+  await page.addInitScript(() => localStorage.setItem('yp-3d-entered', '1'));
+  let releaseRoom;
+  const roomGate = new Promise((resolve) => {
+    releaseRoom = resolve;
+  });
+  await page.route('**/models/room-draft.glb', async (route) => {
+    await roomGate;
+    await route.continue();
+  });
   await page.goto('/');
-  await expect(page.locator('#app')).toHaveAttribute('data-state', 'paper');
+  const app = page.locator('#app');
+  const prompt = page.locator('#action');
+  await expect(app).toHaveAttribute('data-state', 'paper');
+  await expect(prompt).toBeVisible();
+  const box = await prompt.boundingBox();
+  expect(box.x).toBeGreaterThan(40);
+  expect(box.y).toBeGreaterThan(80);
   await page.screenshot({ path: join(tmpdir(), 'portfolio-mobile.png') });
-  await page.locator('#action').focus();
+  await prompt.focus();
   await page.keyboard.press('Space');
-  await expect(page.locator('#app')).toHaveAttribute('data-state', 'window');
+  await expect(app).toHaveAttribute('data-state', 'window');
+  await expect(prompt).toBeVisible();
+  await prompt.focus();
   await page.keyboard.press('Space');
-  await expect(page.locator('#app')).toHaveAttribute('data-state', 'room');
+  await expect(app).toHaveAttribute('data-state', 'room-wait');
+  await expect(page.locator('#loading')).toBeVisible();
+  releaseRoom();
+  await expect(app).toHaveAttribute('data-state', 'room');
   await page.screenshot({ path: join(tmpdir(), 'portfolio-mobile-room.png') });
   expect(
     await page.evaluate(
@@ -150,8 +172,9 @@ test('Blender room inspection, return, and model-load failure', async ({
 }) => {
   await page.setViewportSize({ width: 1440, height: 900 });
   await page.emulateMedia({ reducedMotion: 'reduce' });
-  await page.addInitScript(() => localStorage.setItem('yp-3d-entered', '1'));
   await page.goto('/');
+  await page.locator('#menu-toggle').click();
+  await page.locator('#skip').click();
   await expect(page.locator('#app')).toHaveAttribute('data-room-ready', 'true');
   await expect(page.locator('#app')).toHaveAttribute('data-state', 'room');
   // Use the projected notebook location but dispatch to the canvas: exercise
@@ -167,17 +190,22 @@ test('Blender room inspection, return, and model-load failure', async ({
   await expect(page.locator('#app')).toHaveAttribute('data-focus', 'Projects');
   await page.keyboard.press('Escape');
   await expect(page.locator('#inspect-controls')).toBeHidden();
-  for (const name of ['About', 'Projects', 'Experience', 'Records']) {
-    await page.locator('#menu-toggle').click();
-    await page.locator(`[data-item="${name}"]`).click();
+  for (const name of ['About', 'Projects', 'Experience']) {
+    if (name === 'Experience') {
+      await page.locator('[data-name="Experience"]').click();
+      await expect(page.locator('.experience-note')).toHaveCount(0);
+    } else {
+      await page.locator('#menu-toggle').click();
+      await page.locator(`[data-item="${name}"]`).click();
+    }
     await expect(page.locator('#app')).toHaveAttribute('data-focus', name);
     await page.waitForTimeout(200);
     await page.screenshot({
       path: join(tmpdir(), `portfolio-inspect-${name}.png`),
     });
-    await page.locator('#read-object').click();
-    await expect(page.locator('#details')).toBeVisible();
-    await page.keyboard.press('Escape');
+    await expect(page.locator('#details')).toBeHidden();
+    await expect(page.locator('#scene-body')).not.toBeEmpty();
+    await expect(page.locator('#scene-reading')).toBeFocused();
     await page.locator('#back-room').click();
     await expect(page.locator('#app')).toHaveAttribute('data-focus', '');
   }

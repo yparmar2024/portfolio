@@ -1,3 +1,5 @@
+import { openSurfaceLink } from './surface-links.js';
+
 export function bindCanvas(
   canvas,
   { getState, getWorld, inspect, press, menu, dialog },
@@ -11,7 +13,7 @@ export function bindCanvas(
     }
     if (getState() === 'room' && !menu.open && !dialog.open) {
       const item = getWorld()?.hitItem(event.clientX, event.clientY);
-      if (item) inspect(item);
+      if (!openSurfaceLink(item) && typeof item === 'string') inspect(item);
       return;
     }
     if (

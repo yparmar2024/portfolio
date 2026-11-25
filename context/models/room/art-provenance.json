@@ -1,0 +1,15 @@
+{
+  "tool": "Built-in image_gen.imagegen",
+  "date": "2026-11-17",
+  "usage": "Original printed artwork on modeled surfaces; never a replacement for 3D room geometry.",
+  "assets": [
+    {
+      "file": "textures/rooftops-illustration.png",
+      "prompt": "Use case: illustration-story. Asset type: one print-ready original landscape poster texture for a student's 3D bedroom wall. Create a rich graphic-novel illustration of dense New York rooftops and an elevated train at blue hour, with one small anonymous hoodie-wearing figure sketching at a rooftop edge, no recognizable superhero. Hand-painted shapes, textured gouache, expressive inky contour lines, deliberate crosshatching in shadows, subtle halftone print grain and tiny off-register cyan/red accents. Cinematic animated-film visual development quality with believable architectural perspective. Navy ink, dusky turquoise, cream, warm orange window lights, small magenta accents. Flat edge-to-edge artwork on a rectangular 3:2 canvas, straight-on, no physical frame, no wall, no room, no mockup, no margins. No text, logos, signatures or watermarks. The art must be legible at small size but rewarding in close-up, with human drawing character rather than neat geometric bars."
+    },
+    {
+      "file": "textures/headphones-illustration.png",
+      "prompt": "Use case: illustration-story. Asset type: original vertical art print texture for a student's cinematic animated 3D bedroom, 2:3 aspect. Create a powerful hand-inked graphic novel poster of an anonymous young adult in a dark hoodie and large over-ear headphones, seen from chest up, chin tilted down absorbed in music. A warm orange sun disc behind the head, a few expressive abstract diagonal paint strokes and small geometric fragments. Strong navy silhouettes, bold rust-orange and cream areas, small muted turquoise accents, distressed screenprint texture, visible brush marks and confident broken contour lines, cross-hatched violet shadows. Rich mature animation visual development style, believable facial anatomy, expressive sculptural lighting and asymmetry, not cute or toy-like, not a superhero, no recognizable person. Front-on flat edge-to-edge artwork with no room, frame or surrounding objects. No text, logos, signatures or watermark."
+    }
+  ]
+}

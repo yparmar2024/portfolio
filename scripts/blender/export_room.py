@@ -2,6 +2,12 @@
 from pathlib import Path
 import bpy
 from collections import defaultdict
+import sys
+from tempfile import TemporaryDirectory
+
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from room_occlusion import bake_contact_shading
+from export_textures import prepare_prints
 
 
 def batch_static_geometry():
@@ -14,6 +20,8 @@ def batch_static_geometry():
     # Evaluate bevels and cloth thickness before joining. All source modifiers
     # remain in the .blend on disk because this export never saves the scene.
     bpy.ops.object.convert(target='MESH')
+    if bpy.context.scene.get('illustrated_finish_version'):
+        bake_contact_shading()
     buckets = defaultdict(list)
     for obj in bpy.context.scene.objects:
         if obj.type != 'MESH':
@@ -50,10 +58,16 @@ def export_room(destination):
     for obj in bpy.context.scene.objects:
         if obj.type in {'MESH', 'EMPTY'} or (obj.type == 'LIGHT' and obj.data.type == 'POINT'):
             obj.select_set(True)
-    bpy.ops.export_scene.gltf(
-        filepath=str(destination), export_format='GLB', use_selection=True,
-        export_apply=True, export_extras=True, export_lights=True, export_cameras=False,
-    )
+    with TemporaryDirectory(prefix='portfolio-room-textures-') as directory:
+        prepare_prints(directory)
+        bpy.ops.export_scene.gltf(
+            filepath=str(destination), export_format='GLB', use_selection=True,
+            export_apply=True, export_extras=True, export_lights=True, export_cameras=False,
+            export_vertex_color='NAME', export_vertex_color_name='RoomContact',
+            export_all_vertex_colors=False,
+            export_meshopt_compression_enable=True,
+            export_meshopt_extension='EXT_meshopt_compression',
+        )
 
 
 if __name__ == '__main__':

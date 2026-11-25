@@ -6,13 +6,24 @@
     "depth": 6.2,
     "height": 3.1
   },
-  "objects": 1095,
-  "meshes": 806,
+  "objects": 1468,
+  "meshes": 701,
   "interactive": [
     "About_Whiteboard",
     "Project_Notebook",
     "Experience_Board",
     "Record_Player"
   ],
-  "reference_notes": "Original reconstruction from supplied wide room references; images and third-party models are not embedded. Area light rig is for Blender review, not baked into GLB."
+  "reference_notes": "Original reconstruction from supplied wide room references; images and third-party models are not embedded. Area light rig is for Blender review, not baked into GLB.",
+  "finish_version": 1,
+  "review_cameras": [
+    "entry",
+    "reverse",
+    "left",
+    "right",
+    "bunk",
+    "overhead",
+    "warm lighting"
+  ],
+  "settled_bedding": true
 }

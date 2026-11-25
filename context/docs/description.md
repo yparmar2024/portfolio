@@ -6,11 +6,23 @@ Build a cinematic, Spider-Verse-inspired portfolio using connected, real-time 3D
 
 The active branch is `feat/spiderman-update`. The earlier Minecraft portfolio and its assets remain recoverable through Git history. The current application is Vite, native JavaScript and Three.js/WebGL 2.
 
+## Illustrated room refinement — November 17
+
+The November 17 request was to improve the actual Blender room toward a richer illustrated animated-film finish, examining multiple angles while preserving the successful entrance. This pass supersedes earlier notes that deferred further room art to the user. That art pass preserved the entrance, overview, all four zoom anchors, and interaction flow. The November 18 section below documents the subsequent navigation and reading changes.
+
+The saved room has richer painted teal, wood, plaster and fabric maps; darker formed-steel bunk framing with rounded bends; sewn pillows; quilts settled against mattress and bed-frame collision surfaces and frozen as editable meshes; a thickness modifier on the hanging throw; supported chair backs and seat shells; a shortened dresser that clears the wardrobe; repositioned speakers/comics; inset door construction; outlets; a hanging hoodie and a complete leaning skateboard. That pass added a small project sketch and varied handwritten pinboard studies; the November 18 reading pass replaces those placeholder marks with readable portfolio copy. Screen strokes stay inside their bezels. Two original images generated with the built-in imagegen tool are used only as printed artwork on modeled surfaces. Full prompts and source paths are in `context/models/room/art-provenance.json`.
+
+`polish_room.py` coordinates separate surface, textile, geometry, prop and close-up modules. `settle_bedding.py` performs a finite authoring-time cloth simulation; no cloth solver runs on the website. The one-time polish migration refuses already-polished files to avoid duplicating decorations or overwriting manual work. For ordinary Blender edits, save and run `export_room.py`; do not regenerate the layout.
+
+The exporter evaluates modifiers, bakes short-range ambient contact shading into glTF `COLOR_0`, batches geometry within the existing interaction groups, and applies `EXT_meshopt_compression`. Three.js uses its bundled Meshopt decoder; the asset validator decodes every compressed buffer. Export also creates smaller JPEG web copies of the two prints while keeping the full PNG originals packed in Blender. This is static contact shading, not a full global-illumination light bake. Blender uses its Cycles rig; Three.js uses a stronger cool window key with restrained warm fills. Their rendering is not pixel-identical.
+
+Review cameras cover the entry, reverse/door side, both work areas, bunk, overhead and a warm lighting study. `review_room.py` refreshes these offline renders without adding a preview route. `audit_room.py` checks the unchanged anchors, nine rays along the window-entry corridor, and evaluated quilt contact with mattresses, bed platforms, posts and safety rails. Its report deliberately covers those checks only; other decorative contacts are assessed visually. `export-validation.json` records current web asset size, geometry and shading metadata. Physical-phone performance and the final portfolio copy remain separate work.
+
 ## Visual reference and implementation
 
 Reference files live in `context/assets/building` and `context/assets/room`. The supplied night exterior and night/top-down bedroom references were inspected to establish blue brick, iron fire escapes, warm windows, a narrow cluttered room, bunk bed, desks, bookshelves and pinned notes. They are reference material, not shipped background textures.
 
-The exterior and animated paper are constructed in `src/world.js`: instanced brickwork, a grated fire escape, a real window opening and sliding sash. `src/room.js` now loads the editable Blender room from `/models/room-draft.glb` into the same scene; the old procedural bedroom has been removed. The camera travels from the exterior (+Z), through the window (Z=0), into the bedroom (-Z). Paper is a tessellated surface that bends and flies away. Canvas-generated text and material textures are applied to 3D surfaces.
+The exterior and animated paper are orchestrated by `src/world.js`, with geometry in `exterior.js`, `fire-escape.js`, and `paper.js`: instanced brickwork, a grated fire escape, a real window opening and sliding sash. `src/room.js` now loads the editable Blender room from `/models/room-draft.glb` into the same scene; the old procedural bedroom has been removed. The camera travels from the exterior (+Z), through the window (Z=0), into the bedroom (-Z). Paper is a tessellated surface that bends and flies away. Canvas-generated text and material textures are applied to 3D surfaces.
 
 Lighting uses cool directional moonlight, a magenta exterior accent, warm interior lights, shadow-casting moonlight, area fills and cyan monitor light. A postprocessing pass adds restrained halftone shadow dots, chromatic edging and vignette. Geometry and lighting are an original interpretation of the references, not a reproduction of the film's production assets.
 
@@ -19,9 +31,9 @@ Lighting uses cool directional moonlight, a magenta exterior accent, warm interi
 Exterior → arriving name tag → peel paper → raise window → camera passes inside → framed room exploration.
 Paper requires three inputs; window requires five. After 800ms without input, one progress unit decays; further units decay every 500ms. New input resets that delay. Touch/click and keyboard buttons share this behavior; held-key repeats are suppressed.
 
-The camera move takes 2.8 seconds for a readable 3D transition. Reduced motion uses single activations, suppresses sway and paper arrival, and completes travel in 100ms. Enter room bypasses the introduction, successful visits are remembered using `yp-3d-entered`, and Replay intro returns outside. Unavailable storage does not block use.
+The camera move takes 2.8 seconds for a readable 3D transition. Reduced motion uses single activations, suppresses sway and paper arrival, and completes travel in 100ms. Enter room bypasses the introduction once the model is ready. Replay intro returns outside, and a new visit always starts with the name tag.
 
-Room objects, their triangle prompts and the on-demand navigation menu move the camera to the Blender-authored views for About, Projects, Experience and Records. A document icon opens accessible details after zooming; an arrow or Escape returns to the overview. Drag/swipe pans the overview within a constrained range. Actual mesh picking respects the nearest visible surface and resolves interaction metadata through parent groups. Content is explicitly provisional; no project or career history has been invented. Help explains the interaction. Final content, music, and the web-shooting minigame remain future work.
+Room objects, their triangle prompts and the four-way radial menu move the camera to About, Projects, Experience and Records. Text is printed directly on the whiteboard, notebook, pinned sheet and record sleeve; the red circle button or Escape returns to the overview. There is no document button or portfolio description modal. Drag/swipe pans the overview within a constrained range. Actual mesh picking respects the nearest visible surface and resolves interaction metadata through parent groups. The current copy uses verified public profile and repository details; no project or career history has been invented. Help explains the interaction. Final content, music, and the web-shooting minigame remain future work.
 
 ## Responsive and accessible behavior
 
@@ -31,7 +43,7 @@ WebGL initialization failure presents an explanation, retry action and accessibl
 
 ## Latest interaction and exterior revisions
 
-The default view has no brand, chapter labels, captions, textual action buttons or persistent room navigation. A small menu icon exposes help, skip, replay and accessible room links when requested. In-world lettering and text in opened detail panels remain.
+The default view has no brand, chapter labels or captions. A compact bottom-right dock contains refresh/replay, question-mark/help and menu icons. The menu opens a four-way wheel with ink outlines, halftone paper and red/cyan accents. Before entry, it offers the existing skip action instead. Inspection adds a red circle Back control at bottom left. Only help and the unavailable-WebGL fallback use a text dialog.
 
 Reference files `context/assets/nametag/empty-nametag.png`, `context/assets/buttons/single-action-button.png`, and `context/assets/buttons/repetitive-action-button.png` were found and inspected. The source images are screenshots with surrounding backgrounds, so the tag and prompts are recreated as code-native artwork rather than putting rectangular screenshots over the scene. The tag has a white rounded border, red HELLO / MY NAME IS header, dark Yash lettering and a curled top-right corner. Momentum curls both sides; completion folds the edges inward before a tumbling flight, with a separate pale reverse surface.
 
@@ -94,9 +106,9 @@ The geometry remains separately editable in the Blender source. The export conso
 
 The fan now sits on the left desk. The Blender window aperture has no sky plane, fixed sash or blinds blocking the camera; the main website supplies the animated sash. The quilt remains below the safety rail, the ladder is at the foot of the bunk clear of the hanging quilt, and the purple throw wraps around the upper rail near the pillows, away from the quilt. These targeted corrections were visually reviewed; this is not a certification that every decorative mesh is collision-free.
 
-The former opposite opening is filled by a wall and a simple closed door. Review cameras, main entry travel and overview now face that door from the window. Object cameras still use the named Blender `View_*` and `Target_*` anchors, so those can be adjusted visually without rewriting interaction code. Camera focus takes 950 ms, or 100 ms with reduced motion. The overview and close-up inspections permit limited horizontal and vertical look-around; there is no free walking through furniture. Portrait entry turns toward the desk/whiteboard for a more useful narrow-screen composition.
+The former opposite opening is filled by a wall and a simple closed door. Review cameras, main entry travel and overview now face that door from the window. The named Blender `View_*` and `Target_*` anchors still define interaction locations and inspection directions. Runtime framing now fits the reading surface bounds to the viewport; the notebook uses a steeper reading angle. Entry and overview anchors are unchanged. Camera focus takes 950 ms, or 100 ms with reduced motion. The overview and close-up inspections permit limited horizontal and vertical look-around; there is no free walking through furniture. Portrait entry turns toward the desk/whiteboard for a more useful narrow-screen composition.
 
-The main page waits for the model before enabling entry/replay, presents a small loading indicator, and exposes a retry/readable fallback on model or WebGL failure. Clicking an object now zooms first. Reading details is a separate optional action. Portfolio copy remains provisional. The existing three-input paper and five-input window sequence, replay, visit persistence and reduced-motion behavior are preserved.
+The main page loads the room in the background during the introduction, presents a small loading indicator if the window is ready first, and exposes a retry/readable fallback on model or WebGL failure. Clicking an object zooms to its physical reading surface, with no second action needed to read it. The profile-personalization section below documents the current copy and its sources. The existing three-input paper and five-input window sequence, replay and reduced-motion behavior are preserved.
 
 For manual Blender work, edit and save `room-draft.blend`, then run `scripts/blender/export_room.py` and `node scripts/validate-room.mjs`. Do **not** regenerate with `build_room.py` after manual edits unless intentionally replacing them. Keep the interaction groups and anchors, and leave the entry aperture open. The runtime handles the intro animations; the room does not need to be rebuilt as one monolithic animated asset.
 
@@ -124,9 +136,9 @@ Run `npm test` for deterministic momentum tests, `npm run test:e2e` for Chrome b
 
 Run `node scripts/validate-room.mjs` after each model export to check GLB structure, named anchors, interaction metadata and mesh counts. `npm run test:e2e` verifies that the actual GLB loads, review views and lighting controls work, the layout fits a 390 px viewport, and no uncaught browser errors occur. This viewport check is not a physical-device performance benchmark. Blender renders are visually reviewed for layout, intersections and composition.
 
-Validate exterior, window and interior composition at mobile and desktop widths. Browser coverage includes normal/reduced motion, skip, replay, persistence, blocked storage, details/help, keyboard interaction and unavailable WebGL. Physical mobile hardware, Safari/Firefox and performance profiling remain release checks; no device frame-rate or LCP target has yet been certified.
+Validate exterior, window and interior composition at mobile and desktop widths. Browser coverage includes normal/reduced motion, skip, replay, background loading, physical reading views/help, keyboard navigation and unavailable WebGL. Physical mobile hardware, Safari/Firefox and performance profiling remain release checks; no device frame-rate or LCP target has yet been certified.
 
-Next creative work: review the geometry, lighting and composition against the references; refine materials and furniture shapes; replace provisional content with approved portfolio details. Later consider richer physics or lighting only after profiling. C++/WebAssembly is an exploration, not an assumed optimization. The minigame and audio need a separate design decision.
+Next creative work: review the geometry, lighting and composition against the references; refine materials and furniture shapes; expand the profile-backed copy with deeper project details. Later consider richer physics or lighting only after profiling. C++/WebAssembly is an exploration, not an assumed optimization. The minigame and audio need a separate design decision.
 
 Deployment remains controlled by the existing Vercel Git integration and GitHub workflow. No push or deployment is part of this implementation.
 
@@ -162,3 +174,59 @@ Again, this is all relatively not in place, but this is where we are going to be
 ## Repository cleanup and handoff
 
 The temporary room-preview HTML route, viewer module and viewer-only test have been removed. The main experience is the supported entry point. Exterior geometry, postprocessing, UI markup and content now have dedicated modules. Blender structure and furnishings are separated from build orchestration. Earlier mentions of a separate viewer describe the development process; it is no longer shipped. Run `npm run check` and `npm run test:e2e` before pushing. The source `.blend`, texture sources, reference assets and authored GLB are retained for future editing.
+
+## Comic navigation and physical reading — November 18, 2026
+
+The four existing destinations remain the full implemented interaction set. `navigation.js` owns the radial selector and its keyboard behavior; `icons.js` contains original SVG controls. Replay and help remain available while the wheel is open. The menu closes on its toggle, center cross, outside tap or Escape. Arrow keys cycle destinations, and focus returns predictably. Canvas and scene controls are inert while the selector is open. The circle is a PlayStation-inspired visual cue, not an assertion of controller support.
+
+`add_reading_surfaces.py` replaces obsolete placeholder lettering with four UV-mapped `Content_*` meshes and packs source print textures into the editable Blender file. These carry `contentSurface` and `keep_separate` extras so batching preserves them. The existing furniture, settled cloth, interaction groups and entry/camera anchors stay in place. `scene-print.js` renders `content.js` onto these surfaces, and `scene-surfaces.js` binds the textures and derives world-space reading corners. Portrait About uses a central reading column within the wide board; the board itself stays physically wide. `inspection-frame.js` fits the close-up without relying on a fixed desktop crop. Copy is also mirrored in a focused screen-reader article; the profile-personalization section below records its sources. No CSS text card overlays the 3D scene.
+
+For copy updates, change `content.js`. To sync Blender's packed images, run the development server and `node scripts/build-scene-prints.mjs`, then the reading-surface migration and normal export. The migration is repeatable, but replaces manual edits to those four surface groups; ordinary furniture edits require only export. No new public preview HTML route was introduced.
+
+Verification: `npm run check` passes, including ten unit checks and decoding every compressed GLB buffer. All six browser scenarios passed; final inspection/navigation rechecks also cover 320×568, 390×844, 844×390 and 1440×900 viewports. The Blender audit confirms unchanged anchors, an unobstructed entry corridor and zero measured quilt penetration against the twenty bed collision objects. Menu and phone reading screenshots are saved in `context/models/room/previews`. These browser viewport checks do not replace profiling on physical phones.
+
+### Interaction ideas — brainstorm only, not implemented
+
+- **Notebook project spreads:** turn a page to reveal a project diagram, then select a sketch or taped screenshot for its demo or repository. Keep the camera on the desk rather than opening a generic card.
+- **Record collection:** pick a sleeve, slide out the vinyl, and place it on the turntable. A deliberate play action starts licensed/owned audio; the tonearm becomes the pause control. No autoplay.
+- **Desk lamp and fan:** switch between late-night and warm study lighting, or start the fan so a nearby loose page and hoodie edge respond gently. Small, optional environmental interactions would make the room feel occupied.
+- **Pinned memories:** pull a photo slightly forward to read its dated caption on the reverse, then return it to the board. This could become an experience timeline once actual entries are supplied.
+- **Sketchbook:** reveal rough drawings or development notes by dragging a pencil across a page; include a one-tap alternative and an easy reset.
+- **Mini basketball hoop:** an optional paper-ball toss using a short drag-and-release gesture, with a keyboard equivalent. Keep score on a physical sticky note and avoid blocking portfolio navigation.
+
+Start with the lamp and project-page turns for atmosphere and useful content. The record interaction is a stronger second milestone once music assets and playback behavior are decided. These are proposals only; this pass adds no music, physics toy or extra clickable prop.
+
+## Visual control guide and profile personalization — November 18, 2026
+
+The question-mark dialog is now an icon-and-description legend: green triangle for one tap, purple square for repeated taps and draining progress, red circle for returning from an inspection, directional arrows for look-around, plus the existing menu and replay symbols. Keyboard equivalents and the reduced-motion single-press behavior are compact footnotes. Back uses the red PlayStation-style circle; the repetitive-action prompt stays square. The radial navigation design and all deferred interaction ideas are unchanged.
+
+The four reading surfaces retain their original interaction groups. About introduces Yash Parmar, Computer Science and an Applied Mathematics minor at Stevens. Projects lists Morf, Graphos and SleepyU. Experience lists Stevens Blueprint software engineering, the CS-115/CS-284 course-assistant work, and the virtual Data Glacier internship. Records is currently titled “Off the clock” and retains its music-corner placeholder. The user initially requested music, then clarified that the eventual section should be career-related and explicitly asked to leave it as-is for this pass. Defer that redesign until a later discussion; do not infer music tastes or treat playlist collection as pending work.
+
+Sources checked on November 18, 2026:
+
+- [GitHub profile](https://github.com/yparmar2024) and [current profile README](https://github.com/yparmar2024/yparmar2024/blob/main/README.md): name, Hoboken location, CS + Math at Stevens, and current featured repositories. Live GitHub API reads were used because search-engine copies of the profile were older.
+- [Morf README](https://github.com/yparmar2024/morf/blob/main/README.md): experimental C++ CLI for OBJ geometry differences and merges. The copy does not imply general lossless scene merging or completed research goals.
+- [Graphos README](https://github.com/yparmar2024/graphos/blob/main/README.md): autonomous reconnaissance research in a controlled security lab. The copy does not claim a production pentesting platform or implemented multi-agent orchestration.
+- [SleepyU repository](https://github.com/yparmar2024/SleepyU): 8-bit CPU project using Logisim-Evolution.
+- [Data Glacier README](https://github.com/yparmar2024/Data-Glacier/blob/main/README.md): virtual data-science internship and ML/deployment deliverables.
+- [LinkedIn profile](https://www.linkedin.com/in/yparmar): public indexed profile text supplies the Applied Mathematics minor, Software Engineer at Stevens Blueprint and course-assistant subjects CS-115/CS-284. Direct retrieval was unavailable, so no claim is made that the entire logged-in/current employment history was reviewed. No start/end dates, GPA, liked-post jobs or other people's achievements were inferred.
+
+Copy is centralized in `src/content.js`; `src/print-layout.js` preserves intentional line breaks and measures text to fit each physical print without running into its footer. The same copy is packed into the Blender source and GLB using the existing texture-generation workflow. Runtime profile fetching, account access, new links/interactions, music playback and extra prop behavior were not added.
+
+Latest Records decision: career-related direction for a future pass; keep the existing section as-is now. This supersedes the earlier preference for music. No further music selections are needed for this task.
+
+Validation for the control-guide/profile pass: `npm run check` passed, as did all seven browser scenarios. A final navigation check also confirmed that a short phone viewport can scroll the help legend while keeping its close button reachable. Personalized print tests measure actual browser fonts in both desktop and portrait layouts. Review `previews/help-desktop.png` and `previews/help-mobile.png` for the new guide.
+
+## November 24 room interactions
+
+About now uses Yash’s informal introduction. The project notebook turns through Morf, Graphos and SleepyU, with a stack and GitHub link for each page. The experience board uses the five entries in the root résumé, ordered by start date, with a horizontal marker for each role. Both objects have previous and next controls. The record player is scenery, reserved for a possible future music interaction.
+
+## Pinned experience board and contact links
+
+The experience board presents all five résumé roles as pinned notes, with the supplied Quantum Pulse Consulting logo. The triangle prompt and radial menu frame the full board for reading. The individual notes stay on the board. Both Stevens notes share the university mark. Blueprint and KION artwork comes from the organizations’ sites.
+
+- [Stevens logo archive](https://web.stevens.edu/news/newspoints/brand-logos/2020/Primary/)
+- [Stevens Blueprint logo](https://sitblueprint.com/assets/logos/logo.webp)
+- [KION Group logo](https://www.kiongroup.com/Administration/SVG/kion_group_logo_pos_svg.svg)
+
+The notebook turns along its top binding. Its GitHub icon and the whiteboard’s LinkedIn and GitHub icons are printed into the surface textures. A click matches the visible icon on the 3D object, including from the room overview. Close-ups also offer keyboard links. The whiteboard prints Yash’s obfuscated email address.

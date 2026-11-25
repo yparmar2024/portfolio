@@ -1,13 +1,15 @@
+import { openSurfaceLink } from './surface-links.js';
 import { bindCanvas } from './input.js';
 import { createDialogs } from './dialogs.js';
-import { copy } from './content.js';
+import { createNavigation } from './navigation.js';
+import { projects, roles, readingPage } from './portfolio-pages.js';
+import { contactLine, copy } from './content.js';
 import './style.css';
 import { createProgress } from './progress.js';
 import { createWorld } from './world.js';
 
 const app = document.querySelector('#app');
 const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)');
-const VISIT_KEY = 'yp-3d-entered';
 import { singleIcon, pageTemplate } from './ui.js';
 app.innerHTML = pageTemplate;
 const $ = (selector) => document.querySelector(selector);
@@ -15,51 +17,88 @@ const canvas = $('#world'),
   actionButton = $('#action'),
   bar = $('progress'),
   status = $('#status');
-const dialog = $('#details'),
-  menu = $('#menu');
+const dialog = $('#details');
+const menu = createNavigation($);
 let world,
   action,
   timer,
   state = 'loading',
   projectionFrame,
   inspected = null;
+let roomReady = false;
 app.dataset.state = 'loading';
 
-const { showDetails } = createDialogs($, copy);
+const { showDetails } = createDialogs($, copy, menu);
+let pageIndex = 0;
+function showPage(index) {
+  pageIndex = index;
+  const length = projects.length;
+  const [, title, body, note] = readingPage('Projects', index);
+  world.setPage('Projects', index);
+  $('#scene-title').textContent = title;
+  $('#scene-body').textContent = body + ' · ' + note;
+  $('#page-count').textContent = index + 1 + ' / ' + length;
+  $('#prev-page').disabled = index === 0;
+  $('#next-page').disabled = index === length - 1;
+  $('#project-link').href =
+    'https://github.com/yparmar2024/' + projects[index].repo;
+  status.textContent = [title, body, note].join('. ');
+}
+$('#prev-page').onclick = () => showPage(pageIndex - 1);
+$('#next-page').onclick = () => showPage(pageIndex + 1);
 function inspect(name) {
   if (state !== 'room') return;
   menu.close();
   inspected = name;
   app.dataset.focus = name;
   world.focus(name);
+  menu.select(name);
   $('#inspect-controls').hidden = false;
-  status.textContent = `Inspecting ${name}. Read the details or return to the room.`;
-  $('#read-object').focus({ preventScroll: true });
+  $('#surface-links').hidden = name === 'Experience';
+  $('#linkedin-link').hidden = name !== 'About';
+  $('#github-link').hidden = name !== 'About';
+  $('#project-link').hidden = name !== 'Projects';
+  $('#scene-title').textContent = copy[name][1];
+  $('#scene-body').textContent = copy[name][2];
+  $('#page-tools').hidden = name !== 'Projects';
+  if (name === 'About') $('#scene-body').textContent += ' ' + contactLine;
+  if (name === 'Experience') {
+    $('#scene-title').textContent = 'Experience board';
+    $('#scene-body').textContent = roles
+      .map(
+        ([start, end, company, role]) =>
+          `${role}, ${company}, ${start} to ${end}.`,
+      )
+      .join(' ');
+  }
+  if (!$('#page-tools').hidden) showPage(0);
+  $('#scene-reading').hidden = false;
+  status.textContent = `Inspecting ${name}. Read the object in the room. Circle or Escape returns to the room.`;
+  $('#scene-reading').focus({ preventScroll: true });
 }
 function returnToRoom() {
   inspected = null;
   app.dataset.focus = '';
   $('#inspect-controls').hidden = true;
+  $('#surface-links').hidden = true;
+  $('#scene-reading').hidden = true;
+  menu.select(null);
   world?.clearFocus();
   $('#menu-toggle').focus({ preventScroll: true });
 }
 $('#back-room').onclick = returnToRoom;
-$('#read-object').onclick = () => {
-  if (inspected) showDetails(inspected);
-};
 addEventListener('keydown', (event) => {
-  if (event.key === 'Escape' && inspected && !menu.open && !dialog.open) {
+  if (
+    !event.defaultPrevented &&
+    event.key === 'Escape' &&
+    inspected &&
+    !menu.open &&
+    !dialog.open
+  ) {
     event.preventDefault();
     returnToRoom();
   }
 });
-function remember() {
-  try {
-    localStorage.setItem(VISIT_KEY, '1');
-  } catch {
-    /* Private storage can be unavailable. */
-  }
-}
 function setState(next) {
   state = next;
   app.dataset.state = next;
@@ -71,14 +110,24 @@ function enterRoom() {
   action?.stop();
   setState('room');
   world?.setProgress(1);
-  remember();
   $('#skip').hidden = true;
+  $('#intro-menu').hidden = true;
   actionButton.hidden = true;
   $('#room-nav').hidden = false;
   $('#hotspots').hidden = false;
   status.textContent =
     'Inside the room. Choose an object or open the navigation menu.';
   $('#menu-toggle').focus({ preventScroll: true });
+}
+function startEntry() {
+  if (!roomReady) {
+    setState('room-wait');
+    $('#loading').hidden = false;
+    status.textContent = 'The window is open. Loading the room…';
+    return;
+  }
+  setState('entering');
+  timer = setTimeout(enterRoom, reducedMotion.matches ? 100 : 2850);
 }
 function complete(kind) {
   state = `${kind}-complete`;
@@ -94,13 +143,11 @@ function complete(kind) {
         timer = setTimeout(
           () => {
             prepare('window');
-            actionButton.focus({ preventScroll: true });
           },
           reducedMotion.matches ? 100 : 1300,
         );
       } else {
-        setState('entering');
-        timer = setTimeout(enterRoom, reducedMotion.matches ? 100 : 2850);
+        startEntry();
       }
     },
     reducedMotion.matches ? 100 : 240,
@@ -112,9 +159,9 @@ function prepare(kind) {
   bar.max = target;
   bar.value = 0;
   world?.setProgress(0);
-  actionButton.hidden = kind === 'paper' && !reducedMotion.matches;
-  actionButton.disabled = actionButton.hidden;
-  app.dataset.paperReady = String(kind !== 'paper' || reducedMotion.matches);
+  actionButton.hidden = true;
+  actionButton.disabled = true;
+  app.dataset.paperReady = 'false';
   actionButton.dataset.complete = 'false';
   actionButton.dataset.single = String(reducedMotion.matches);
   actionButton.style.setProperty('--progress', 0);
@@ -140,14 +187,18 @@ function restart() {
   inspected = null;
   app.dataset.focus = '';
   $('#inspect-controls').hidden = true;
+  $('#surface-links').hidden = true;
+  $('#scene-reading').hidden = true;
+  menu.select(null);
   menu.close();
   clearTimeout(timer);
   action?.stop();
+  $('#loading').hidden = true;
   $('#skip').hidden = false;
+  $('#intro-menu').hidden = false;
   $('#room-nav').hidden = true;
   $('#hotspots').hidden = true;
   prepare('paper');
-  actionButton.focus({ preventScroll: true });
 }
 function press() {
   if (
@@ -180,8 +231,12 @@ $('#room-nav').onclick = (event) => {
   if (item) inspect(item.dataset.item);
 };
 function fail() {
+  menu.close();
   $('#loading').hidden = true;
   $('#inspect-controls').hidden = true;
+  $('#surface-links').hidden = true;
+  $('#scene-reading').hidden = true;
+  $('#menu-toggle').hidden = true;
   $('#fallback p').textContent =
     'The 3D view could not be loaded. Check your connection and browser graphics settings, then retry, or read the introduction below.';
   action?.stop();
@@ -201,45 +256,51 @@ canvas.addEventListener('webglcontextlost', (event) => {
 });
 try {
   world = createWorld(canvas, reducedMotion);
-  await world.ready;
-  if (state === 'error')
-    throw new Error('Graphics context was lost while loading');
-  app.dataset.roomReady = 'true';
-  $('#loading').hidden = true;
-  $('#skip').disabled = false;
   $('#replay').disabled = false;
-  for (const name of ['About', 'Projects', 'Experience', 'Records']) {
+  restart();
+  for (const name of ['About', 'Projects', 'Experience']) {
     const button = document.createElement('button');
     button.className = 'hotspot game-prompt';
     button.dataset.name = name;
     button.hidden = true;
     button.innerHTML = singleIcon;
     button.setAttribute('aria-label', name);
-    button.onclick = () => inspect(name);
+    button.onclick = (event) => {
+      // A room prompt can overlap a small printed icon at a distance.
+      if (
+        event.detail &&
+        openSurfaceLink(world.hitItem(event.clientX, event.clientY))
+      )
+        return;
+      inspect(name);
+    };
     $('#hotspots').append(button);
   }
   function project() {
     projectionFrame = requestAnimationFrame(project);
     if (document.hidden) return;
-    if (state === 'paper') {
-      const ready = world.isPaperReady();
+    const activePrompt = state === 'paper' || state === 'window';
+    const ready =
+      state === 'window' || (state === 'paper' && world.isPaperReady());
+    if (ready || !actionButton.hidden) {
+      const point = world.projectAction();
+      actionButton.style.left = `${Math.max(10, Math.min(90, point.x))}%`;
+      actionButton.style.top = `${Math.max(12, Math.min(88, point.y))}%`;
+    }
+    if (activePrompt) {
       const wasHidden = actionButton.hidden;
       actionButton.hidden = !ready;
       actionButton.disabled = !ready;
+      app.dataset.paperReady = String(ready);
       if (
         ready &&
         wasHidden &&
         !menu.open &&
         !dialog.open &&
-        document.activeElement === document.body
+        (document.activeElement === document.body ||
+          document.activeElement === $('#replay'))
       )
         actionButton.focus({ preventScroll: true });
-      app.dataset.paperReady = String(ready);
-    }
-    if (!actionButton.hidden) {
-      const point = world.projectAction();
-      actionButton.style.left = `${Math.max(10, Math.min(90, point.x))}%`;
-      actionButton.style.top = `${Math.max(12, Math.min(88, point.y))}%`;
     }
     if (state !== 'room') return;
     for (const target of world.projectTargets()) {
@@ -249,14 +310,15 @@ try {
       button.hidden = !target.visible;
     }
   }
-  project();
-  let visited = false;
-  try {
-    visited = localStorage.getItem(VISIT_KEY) === '1';
-  } catch {
-    /* Start outside. */
-  }
-  visited ? enterRoom() : restart();
+  projectionFrame = requestAnimationFrame(project);
+  await world.ready;
+  if (state === 'error')
+    throw new Error('Graphics context was lost while loading');
+  roomReady = true;
+  app.dataset.roomReady = 'true';
+  $('#loading').hidden = true;
+  $('#skip').disabled = false;
+  if (state === 'room-wait') startEntry();
 } catch (error) {
   console.error('Unable to create 3D scene', error);
   world?.dispose();
